@@ -65,3 +65,6 @@ def create_app() -> FastAPI:
         Base.metadata.create_all(bind=engine)
         
     return app
+
+# Explicitly expose app for Uvicorn/Render
+app = create_app()
