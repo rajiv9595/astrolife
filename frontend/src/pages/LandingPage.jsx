@@ -8,6 +8,8 @@ import SignupForm from '../components/auth/SignupForm';
 // We are hoisting the form directly onto the landing page as per reference img "Fill the form to get your kundli"
 import { Star, Sun, Moon, ArrowRight, Heart, BookOpen, UserCheck, Compass, Sparkles } from 'lucide-react';
 
+import ganeshaImage from '../assets/ganesha_circle.png';
+
 const LandingPage = () => {
     return (
         <div className="min-h-screen bg-vedic-cream font-sans">
@@ -53,7 +55,7 @@ const LandingPage = () => {
                         <div className="w-[300px] h-[300px] md:w-[450px] md:h-[450px] border-[12px] border-white/10 rounded-full flex items-center justify-center relative">
                             <div className="absolute inset-0 border-[2px] border-vedic-orange/30 rounded-full animate-pulse-slow"></div>
                             <img
-                                src="/src/assets/ganesha_circle.png"
+                                src={ganeshaImage}
                                 alt="Lord Ganesha"
                                 className="w-full h-full object-cover rounded-full"
                             />

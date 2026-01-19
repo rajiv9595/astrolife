@@ -54,66 +54,65 @@ const Navbar = () => {
                                     </VedicButton>
                                 </Link>
                                 <button
-                                    onClick={() => {
-                                        localStorage.removeItem('token');
-                                        localStorage.removeItem('user');
-                                        window.location.reload();
+                                    localStorage.removeItem('token');
+                                localStorage.removeItem('user');
+                                window.location.href = '/';
                                     }}
-                                    className="text-sm font-bold text-vedic-muted hover:text-vedic-orange transition-colors uppercase tracking-wide"
+                                className="text-sm font-bold text-vedic-muted hover:text-vedic-orange transition-colors uppercase tracking-wide"
                                 >
-                                    Logout
-                                </button>
+                                Logout
+                            </button>
                             </div>
-                        ) : (
-                            <div className="flex items-center gap-4">
-                                <Link to="/auth?mode=login" className="text-sm font-bold text-vedic-blue hover:text-vedic-orange transition-colors uppercase">
-                                    Login
-                                </Link>
-                                <Link to="/auth?mode=signup">
-                                    <VedicButton variant="primary" className="!py-2 !px-6 text-xs shadow-none">
-                                        Chat Now
-                                    </VedicButton>
-                                </Link>
-                            </div>
-                        )}
+                    ) : (
+                    <div className="flex items-center gap-4">
+                        <Link to="/auth?mode=login" className="text-sm font-bold text-vedic-blue hover:text-vedic-orange transition-colors uppercase">
+                            Login
+                        </Link>
+                        <Link to="/auth?mode=signup">
+                            <VedicButton variant="primary" className="!py-2 !px-6 text-xs shadow-none">
+                                Chat Now
+                            </VedicButton>
+                        </Link>
                     </div>
-
-                    {/* Mobile Menu Button */}
-                    <button
-                        className="md:hidden text-vedic-blue p-2"
-                        onClick={() => setIsOpen(!isOpen)}
-                    >
-                        {isOpen ? <X /> : <Menu />}
-                    </button>
+                        )}
                 </div>
 
-                {/* Mobile Menu */}
-                <AnimatePresence>
-                    {isOpen && (
-                        <motion.div
-                            initial={{ opacity: 0, height: 0 }}
-                            animate={{ opacity: 1, height: 'auto' }}
-                            exit={{ opacity: 0, height: 0 }}
-                            className="md:hidden bg-white border-t border-stone-100 shadow-lg"
-                        >
-                            <div className="flex flex-col p-6 gap-4">
-                                <Link to="/" className="text-vedic-text font-bold">Home</Link>
-                                <Link to="/about" className="text-vedic-text font-bold">About</Link>
-                                <Link to="/services" className="text-vedic-text font-bold">Services</Link>
-                                {!isAuth && (
-                                    <>
-                                        <Link to="/auth?mode=login" className="text-vedic-blue font-bold">Login</Link>
-                                        <Link to="/auth?mode=signup" className="text-vedic-orange font-bold">Get Kundli</Link>
-                                    </>
-                                )}
-                                {isAuth && (
-                                    <Link to="/dashboard" className="text-vedic-orange font-bold">Dashboard</Link>
-                                )}
-                            </div>
-                        </motion.div>
-                    )}
-                </AnimatePresence>
-            </nav>
+                {/* Mobile Menu Button */}
+                <button
+                    className="md:hidden text-vedic-blue p-2"
+                    onClick={() => setIsOpen(!isOpen)}
+                >
+                    {isOpen ? <X /> : <Menu />}
+                </button>
+            </div>
+
+            {/* Mobile Menu */}
+            <AnimatePresence>
+                {isOpen && (
+                    <motion.div
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: 'auto' }}
+                        exit={{ opacity: 0, height: 0 }}
+                        className="md:hidden bg-white border-t border-stone-100 shadow-lg"
+                    >
+                        <div className="flex flex-col p-6 gap-4">
+                            <Link to="/" className="text-vedic-text font-bold">Home</Link>
+                            <Link to="/about" className="text-vedic-text font-bold">About</Link>
+                            <Link to="/services" className="text-vedic-text font-bold">Services</Link>
+                            {!isAuth && (
+                                <>
+                                    <Link to="/auth?mode=login" className="text-vedic-blue font-bold">Login</Link>
+                                    <Link to="/auth?mode=signup" className="text-vedic-orange font-bold">Get Kundli</Link>
+                                </>
+                            )}
+                            {isAuth && (
+                                <Link to="/dashboard" className="text-vedic-orange font-bold">Dashboard</Link>
+                            )}
+                        </div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+        </nav >
         </>
     );
 };
