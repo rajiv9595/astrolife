@@ -1,0 +1,11 @@
+{
+    "name": "Viparita Raja Yoga",
+    "description": "Formed when lords of Dusthana houses (6, 8, 12) occupy other Dusthana houses (e.g., 6th lord in 8th). Turns adversity into success.",
+    "conditions": [
+        {
+            "condition": "viparita_raja_yoga_check"
+        }
+    ],
+    "category": "Classical Yoga",
+    "id": "viparita_rajayoga"
+}

@@ -1,0 +1,12 @@
+{
+    "name": "Astra Yoga",
+    "description": "Malefics in 6th house, 6th Lord strong. Gives powerful enemies but ability to conquer them.",
+    "conditions": [
+        {
+            "lord_of": 6,
+            "strength": "strong"
+        }
+    ],
+    "category": "House Yoga",
+    "id": "astra_yoga"
+}

@@ -1,0 +1,11 @@
+{
+    "name": "Indra Yoga",
+    "description": "Mars in 3rd from Moon, Saturn in 7th from Mars, Venus in 7th from Saturn. Gives fame and authority.",
+    "conditions": [
+        {
+            "condition": "complex_placement_indra"
+        }
+    ],
+    "category": "Classical Yoga",
+    "id": "indra_yoga"
+}

@@ -1,0 +1,12 @@
+{
+    "name": "Bhrigu Mangala Yoga",
+    "description": "Conjunction of Venus and Mars. Gives passion and potential for gain through women or arts.",
+    "conditions": [
+        {
+            "planet": "Venus",
+            "conjunct_with": "Mars"
+        }
+    ],
+    "category": "Classical Yoga",
+    "id": "bhrigu_mangala_yoga"
+}

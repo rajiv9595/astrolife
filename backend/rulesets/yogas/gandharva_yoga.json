@@ -1,0 +1,11 @@
+{
+    "name": "Gandharva Yoga",
+    "description": "10th Lord in Kama Trikona, Sun strong, Moon in 9th. Gives skill in arts.",
+    "conditions": [
+        {
+            "condition": "gandharva_pattern"
+        }
+    ],
+    "category": "Classical Yoga",
+    "id": "gandharva_yoga"
+}

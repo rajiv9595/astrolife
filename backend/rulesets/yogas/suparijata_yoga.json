@@ -1,0 +1,12 @@
+{
+    "name": "Suparijata Yoga",
+    "description": "Benefics in 11th house, 11th Lord strong. Gives abundant gains.",
+    "conditions": [
+        {
+            "lord_of": 11,
+            "strength": "strong"
+        }
+    ],
+    "category": "House Yoga",
+    "id": "suparijata_yoga"
+}

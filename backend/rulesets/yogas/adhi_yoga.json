@@ -1,0 +1,21 @@
+{
+    "name": "Adhi Yoga",
+    "description": "Benefic planets (Jupiter, Venus, Mercury) in 6th, 7th, and 8th from Moon (Chandradhi) or Lagna (Lagnadhi). Gives leadership and long life.",
+    "conditions": [
+        {
+            "planets": [
+                "Jupiter",
+                "Venus",
+                "Mercury"
+            ],
+            "houses_from_moon": [
+                6,
+                7,
+                8
+            ],
+            "match_count_min": 1
+        }
+    ],
+    "category": "Classical Yoga",
+    "id": "adhi_yoga"
+}

@@ -1,0 +1,11 @@
+{
+    "name": "Hari Yoga",
+    "description": "Benefics in 2nd, 12th, 8th from 2nd Lord. Gives happiness.",
+    "conditions": [
+        {
+            "condition": "hari_pattern"
+        }
+    ],
+    "category": "Classical Yoga",
+    "id": "hari_yoga"
+}

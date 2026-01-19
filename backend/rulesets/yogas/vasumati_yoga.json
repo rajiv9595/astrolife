@@ -1,0 +1,11 @@
+{
+    "name": "Vasumati Yoga",
+    "description": "Benefics (Jupiter, Venus, Mercury) occupy Upachaya houses (3, 6, 10, 11). Gives immense independent wealth.",
+    "conditions": [
+        {
+            "condition": "benefics_in_upachaya"
+        }
+    ],
+    "category": "Dhana Yoga",
+    "id": "vasumati_yoga"
+}

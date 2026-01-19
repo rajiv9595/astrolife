@@ -1,0 +1,12 @@
+{
+    "name": "Amala Yoga",
+    "description": "Benefic planet in 10th house from Moon or Lagna. Gives lasting fame and professional success.",
+    "conditions": [
+        {
+            "house": 10,
+            "has_benefic": true
+        }
+    ],
+    "category": "Classical Yoga",
+    "id": "amala_yoga"
+}

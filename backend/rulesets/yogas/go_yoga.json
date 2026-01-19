@@ -1,0 +1,13 @@
+{
+    "name": "Go Yoga",
+    "description": "Jupiter in Moolatrikona with Lagna Lord. Gives respect from elders and wealth.",
+    "conditions": [
+        {
+            "planet": "Jupiter",
+            "sign_type": "moolatrikona",
+            "conjunct_with_lord": 1
+        }
+    ],
+    "category": "Classical Yoga",
+    "id": "go_yoga"
+}

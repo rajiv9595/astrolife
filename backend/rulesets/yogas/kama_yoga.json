@@ -1,0 +1,12 @@
+{
+    "name": "Kama Yoga",
+    "description": "Benefics in 7th house, 7th Lord strong. Gives good spouse and desires.",
+    "conditions": [
+        {
+            "lord_of": 7,
+            "strength": "strong"
+        }
+    ],
+    "category": "House Yoga",
+    "id": "kama_yoga"
+}

@@ -1,0 +1,17 @@
+{
+    "name": "Bheri Yoga",
+    "description": "Planets in 1st, 2nd, 7th, 12th houses. Gives wealth and health.",
+    "conditions": [
+        {
+            "houses": [
+                1,
+                2,
+                7,
+                12
+            ],
+            "has_planets": true
+        }
+    ],
+    "category": "Classical Yoga",
+    "id": "bheri_yoga"
+}

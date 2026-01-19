@@ -1,0 +1,26 @@
+{
+    "name": "Durdhara Yoga",
+    "description": "Planets (excluding Sun, Rahu, Ketu) in both 2nd and 12th houses from Moon. Gives immense wealth and comfort.",
+    "conditions": [
+        {
+            "house_from_moon": 2,
+            "has_planets": true,
+            "exclude_planets": [
+                "Sun",
+                "Rahu",
+                "Ketu"
+            ]
+        },
+        {
+            "house_from_moon": 12,
+            "has_planets": true,
+            "exclude_planets": [
+                "Sun",
+                "Rahu",
+                "Ketu"
+            ]
+        }
+    ],
+    "category": "Classical Yoga",
+    "id": "durdhara_yoga"
+}

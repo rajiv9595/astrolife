@@ -1,0 +1,11 @@
+{
+    "name": "Dharma Karmadhipati Yoga",
+    "description": "Conjunction or exchange of 9th and 10th Lords. The highest Raja Yoga for career and duty.",
+    "conditions": [
+        {
+            "condition": "raja_yoga_9_10"
+        }
+    ],
+    "category": "Raja Yoga",
+    "id": "dharma_karmadhipati_yoga"
+}

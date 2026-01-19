@@ -1,0 +1,11 @@
+{
+    "name": "Sarpa Yoga",
+    "description": "Malefics in 3 Kendras. A tricky yoga often giving hardness or imprisonment.",
+    "conditions": [
+        {
+            "condition": "malefics_in_kendras"
+        }
+    ],
+    "category": "Nabhasa Yoga",
+    "id": "sarpa_yoga"
+}

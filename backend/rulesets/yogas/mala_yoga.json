@@ -1,0 +1,11 @@
+{
+    "name": "Mala Yoga",
+    "description": "Benefics in 3 Kendras. Gives enjoyment and comforts.",
+    "conditions": [
+        {
+            "condition": "benefics_in_kendras"
+        }
+    ],
+    "category": "Nabhasa Yoga",
+    "id": "mala_yoga"
+}

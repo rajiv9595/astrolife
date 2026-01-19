@@ -1,0 +1,12 @@
+{
+    "name": "Budhaditya Yoga",
+    "description": "Conjunction of Sun and Mercury. Gives high intelligence, skill in work, and good reputation.",
+    "conditions": [
+        {
+            "planet": "Sun",
+            "conjunct_with": "Mercury"
+        }
+    ],
+    "category": "Classical Yoga",
+    "id": "budhaditya_yoga"
+}

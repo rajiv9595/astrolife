@@ -1,0 +1,11 @@
+{
+    "name": "Raja Lakshana Yoga",
+    "description": "Jupiter, Venus, Mercury, Moon in Kendras. Gives appearance and aura of a king.",
+    "conditions": [
+        {
+            "condition": "benefics_kendra_quad"
+        }
+    ],
+    "category": "Classical Yoga",
+    "id": "raja_lakshana_yoga"
+}

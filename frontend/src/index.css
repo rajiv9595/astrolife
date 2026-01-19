@@ -1,0 +1,64 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    background-color: theme('colors.vedic-cream');
+    color: theme('colors.vedic-text');
+    font-family: theme('fontFamily.sans');
+  }
+
+  /* Selection styles cannot be easily applied via standard CSS in this block without separate rules, 
+     but we can leave them out or use @apply if it works for utilities. 
+     However, standard CSS is safer here. */
+  ::selection {
+    background-color: theme('colors.vedic-orange');
+    color: white;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: theme('fontFamily.serif');
+    color: theme('colors.vedic-blue');
+    font-weight: 700;
+  }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: theme('colors.vedic-beige');
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: rgba(218, 165, 32, 0.5);
+  /* vedic-gold with 50% opacity */
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: theme('colors.vedic-gold');
+}
+
+/* Animation Utilities if needed */
+.fade-in {
+  animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}

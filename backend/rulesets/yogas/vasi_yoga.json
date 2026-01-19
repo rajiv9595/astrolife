@@ -1,0 +1,17 @@
+{
+    "name": "Vasi Yoga",
+    "description": "Planets (excluding Moon, Rahu, Ketu) in 12th house from Sun. Gives skills, wealth, and recognition.",
+    "conditions": [
+        {
+            "house_from_sun": 12,
+            "has_planets": true,
+            "exclude_planets": [
+                "Moon",
+                "Rahu",
+                "Ketu"
+            ]
+        }
+    ],
+    "category": "Classical Yoga",
+    "id": "vasi_yoga"
+}

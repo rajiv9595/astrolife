@@ -1,0 +1,12 @@
+{
+    "name": "Musala Yoga",
+    "description": "Lagna Lord in 12th, Malefics in 12th. Gives accumulation of wealth but difficulty keeping it.",
+    "conditions": [
+        {
+            "lord_of": 1,
+            "house": 12
+        }
+    ],
+    "category": "House Yoga",
+    "id": "musala_yoga"
+}

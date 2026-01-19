@@ -1,0 +1,26 @@
+{
+    "name": "Kemadruma Yoga",
+    "description": "No planets in 2nd and 12th from Moon (and no Kendra support). Can indicate hardships, though usually cancelled by other factors.",
+    "conditions": [
+        {
+            "house_from_moon": 2,
+            "has_planets": false,
+            "exclude_planets": [
+                "Sun",
+                "Rahu",
+                "Ketu"
+            ]
+        },
+        {
+            "house_from_moon": 12,
+            "has_planets": false,
+            "exclude_planets": [
+                "Sun",
+                "Rahu",
+                "Ketu"
+            ]
+        }
+    ],
+    "category": "Classical Yoga",
+    "id": "kemadruma_yoga"
+}

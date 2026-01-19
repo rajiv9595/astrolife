@@ -1,0 +1,14 @@
+{
+    "name": "Gaja Kesari Yoga",
+    "description": "Jupiter in Kendra from Moon. Brings fame, virtue, and reputation.",
+    "conditions": [
+        {
+            "planet": "Jupiter",
+            "relationship": "kendra_from_moon",
+            "target": "Moon",
+            "is_benefic": true
+        }
+    ],
+    "category": "Classical Yoga",
+    "id": "gaja_kesari"
+}

@@ -1,0 +1,20 @@
+{
+    "name": "Kusuma Yoga",
+    "description": "Venus in Kendra, Moon in Trikona, Saturn in 10th. Gives charitable nature and kingship.",
+    "conditions": [
+        {
+            "planet": "Venus",
+            "house_type": "kendra"
+        },
+        {
+            "planet": "Moon",
+            "house_type": "trikona"
+        },
+        {
+            "planet": "Saturn",
+            "house": 10
+        }
+    ],
+    "category": "Classical Yoga",
+    "id": "kusuma_yoga"
+}

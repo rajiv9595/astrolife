@@ -1,0 +1,11 @@
+{
+    "name": "Mridanga Yoga",
+    "description": "Lord of Navamsa of an exalted planet is in Kendra/Trikona. Gives royal status.",
+    "conditions": [
+        {
+            "condition": "mridanga_complex"
+        }
+    ],
+    "category": "Raja Yoga",
+    "id": "mridanga_yoga"
+}

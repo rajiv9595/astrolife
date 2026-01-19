@@ -1,0 +1,12 @@
+{
+    "name": "Kedara Yoga",
+    "description": "All 7 planets occupy exactly 4 different signs. Gives agricultural wealth and helpful nature.",
+    "conditions": [
+        {
+            "type": "nabha",
+            "count": 4
+        }
+    ],
+    "category": "Nabha Yoga",
+    "id": "kedara_yoga"
+}

@@ -1,0 +1,11 @@
+{
+    "name": "Dainya Parivartana Yoga",
+    "description": "Exchange of signs between Dusthana (6, 8, 12) Lords and others. Gives trouble from enemies and instability.",
+    "conditions": [
+        {
+            "condition": "parivartana_dusthana"
+        }
+    ],
+    "category": "Parivartana Yoga",
+    "id": "dainya_parivartana_yoga"
+}

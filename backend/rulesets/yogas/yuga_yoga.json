@@ -1,0 +1,12 @@
+{
+    "name": "Yuga Yoga",
+    "description": "All 7 planets occupy exactly 2 different signs. Gives heterodox beliefs and potential addiction.",
+    "conditions": [
+        {
+            "type": "nabha",
+            "count": 2
+        }
+    ],
+    "category": "Nabha Yoga",
+    "id": "yuga_yoga"
+}

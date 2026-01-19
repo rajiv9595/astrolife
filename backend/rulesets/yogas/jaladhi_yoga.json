@@ -1,0 +1,12 @@
+{
+    "name": "Jaladhi Yoga",
+    "description": "Benefics in 4th house, 4th Lord strong. Gives cows, lands, and happiness.",
+    "conditions": [
+        {
+            "lord_of": 4,
+            "strength": "strong"
+        }
+    ],
+    "category": "House Yoga",
+    "id": "jaladhi_yoga"
+}

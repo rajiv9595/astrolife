@@ -1,0 +1,12 @@
+{
+    "name": "Nipuna Yoga",
+    "description": "Sun and Mercury in close conjunction (Budhaditya variant) specifically focusing on skill/expertise.",
+    "conditions": [
+        {
+            "planet": "Sun",
+            "conjunct_with": "Mercury"
+        }
+    ],
+    "category": "Classical Yoga",
+    "id": "nipuna_yoga"
+}

@@ -1,0 +1,11 @@
+{
+    "name": "Kurma Yoga",
+    "description": "Benefics in 5th, 6th, 7th; Malefics in 1st, 3rd, 11th. Gives renown.",
+    "conditions": [
+        {
+            "condition": "kurma_pattern"
+        }
+    ],
+    "category": "Classical Yoga",
+    "id": "kurma_yoga"
+}

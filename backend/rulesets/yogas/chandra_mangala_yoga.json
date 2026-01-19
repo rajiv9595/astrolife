@@ -1,0 +1,12 @@
+{
+    "name": "Chandra Mangala Yoga",
+    "description": "Conjunction of Moon and Mars. Gives earnings through unscrupulous means, but wealth and energy.",
+    "conditions": [
+        {
+            "planet": "Moon",
+            "conjunct_with": "Mars"
+        }
+    ],
+    "category": "Classical Yoga",
+    "id": "chandra_mangala_yoga"
+}

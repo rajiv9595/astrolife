@@ -1,0 +1,11 @@
+{
+    "name": "Khala Parivartana Yoga",
+    "description": "Exchange of signs between 3rd Lord and a Kendra/Trikona Lord. Gives fluctuation in fortune.",
+    "conditions": [
+        {
+            "condition": "parivartana_3rd"
+        }
+    ],
+    "category": "Parivartana Yoga",
+    "id": "khala_parivartana_yoga"
+}

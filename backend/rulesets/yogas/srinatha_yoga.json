@@ -1,0 +1,13 @@
+{
+    "name": "Srinatha Yoga",
+    "description": "Lord of 7th exalted in 10th, Lord of 10th with Lord of 9th. Gives divine grace.",
+    "conditions": [
+        {
+            "lord_of": 7,
+            "house": 10,
+            "sign_type": "exaltation"
+        }
+    ],
+    "category": "Classical Yoga",
+    "id": "srinatha_yoga"
+}

@@ -1,0 +1,11 @@
+{
+    "name": "Mahabhagya Yoga",
+    "description": "Complex rule dependent on gender and birth time (Day/Night). Gives great fortune and popularity.",
+    "conditions": [
+        {
+            "special_condition": "mahabhagya_check"
+        }
+    ],
+    "category": "Classical Yoga",
+    "id": "mahabhagya_yoga"
+}

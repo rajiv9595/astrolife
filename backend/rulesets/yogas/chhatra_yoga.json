@@ -1,0 +1,12 @@
+{
+    "name": "Chhatra Yoga",
+    "description": "Benefics in 5th house, 5th Lord strong. Gives children, intelligence, and fortune.",
+    "conditions": [
+        {
+            "lord_of": 5,
+            "strength": "strong"
+        }
+    ],
+    "category": "House Yoga",
+    "id": "chhatra_yoga"
+}

@@ -1,0 +1,12 @@
+{
+    "name": "Bhagya Yoga",
+    "description": "Benefics in 9th house, 9th Lord exalted or strong. Gives excessive luck and wealth.",
+    "conditions": [
+        {
+            "lord_of": 9,
+            "strength": "strong"
+        }
+    ],
+    "category": "House Yoga",
+    "id": "bhagya_yoga"
+}

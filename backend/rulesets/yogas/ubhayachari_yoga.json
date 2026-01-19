@@ -1,0 +1,26 @@
+{
+    "name": "Ubhayachari Yoga",
+    "description": "Planets (excluding Moon, Rahu, Ketu) in both 2nd and 12th houses from Sun. Gives all-round happiness and strength.",
+    "conditions": [
+        {
+            "house_from_sun": 2,
+            "has_planets": true,
+            "exclude_planets": [
+                "Moon",
+                "Rahu",
+                "Ketu"
+            ]
+        },
+        {
+            "house_from_sun": 12,
+            "has_planets": true,
+            "exclude_planets": [
+                "Moon",
+                "Rahu",
+                "Ketu"
+            ]
+        }
+    ],
+    "category": "Classical Yoga",
+    "id": "ubhayachari_yoga"
+}

@@ -1,0 +1,12 @@
+{
+    "name": "Shaurya Yoga",
+    "description": "Benefics in 3rd house, 3rd Lord strong. Gives younger brothers and fame.",
+    "conditions": [
+        {
+            "lord_of": 3,
+            "strength": "strong"
+        }
+    ],
+    "category": "House Yoga",
+    "id": "shaurya_yoga"
+}

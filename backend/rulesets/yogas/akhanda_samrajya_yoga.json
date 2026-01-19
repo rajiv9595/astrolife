@@ -1,0 +1,11 @@
+{
+    "name": "Akhanda Samrajya Yoga",
+    "description": "Jupiter rules 2nd, 5th, or 11th and in Kendra from Moon. Gives unbroken kingdom/wealth.",
+    "conditions": [
+        {
+            "condition": "akhanda_samrajya_check"
+        }
+    ],
+    "category": "Raja Yoga",
+    "id": "akhanda_samrajya_yoga"
+}

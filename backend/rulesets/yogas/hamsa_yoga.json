@@ -1,0 +1,21 @@
+{
+    "name": "Hamsa Yoga",
+    "description": "Jupiter in Kendra from Lagna/Moon, in its own or exalted sign. One of the Pancha Mahapurusha Yogas. Gives wisdom, spirituality, and respect.",
+    "conditions": [
+        {
+            "planet": "Jupiter",
+            "house": [
+                1,
+                4,
+                7,
+                10
+            ],
+            "sign_type": [
+                "own",
+                "exaltation"
+            ]
+        }
+    ],
+    "category": "Classical Yoga",
+    "id": "hamsa_yoga"
+}

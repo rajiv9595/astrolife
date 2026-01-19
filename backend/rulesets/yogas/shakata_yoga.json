@@ -1,0 +1,13 @@
+{
+    "name": "Shakata Yoga",
+    "description": "Moon in 6th, 8th, or 12th from Jupiter. Gives cycles of fortune and misfortune.",
+    "conditions": [
+        {
+            "planet": "Moon",
+            "relationship": "6_8_12_from",
+            "target": "Jupiter"
+        }
+    ],
+    "category": "Classical Yoga",
+    "id": "shakata_yoga"
+}

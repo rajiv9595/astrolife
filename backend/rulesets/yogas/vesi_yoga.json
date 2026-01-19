@@ -1,0 +1,17 @@
+{
+    "name": "Vesi Yoga",
+    "description": "Planets (excluding Moon, Rahu, Ketu) in 2nd house from Sun. Gives good status, health, and happiness.",
+    "conditions": [
+        {
+            "house_from_sun": 2,
+            "has_planets": true,
+            "exclude_planets": [
+                "Moon",
+                "Rahu",
+                "Ketu"
+            ]
+        }
+    ],
+    "category": "Classical Yoga",
+    "id": "vesi_yoga"
+}

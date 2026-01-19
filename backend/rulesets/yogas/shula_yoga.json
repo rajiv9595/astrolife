@@ -1,0 +1,12 @@
+{
+    "name": "Shula Yoga",
+    "description": "All 7 planets occupy exactly 3 different signs. Gives courage involving weapons, but potential poverty.",
+    "conditions": [
+        {
+            "type": "nabha",
+            "count": 3
+        }
+    ],
+    "category": "Nabha Yoga",
+    "id": "shula_yoga"
+}

@@ -1,0 +1,12 @@
+{
+    "name": "Pasha Yoga",
+    "description": "All 7 planets occupy exactly 5 different signs. Gives skill in work, silence, and many servants.",
+    "conditions": [
+        {
+            "type": "nabha",
+            "count": 5
+        }
+    ],
+    "category": "Nabha Yoga",
+    "id": "pasha_yoga"
+}

@@ -1,0 +1,12 @@
+{
+    "name": "Dhenu Yoga",
+    "description": "Benefits in 2nd house, 2nd Lord exalted. Gives good food, speech, and wealth.",
+    "conditions": [
+        {
+            "lord_of": 2,
+            "sign_type": "exaltation"
+        }
+    ],
+    "category": "House Yoga",
+    "id": "dhenu_yoga"
+}

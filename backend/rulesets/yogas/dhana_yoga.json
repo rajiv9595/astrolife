@@ -1,0 +1,11 @@
+{
+    "name": "Dhana Yoga",
+    "description": "Formed when the 2nd Lord (Wealth) and 11th Lord (Gains) form a relationship, or when they connect with the 9th Lord (Fortune). Gives immense wealth.",
+    "conditions": [
+        {
+            "condition": "dhana_yoga_check"
+        }
+    ],
+    "category": "Classical Yoga",
+    "id": "dhana_yoga"
+}

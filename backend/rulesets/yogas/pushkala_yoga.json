@@ -1,0 +1,11 @@
+{
+    "name": "Pushkala Yoga",
+    "description": "Moon Lord with Lagna Lord in Kendra. Gives sweet speech and honor.",
+    "conditions": [
+        {
+            "condition": "pushkala_def"
+        }
+    ],
+    "category": "Classical Yoga",
+    "id": "pushkala_yoga"
+}

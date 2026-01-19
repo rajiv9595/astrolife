@@ -1,0 +1,21 @@
+{
+    "name": "Sasa Yoga",
+    "description": "Saturn in Kendra from Lagna/Moon, in its own or exalted sign. One of the Pancha Mahapurusha Yogas. Gives power over others, discipline, possible harsh nature but high status.",
+    "conditions": [
+        {
+            "planet": "Saturn",
+            "house": [
+                1,
+                4,
+                7,
+                10
+            ],
+            "sign_type": [
+                "own",
+                "exaltation"
+            ]
+        }
+    ],
+    "category": "Classical Yoga",
+    "id": "sasa_yoga"
+}

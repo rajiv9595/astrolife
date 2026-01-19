@@ -1,0 +1,12 @@
+{
+    "name": "Khyathi Yoga",
+    "description": "Benefics in 10th house, 10th Lord strong. Gives wide fame and good deeds.",
+    "conditions": [
+        {
+            "lord_of": 10,
+            "strength": "strong"
+        }
+    ],
+    "category": "House Yoga",
+    "id": "khyathi_yoga"
+}

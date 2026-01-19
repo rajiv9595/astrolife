@@ -1,0 +1,13 @@
+{
+    "name": "Chamara Yoga",
+    "description": "Lagna Lord exalted in Kendra, aspects Lagna. Gives long life and kingship.",
+    "conditions": [
+        {
+            "lord_of": 1,
+            "sign_type": "exaltation",
+            "house_type": "kendra"
+        }
+    ],
+    "category": "House Yoga",
+    "id": "chamara_yoga"
+}

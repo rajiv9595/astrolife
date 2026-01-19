@@ -1,0 +1,15 @@
+{
+    "name": "Kahala Yoga",
+    "description": "Lord of 4th and Lord of 9th in Kendra from each other or Lagna. Gives daring nature and leadership.",
+    "conditions": [
+        {
+            "relationship": "lords_in_kendra",
+            "lords": [
+                4,
+                9
+            ]
+        }
+    ],
+    "category": "Classical Yoga",
+    "id": "kahala_yoga"
+}

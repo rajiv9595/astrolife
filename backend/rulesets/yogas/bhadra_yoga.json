@@ -1,0 +1,21 @@
+{
+    "name": "Bhadra Yoga",
+    "description": "Mercury in Kendra from Lagna/Moon, in its own or exalted sign. One of the Pancha Mahapurusha Yogas. Gives high intelligence, communication skills, and longevity.",
+    "conditions": [
+        {
+            "planet": "Mercury",
+            "house": [
+                1,
+                4,
+                7,
+                10
+            ],
+            "sign_type": [
+                "own",
+                "exaltation"
+            ]
+        }
+    ],
+    "category": "Classical Yoga",
+    "id": "bhadra_yoga"
+}

@@ -1,0 +1,19 @@
+{
+    "name": "Kalanidhi Yoga",
+    "description": "Jupiter in 2nd/5th conjunct Mercury/Venus. Gives expertise in arts and astrology.",
+    "conditions": [
+        {
+            "planet": "Jupiter",
+            "house": [
+                2,
+                5
+            ],
+            "conjunct_with": [
+                "Mercury",
+                "Venus"
+            ]
+        }
+    ],
+    "category": "Classical Yoga",
+    "id": "kalanidhi_yoga"
+}

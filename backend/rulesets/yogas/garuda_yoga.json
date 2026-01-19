@@ -1,0 +1,11 @@
+{
+    "name": "Garuda Yoga",
+    "description": "Moon in bright half, exalted Lord of Navamsa of Moon. Gives flowery speech and devotion.",
+    "conditions": [
+        {
+            "condition": "moon_navamsa_exalt"
+        }
+    ],
+    "category": "Classical Yoga",
+    "id": "garuda_yoga"
+}

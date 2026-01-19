@@ -1,0 +1,11 @@
+{
+    "name": "Parijata Yoga",
+    "description": "Dispositor of Lagna Lord exalted. Gives fame later in life.",
+    "conditions": [
+        {
+            "condition": "dispositor_exalt"
+        }
+    ],
+    "category": "Classical Yoga",
+    "id": "parijata_yoga"
+}

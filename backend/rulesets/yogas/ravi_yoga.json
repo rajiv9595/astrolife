@@ -1,0 +1,16 @@
+{
+    "name": "Ravi Yoga",
+    "description": "Sun in 10th house and 10th Lord in 3rd house. Gives scientific mind and status.",
+    "conditions": [
+        {
+            "planet": "Sun",
+            "house": 10
+        },
+        {
+            "lord_of": 10,
+            "house": 3
+        }
+    ],
+    "category": "Classical Yoga",
+    "id": "ravi_yoga"
+}

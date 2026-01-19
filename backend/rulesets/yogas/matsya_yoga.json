@@ -1,0 +1,11 @@
+{
+    "name": "Matsya Yoga",
+    "description": "Malefics in Lagna/9th, Mix in 5th, Malefics in 4th/8th. Gives kindness and ocean-related fortune.",
+    "conditions": [
+        {
+            "condition": "matsya_pattern"
+        }
+    ],
+    "category": "Classical Yoga",
+    "id": "matsya_yoga"
+}

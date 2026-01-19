@@ -1,0 +1,21 @@
+{
+    "name": "grand_success_saturn_12th",
+    "description": "Calculates influence for Saturn in 12th house, often indicating success in foreign lands or spiritual pursuits but with delay.",
+    "conditions": [
+        {
+            "planet": "Saturn",
+            "house": 12
+        }
+    ],
+    "strength_factors": {
+        "score_base": 15,
+        "multiplier_if_retrograde": 1.2,
+        "multiplier_if_benefic_aspect": 1.5
+    },
+    "result": {
+        "career_impact": "high_foreign",
+        "delay_years": 3,
+        "success_type": "slow_build"
+    },
+    "category": "Strength Rule"
+}

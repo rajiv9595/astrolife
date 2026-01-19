@@ -1,0 +1,11 @@
+{
+    "name": "Brahma Yoga",
+    "description": "Jupiter, Venus, Mercury in Kendras from Lagna Lords. Gives purity and learning.",
+    "conditions": [
+        {
+            "condition": "brahma_complex"
+        }
+    ],
+    "category": "Classical Yoga",
+    "id": "brahma_yoga"
+}

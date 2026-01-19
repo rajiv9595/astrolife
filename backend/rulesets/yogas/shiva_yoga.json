@@ -1,0 +1,20 @@
+{
+    "name": "Shiva Yoga",
+    "description": "5th Lord in 9th, 9th Lord in 10th, 10th Lord in 5th. Gives divine wisdom and authority.",
+    "conditions": [
+        {
+            "lord_of": 5,
+            "house": 9
+        },
+        {
+            "lord_of": 9,
+            "house": 10
+        },
+        {
+            "lord_of": 10,
+            "house": 5
+        }
+    ],
+    "category": "Classical Yoga",
+    "id": "shiva_yoga"
+}

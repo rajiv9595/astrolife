@@ -1,0 +1,12 @@
+{
+    "name": "Veena Yoga",
+    "description": "All 7 planets occupy exactly 7 different signs. Gives musical skill, wealth, and happiness.",
+    "conditions": [
+        {
+            "type": "nabha",
+            "count": 7
+        }
+    ],
+    "category": "Nabha Yoga",
+    "id": "veena_yoga"
+}

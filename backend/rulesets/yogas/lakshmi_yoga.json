@@ -1,0 +1,23 @@
+{
+    "name": "Lakshmi Yoga",
+    "description": "Lord of 9th House in Kendra/Trikona and in own/exaltation sign, and Lagna Lord strong. Gives immense wealth and grace.",
+    "conditions": [
+        {
+            "lord_of": 9,
+            "house": [
+                1,
+                4,
+                7,
+                10,
+                5,
+                9
+            ],
+            "sign_type": [
+                "own",
+                "exaltation"
+            ]
+        }
+    ],
+    "category": "Classical Yoga",
+    "id": "lakshmi_yoga"
+}

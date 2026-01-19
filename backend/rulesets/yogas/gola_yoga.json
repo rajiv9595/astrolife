@@ -1,0 +1,12 @@
+{
+    "name": "Gola Yoga",
+    "description": "All 7 planets occupy exactly 1 sign. Gives laziness, short life, and poverty.",
+    "conditions": [
+        {
+            "type": "nabha",
+            "count": 1
+        }
+    ],
+    "category": "Nabha Yoga",
+    "id": "gola_yoga"
+}

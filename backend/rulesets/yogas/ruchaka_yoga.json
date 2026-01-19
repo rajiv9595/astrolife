@@ -1,0 +1,21 @@
+{
+    "name": "Ruchaka Yoga",
+    "description": "Mars in Kendra from Lagna/Moon, in its own or exalted sign. One of the Pancha Mahapurusha Yogas. Gives bold character, strength, and leadership.",
+    "conditions": [
+        {
+            "planet": "Mars",
+            "house": [
+                1,
+                4,
+                7,
+                10
+            ],
+            "sign_type": [
+                "own",
+                "exaltation"
+            ]
+        }
+    ],
+    "category": "Classical Yoga",
+    "id": "ruchaka_yoga"
+}

@@ -1,0 +1,17 @@
+{
+    "name": "Anapha Yoga",
+    "description": "Planets (excluding Sun, Rahu, Ketu) in the 12th house from Moon. Gives good health, manners, and material comforts.",
+    "conditions": [
+        {
+            "house_from_moon": 12,
+            "has_planets": true,
+            "exclude_planets": [
+                "Sun",
+                "Rahu",
+                "Ketu"
+            ]
+        }
+    ],
+    "category": "Classical Yoga",
+    "id": "anapha_yoga"
+}

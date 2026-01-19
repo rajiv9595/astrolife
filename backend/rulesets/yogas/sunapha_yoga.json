@@ -1,0 +1,17 @@
+{
+    "name": "Sunapha Yoga",
+    "description": "Planets (excluding Sun, Rahu, Ketu) in the 2nd house from Moon. Indicates wealth, intelligence, and fame.",
+    "conditions": [
+        {
+            "house_from_moon": 2,
+            "has_planets": true,
+            "exclude_planets": [
+                "Sun",
+                "Rahu",
+                "Ketu"
+            ]
+        }
+    ],
+    "category": "Classical Yoga",
+    "id": "sunapha_yoga"
+}

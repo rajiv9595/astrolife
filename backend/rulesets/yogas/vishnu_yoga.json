@@ -1,0 +1,16 @@
+{
+    "name": "Vishnu Yoga",
+    "description": "9th and 10th Lords in 2nd house. Gives favor from government.",
+    "conditions": [
+        {
+            "lord_of": 9,
+            "house": 2
+        },
+        {
+            "lord_of": 10,
+            "house": 2
+        }
+    ],
+    "category": "Classical Yoga",
+    "id": "vishnu_yoga"
+}

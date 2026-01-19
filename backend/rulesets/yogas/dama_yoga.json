@@ -1,0 +1,12 @@
+{
+    "name": "Dama Yoga",
+    "description": "All 7 planets occupy exactly 6 different signs. Gives charity, wealth, and fame.",
+    "conditions": [
+        {
+            "type": "nabha",
+            "count": 6
+        }
+    ],
+    "category": "Nabha Yoga",
+    "id": "dama_yoga"
+}

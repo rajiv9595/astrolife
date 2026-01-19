@@ -1,0 +1,11 @@
+{
+    "name": "Hara Yoga",
+    "description": "Benefics in 4th, 9th, 8th from 7th Lord. Gives destruction of enemies.",
+    "conditions": [
+        {
+            "condition": "hara_pattern"
+        }
+    ],
+    "category": "Classical Yoga",
+    "id": "hara_yoga"
+}

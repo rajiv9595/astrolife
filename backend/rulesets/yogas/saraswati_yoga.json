@@ -1,0 +1,44 @@
+{
+    "name": "Saraswati Yoga",
+    "description": "Jupiter, Venus, and Mercury in Kendra/Trikona or 2nd house. Gives wisdom, literary skills, and fame.",
+    "conditions": [
+        {
+            "planet": "Jupiter",
+            "house": [
+                1,
+                2,
+                4,
+                5,
+                7,
+                9,
+                10
+            ]
+        },
+        {
+            "planet": "Venus",
+            "house": [
+                1,
+                2,
+                4,
+                5,
+                7,
+                9,
+                10
+            ]
+        },
+        {
+            "planet": "Mercury",
+            "house": [
+                1,
+                2,
+                4,
+                5,
+                7,
+                9,
+                10
+            ]
+        }
+    ],
+    "category": "Classical Yoga",
+    "id": "saraswati_yoga"
+}

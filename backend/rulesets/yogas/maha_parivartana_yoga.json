@@ -1,0 +1,11 @@
+{
+    "name": "Maha Parivartana Yoga",
+    "description": "Exchange of signs between lords of Kendra and Trikona houses. Gives great prosperity.",
+    "conditions": [
+        {
+            "condition": "parivartana_kendra_trikona"
+        }
+    ],
+    "category": "Parivartana Yoga",
+    "id": "maha_parivartana_yoga"
+}

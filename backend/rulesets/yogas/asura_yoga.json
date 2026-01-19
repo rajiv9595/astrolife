@@ -1,0 +1,12 @@
+{
+    "name": "Asura Yoga",
+    "description": "Malefics in 8th house, 8th Lord strong. Gives selfishness but great power.",
+    "conditions": [
+        {
+            "lord_of": 8,
+            "strength": "strong"
+        }
+    ],
+    "category": "House Yoga",
+    "id": "asura_yoga"
+}

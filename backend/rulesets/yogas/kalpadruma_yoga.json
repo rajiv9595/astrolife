@@ -1,0 +1,11 @@
+{
+    "name": "Kalpadruma Yoga",
+    "description": "Lagna Lord, its dispositor, its dispositor, and its Navamsa lord all in Kendra/Trikona. Gives all desires.",
+    "conditions": [
+        {
+            "condition": "kalpadruma_chain"
+        }
+    ],
+    "category": "Classical Yoga",
+    "id": "kalpadruma_yoga"
+}

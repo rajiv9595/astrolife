@@ -1,0 +1,11 @@
+{
+    "name": "Parvata Yoga",
+    "description": "Benefics in Kendras, no planets in 6/8. Gives unshakeable wealth and status.",
+    "conditions": [
+        {
+            "condition": "parvata_def"
+        }
+    ],
+    "category": "Classical Yoga",
+    "id": "parvata_yoga"
+}
