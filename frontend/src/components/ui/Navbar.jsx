@@ -107,17 +107,19 @@ const Navbar = () => {
                                     </>
                                 )}
                                 {isAuth && (
-                                    <Link to="/dashboard" className="text-vedic-orange font-bold">Dashboard</Link>
-                                    <button
-                                        onClick={() => {
-                                            localStorage.removeItem('token');
-                                            localStorage.removeItem('user');
-                                            window.location.href = '/';
-                                        }}
-                                        className="text-left text-vedic-muted font-bold hover:text-vedic-orange transition-colors"
-                                    >
-                                        Logout
-                                    </button>
+                                    <>
+                                        <Link to="/dashboard" className="text-vedic-orange font-bold">Dashboard</Link>
+                                        <button
+                                            onClick={() => {
+                                                localStorage.removeItem('token');
+                                                localStorage.removeItem('user');
+                                                window.location.href = '/';
+                                            }}
+                                            className="text-left text-vedic-muted font-bold hover:text-vedic-orange transition-colors"
+                                        >
+                                            Logout
+                                        </button>
+                                    </>
                                 )}
                             </div>
                         </motion.div>
