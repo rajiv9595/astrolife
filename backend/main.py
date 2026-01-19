@@ -1,6 +1,6 @@
 # main.py - Entry point
 import uvicorn
-from app import create_app
+from backend.app import create_app
 
 # Create the application instance
 # This 'app' variable is what uvicorn looks for when running "main:app"

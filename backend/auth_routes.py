@@ -6,9 +6,9 @@ from sqlalchemy.orm import Session
 from pydantic import BaseModel, EmailStr
 from typing import Optional
 from datetime import timedelta
-from database import get_db
-from models import User, ChartData
-from auth import (
+from backend.database import get_db
+from backend.models import User, ChartData
+from backend.auth import (
     authenticate_user,
     get_password_hash,
     create_access_token,
@@ -67,7 +67,7 @@ def get_current_user(
     db: Session = Depends(get_db)
 ) -> User:
     from jose import JWTError, jwt
-    from auth import SECRET_KEY, ALGORITHM
+    from backend.auth import SECRET_KEY, ALGORITHM
     
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,

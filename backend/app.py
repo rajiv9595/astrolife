@@ -4,17 +4,17 @@ import swisseph as swe
 import os
 
 # Config
-from config import EPHE_PATH
+from backend.config import EPHE_PATH
 
 # Database
-from database import engine
-from models import Base
+from backend.database import engine
+from backend.models import Base
 
 # Routes
-from auth_routes import router as auth_router
-from geocode import router as geocode_router
-from routes.astro import router as astro_router
-from routes.ai_routes import router as ai_router
+from backend.auth_routes import router as auth_router
+from backend.geocode import router as geocode_router
+from backend.routes.astro import router as astro_router
+from backend.routes.ai_routes import router as ai_router
 
 def create_app() -> FastAPI:
     """

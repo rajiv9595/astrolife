@@ -1,8 +1,8 @@
 # init_db.py - Script to initialize the database
 # Run this script once to create the database and tables
 
-from database import engine, Base
-from models import User, ChartData
+from backend.database import engine, Base
+from backend.models import User, ChartData
 
 if __name__ == "__main__":
     print("Creating database tables...")

@@ -2,11 +2,11 @@ from fastapi import APIRouter, Depends
 from typing import Optional, List
 import os
 
-from schemas import ComputeRequest, MatchRequest
-from models import User
-from dependencies import get_current_user_optional
-from calculations import compute_chart, compute_match_for_birth_data
-from tables import compute_lucky_factors, SIGN_LORDS as TABLES_SIGN_LORDS
+from backend.schemas import ComputeRequest, MatchRequest
+from backend.models import User
+from backend.dependencies import get_current_user_optional
+from backend.calculations import compute_chart, compute_match_for_birth_data
+from backend.tables import compute_lucky_factors, SIGN_LORDS as TABLES_SIGN_LORDS
 
 router = APIRouter()
 
@@ -48,7 +48,7 @@ def compute(
         ruleset_dir = os.path.join(backend_dir, "rulesets")
         
         try:
-            from yoga_evaluator import evaluate_all_yogas
+            from backend.yoga_evaluator import evaluate_all_yogas
             # Update to read specifically from the "yogas" subdirectory for the UI report
             yogas_dir = os.path.join(ruleset_dir, "yogas")
             yogas = evaluate_all_yogas(

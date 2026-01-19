@@ -4,10 +4,10 @@ from typing import Optional, Any
 from jose import JWTError, jwt
 from sqlalchemy.orm import Session
 
-from auth import SECRET_KEY, ALGORITHM
-from database import get_db
-from models import User
-from auth_routes import get_user_by_email
+from backend.auth import SECRET_KEY, ALGORITHM
+from backend.database import get_db
+from backend.models import User
+from backend.auth_routes import get_user_by_email
 
 # OAuth2 scheme for optional authentication (auto_error=False)
 oauth2_scheme_optional = OAuth2PasswordBearer(tokenUrl="/auth/login", auto_error=False)

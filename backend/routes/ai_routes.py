@@ -3,10 +3,10 @@ from pydantic import BaseModel
 from typing import Dict, Any, List, Optional
 import json
 
-from dependencies import get_current_user_optional
-from models import User
-from ai_engine import ai_engine
-from knowledge_base import get_knowledge_context
+from backend.dependencies import get_current_user_optional
+from backend.models import User
+from backend.ai_engine import ai_engine
+from backend.knowledge_base import get_knowledge_context
 
 router = APIRouter(prefix="/ai", tags=["AI Astrologer"])
 

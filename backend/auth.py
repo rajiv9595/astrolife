@@ -4,7 +4,7 @@ from datetime import datetime, timedelta
 from typing import Optional
 from jose import JWTError, jwt
 from sqlalchemy.orm import Session
-from models import User
+from backend.models import User
 import hashlib
 import bcrypt
 

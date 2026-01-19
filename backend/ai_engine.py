@@ -5,7 +5,7 @@ Handles interaction with Google Gemini (gemini-1.5-pro).
 
 import os
 import google.generativeai as genai
-from config import GOOGLE_API_KEY, GEMINI_MODEL
+from backend.config import GOOGLE_API_KEY, GEMINI_MODEL
 
 class AIEngine:
     def __init__(self):
