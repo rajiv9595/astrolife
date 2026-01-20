@@ -649,9 +649,26 @@ def evaluate_yoga(ruleset: Dict, planet_data: Dict, whole_sign_houses: Dict,
                 if "conjunct_with" in cond:
                      partner = cond.get("conjunct_with")
                      h_source = get_planet_house(planet_data, p_name, asc_sign)
-                     h_partner = get_planet_house(planet_data, partner, asc_sign)
-                     if not h_source or not h_partner or h_source != h_partner:
-                         all_passed = False
+                     
+                     if isinstance(partner, list):
+                         # If list, check if conjunct with ALL or ANY?
+                         # Usually "conjunct with Mercury, Venus" implies both or any depending on context?
+                         # For Kalanidhi "Jupiter conj Mercury/Venus", usually implies combined influence.
+                         # Let's assume ANY for now unless specified
+                         partners = partner
+                         is_conjunct = False
+                         for pt in partners:
+                             h_pt = get_planet_house(planet_data, pt, asc_sign)
+                             if h_source and h_pt and h_source == h_pt:
+                                 is_conjunct = True
+                                 break
+                         if not is_conjunct:
+                             all_passed = False
+                     else:
+                         # Single string
+                         h_partner = get_planet_house(planet_data, partner, asc_sign)
+                         if not h_source or not h_partner or h_source != h_partner:
+                             all_passed = False
 
             elif "lord_of" in cond:
                 is_handled = True
