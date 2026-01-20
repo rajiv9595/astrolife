@@ -1,7 +1,10 @@
 import os
 
 # Ephemeris Path
-EPHE_PATH = os.getenv("EPHE_PATH", r"C:\Users\RAJIV MEDAPATI\Documents\lifepath\backend\ephe")
+# Ephemeris Path
+# Dynamically determine the path to the 'ephe' directory relative to this file
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+EPHE_PATH = os.getenv("EPHE_PATH", os.path.join(BASE_DIR, "ephe"))
 
 # Auth Config (could be moved here from auth.py eventually, but keeping minimal changes)
 

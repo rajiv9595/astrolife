@@ -15,6 +15,10 @@ DATABASE_URL = os.getenv(
     "postgresql://postgres:postgres@localhost:5432/lifepath_db"
 )
 
+# Fix for SQLAlchemy compatibility with some providers (like Render) asking for postgres://
+if DATABASE_URL and DATABASE_URL.startswith("postgres://"):
+    DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
+
 # Create engine
 engine = create_engine(DATABASE_URL, echo=True)
 
