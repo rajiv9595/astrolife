@@ -14,6 +14,7 @@ class AIEngine:
         self.client = None
         self.model = None
         
+        if self.api_key:
             try:
                 genai.configure(api_key=self.api_key)
                 self.model = genai.GenerativeModel(self.model_name)
