@@ -390,6 +390,10 @@ def evaluate_condition(condition_str: str, signal_results: Dict[str, bool]) -> b
 
 
 
+
+def evaluate_named_pattern(pattern_name: str, planet_data: Dict, whole_sign_houses: Dict, asc_sign: str) -> bool:
+    """Evaluate specific named patterns for complicated yogas"""
+    
     if pattern_name == "hari_pattern":
         # Benefics in 2nd, 12th, 8th from 2nd Lord
         lord_2 = get_house_lord(2, asc_sign, planet_data)
@@ -603,11 +607,11 @@ def evaluate_yoga(ruleset: Dict, planet_data: Dict, whole_sign_houses: Dict,
                     is_valid_sign = False
                     
                     if "own" in allowed_types:
-                        lord = SIGN_LORDS_MAP.get(p_sign)
+                        lord = SIGN_LORDS.get(p_sign)
                         if lord == p_name: is_valid_sign = True
                         
                     if "exaltation" in allowed_types:
-                        if is_exalted(p_name, p_sign): is_valid_sign = True
+                        if is_planet_exalted(p_name, p_sign): is_valid_sign = True
                     
                     if not is_valid_sign:
                         all_passed = False
@@ -666,9 +670,9 @@ def evaluate_yoga(ruleset: Dict, planet_data: Dict, whole_sign_houses: Dict,
                          is_valid_sign = False
                          
                          if "exaltation" in allowed_types:
-                             if is_exalted(lord_name, p_sign): is_valid_sign = True
+                             if is_planet_exalted(lord_name, p_sign): is_valid_sign = True
                          if "own" in allowed_types:
-                             if SIGN_LORDS_MAP.get(p_sign) == lord_name: is_valid_sign = True
+                             if SIGN_LORDS.get(p_sign) == lord_name: is_valid_sign = True
                              
                          if not is_valid_sign:
                              all_passed = False
@@ -676,8 +680,8 @@ def evaluate_yoga(ruleset: Dict, planet_data: Dict, whole_sign_houses: Dict,
                     # Check Strength (Generic 'strong' check for now - Exaltation, Own, or Kendra)
                     if "strength" in cond and cond.get("strength") == "strong":
                         p_sign = get_planet_sign(planet_data, lord_name)
-                        is_exalt = is_exalted(lord_name, p_sign)
-                        is_own = (SIGN_LORDS_MAP.get(p_sign) == lord_name)
+                        is_exalt = is_planet_exalted(lord_name, p_sign)
+                        is_own = (SIGN_LORDS.get(p_sign) == lord_name)
                         h_lord = get_planet_house(planet_data, lord_name, asc_sign)
                         is_kendra = h_lord in [1, 4, 7, 10]
                         
