@@ -14,7 +14,6 @@ class AIEngine:
         self.client = None
         self.model = None
         
-        if self.api_key:
             try:
                 genai.configure(api_key=self.api_key)
                 self.model = genai.GenerativeModel(self.model_name)
@@ -22,6 +21,13 @@ class AIEngine:
                 print(f"AI Engine initialized with Google Gemini model: {self.model_name}")
             except Exception as e:
                 print(f"AI Engine Init Error: {e}")
+                print("Attempting to list available models for debugging...")
+                try:
+                    for m in genai.list_models():
+                        if 'generateContent' in m.supported_generation_methods:
+                            print(f"- {m.name}")
+                except Exception as ex:
+                    print(f"Could not list models: {ex}")
         else:
             print("AI Engine Warning: No Google API Key found.")
 
