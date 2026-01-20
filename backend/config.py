@@ -10,5 +10,5 @@ EPHE_PATH = os.getenv("EPHE_PATH", os.path.join(BASE_DIR, "ephe"))
 
 # AI Configuration
 # User will provide API Key
-GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY", "AIzaSyCKy78lL3NEaBfa-G2Yj0jUFMh2V8ZJF-8")
+GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
 GEMINI_MODEL = "gemini-2.5-flash"
