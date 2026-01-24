@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import Navbar from '../components/ui/Navbar';
@@ -8,9 +8,37 @@ import SignupForm from '../components/auth/SignupForm';
 // We are hoisting the form directly onto the landing page as per reference img "Fill the form to get your kundli"
 import { Star, Sun, Moon, ArrowRight, Heart, BookOpen, UserCheck, Compass, Sparkles } from 'lucide-react';
 
+import { astroService } from '../services/astroService';
 import ganeshaImage from '../assets/ganesha_circle.png';
 
 const LandingPage = () => {
+    const [panchang, setPanchang] = useState(null);
+
+    useEffect(() => {
+        const fetchPanchang = async () => {
+            try {
+                const now = new Date();
+                const params = {
+                    year: now.getFullYear(),
+                    month: now.getMonth() + 1,
+                    day: now.getDate(),
+                    hour: now.getHours(),
+                    minute: now.getMinutes(),
+                    second: now.getSeconds(),
+                    lat: 28.6139,
+                    lon: 77.2090,
+                    tz: "Asia/Kolkata",
+                    planets: ["Sun", "Moon"] // Optimization
+                };
+                const data = await astroService.computeChart(params);
+                setPanchang(data);
+            } catch (err) {
+                console.error("Failed to load Panchang", err);
+            }
+        };
+        fetchPanchang();
+    }, []);
+
     return (
         <div className="min-h-screen bg-vedic-cream font-sans">
             <Navbar />
@@ -67,10 +95,25 @@ const LandingPage = () => {
             {/* Panchang / Daily Strip */}
             <section className="bg-white py-8 border-b border-stone-200 shadow-sm relative z-20 -mt-8 mx-6 md:mx-12 rounded-xl">
                 <div className="max-w-7xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-8 text-center divide-x divide-stone-100">
-                    <PanchangItem label="Tithi" value="Shukla Paksha" sub="Dashami" />
-                    <PanchangItem label="Nakshatra" value="Rohini" sub="Moon 12°" />
-                    <PanchangItem label="Yoga" value="Siddha" />
-                    <PanchangItem label="Sunrise" value="06:24 AM" color="text-vedic-orange" />
+                    <PanchangItem
+                        label="Tithi"
+                        value={panchang?.tithi?.paksha || "Loading..."}
+                        sub={panchang?.tithi?.name || "..."}
+                    />
+                    <PanchangItem
+                        label="Nakshatra"
+                        value={panchang?.nakshatra_of_moon?.nakshatra || "Loading..."}
+                        sub={panchang?.nakshatra_of_moon?.lord ? `Lord: ${panchang.nakshatra_of_moon.lord}` : "..."}
+                    />
+                    <PanchangItem
+                        label="Yoga"
+                        value={panchang?.nithya_yoga?.name || "Loading..."}
+                    />
+                    <PanchangItem
+                        label="Sunrise"
+                        value={panchang?.sunrise || "Loading..."}
+                        color="text-vedic-orange"
+                    />
                 </div>
             </section>
 

@@ -49,6 +49,22 @@ KARANA_NAMES = [
     "Vanija", "Vishti", "Shakuni", "Chatushpada", "Naga", "Kimstughna"
 ]
 
+TITHI_NAMES = [
+    "Pratipada", "Dwitiya", "Tritiya", "Chaturthi", "Panchami",
+    "Shashthi", "Saptami", "Ashtami", "Navami", "Dashami",
+    "Ekadashi", "Dwadashi", "Trayodashi", "Chaturdashi", "Purnima",
+    "Pratipada", "Dwitiya", "Tritiya", "Chaturthi", "Panchami",
+    "Shashthi", "Saptami", "Ashtami", "Navami", "Dashami",
+    "Ekadashi", "Dwadashi", "Trayodashi", "Chaturdashi", "Amavasya"
+]
+
+NITHYA_YOGA_NAMES = [
+    "Vishkumbha", "Priti", "Ayushman", "Saubhagya", "Shobhana", "Atiganda",
+    "Sukarma", "Dhriti", "Shula", "Ganda", "Vriddhi", "Dhruva", "Vyaghata",
+    "Harshana", "Vajra", "Siddhi", "Vyatipata", "Variyan", "Parigha", "Shiva",
+    "Siddha", "Sadhya", "Shubha", "Shukla", "Brahma", "Indra", "Vaidhriti"
+]
+
 PLANET_KEYS = {
     "Sun": swe.SUN, "Moon": swe.MOON, "Mercury": swe.MERCURY,
     "Venus": swe.VENUS, "Mars": swe.MARS, "Jupiter": swe.JUPITER,
@@ -180,6 +196,128 @@ def compute_karana(moon_lon, sun_lon):
         "karana_index": karana_index,
         "moon_sun_diff": round(diff, 4)
     }
+
+
+def compute_tithi(moon_lon: float, sun_lon: float) -> Dict[str, Any]:
+    """
+    Calculate Tithi (lunar day).
+    Difference between Moon and Sun longitudes divided by 12 degrees.
+    """
+    diff = normalize_deg(moon_lon - sun_lon)
+    tithi_val = diff / 12.0
+    tithi_index = int(tithi_val)  # 0-29
+    
+    # Check if Shukla (Waxing) or Krishna (Waning)
+    # 0-14: Shukla (waxing), 15-29: Krishna (waning)
+    if tithi_index < 15:
+        paksha = "Shukla Paksha"
+        # 14 is Purnima
+        day_index = tithi_index + 1
+    else:
+        paksha = "Krishna Paksha"
+        # 29 is Amavasya
+        day_index = tithi_index - 14 + 1
+        
+    name = TITHI_NAMES[tithi_index]
+    
+    # Calculate percentage remaining/passed
+    fraction = tithi_val - tithi_index
+    
+    return {
+        "index": tithi_index + 1,
+        "name": name,
+        "paksha": paksha,
+        "fraction": fraction,
+        "degrees_left": (1.0 - fraction) * 12.0
+    }
+
+
+def compute_nithya_yoga(moon_lon: float, sun_lon: float) -> Dict[str, Any]:
+    """
+    Calculate Nithya Yoga (Daily Yoga).
+    Sum of Moon and Sun longitudes divided by 13°20' (13.3333 degrees).
+    """
+    total = normalize_deg(moon_lon + sun_lon)
+    yoga_length = 360.0 / 27.0  # 13.3333...
+    yoga_val = total / yoga_length
+    yoga_index = int(yoga_val)  # 0-26
+    
+    name = NITHYA_YOGA_NAMES[yoga_index]
+    fraction = yoga_val - yoga_index
+    
+    return {
+        "index": yoga_index + 1,
+        "name": name,
+        "fraction": fraction
+    }
+
+
+def compute_sunrise_sunset(jd_ut: float, lat: float, lon: float, tz_name: str) -> Dict[str, Any]:
+    """Calculate Sunrise and Sunset times."""
+    # We want sunrise/sunset for the day of the chart
+    # Back up to start of the day in local time?
+    # Or just search backwards for previous sunrise and forward for next sunset?
+    
+    # Search for sunrise (CALC_RISE=1, CALC_SET=2)
+    # We search starting from 24h before to find the sunrise that started this day
+    # Actually, simplistic approach: search back 24h and forward 24h, find the one on the same calendar civil day.
+    
+    # Let's try to find sunrise closest to the input time but on the same day.
+    # Actually most accurate:
+    # 1. Get local date
+    # 2. Get JD for 12:00 PM local time of that date
+    # 3. Search for sunrise before and after noon?
+    
+    # Trying swisseph approach
+    swe.set_topo(lon, lat, 0)
+    
+    # Find sunrise
+    flags = swe.FLG_SWIEPH
+    # Look for sunrise relative to current jd_ut.
+    # If it's night, sunrise might be next morning or previous morning.
+    # We want the sunrise relevant to the Panchang (Start of the day).
+    # In Hindu system, Day starts at Sunrise.
+    # But usually UI shows "Sunrise: 06:xx AM" which implies the morning of that calendar date.
+    
+    # convert jd_ut to local datetime to get the date
+    dt = jd_to_datetime(jd_ut) # this returns UTC datetime from JD?
+    # No, jd_to_datetime returns the datetime corresponding to the JD. JD is UT based.
+    # So dt is UTC.
+    # We need local date.
+    ut_dt = pytz.utc.localize(dt)
+    tz = pytz.timezone(tz_name)
+    local_dt = ut_dt.astimezone(tz)
+    
+    # Construct JD for Local Noon of that day
+    noon_local = local_dt.replace(hour=12, minute=0, second=0, microsecond=0)
+    noon_utc = noon_local.astimezone(pytz.utc)
+    
+    # Get JD for noon utc
+    ut_dec = noon_utc.hour + noon_utc.minute/60.0 + noon_utc.second/3600.0
+    jd_noon = swe.julday(noon_utc.year, noon_utc.month, noon_utc.day, ut_dec, swe.GREG_CAL)
+    
+    # Search for sunrise backwards from noon (usually morning)
+    # rise_trans returns ((jd_rise, ...), status)
+    try:
+        res_rise = swe.rise_trans(jd_noon, swe.SUN, "", flags, swe.CALC_RISE, (lon, lat, 0))
+        jd_rise = res_rise[0][0]
+        
+        res_set = swe.rise_trans(jd_noon, swe.SUN, "", flags, swe.CALC_SET, (lon, lat, 0))
+        jd_set = res_set[0][0]
+        
+        # Convert JDs to local formatted strings
+        rise_dt = jd_to_datetime(jd_rise).replace(tzinfo=pytz.utc).astimezone(tz)
+        set_dt = jd_to_datetime(jd_set).replace(tzinfo=pytz.utc).astimezone(tz)
+        
+        return {
+            "sunrise": rise_dt.strftime("%I:%M %p"),
+            "sunset": set_dt.strftime("%I:%M %p"),
+            "sunrise_jd": jd_rise,
+            "sunset_jd": jd_set
+        }
+    except Exception as e:
+        print(f"Error computing sunrise/sunset: {e}")
+        return {"sunrise": "N/A", "sunset": "N/A"}
 
 
 # ---------------------------
@@ -945,11 +1083,19 @@ def compute_chart(year: int, month: int, day: int, hour: int, minute: int, secon
     nakshatra = compute_nakshatra_pada(moon_sid) if moon_sid else None
     dasha = compute_vimshottari_timeline(jd_ut, moon_sid) if moon_sid else None
     
-    # Calculate Karana
+    # Calculate Karana, Tithi, Nithya Yoga
     karana_data = None
+    tithi_data = None
+    yoga_data = None
+    
     if moon_sid is not None and sun_sid is not None:
         karana_data = compute_karana(moon_sid, sun_sid)
-    
+        tithi_data = compute_tithi(moon_sid, sun_sid)
+        yoga_data = compute_nithya_yoga(moon_sid, sun_sid)
+        
+    # Calculate Sunrise/Sunset
+    sun_data = compute_sunrise_sunset(jd_ut, lat, lon, tz)
+
     # Get Moon sign
     moon_sign = None
     if moon_sid is not None:
@@ -1076,6 +1222,10 @@ def compute_chart(year: int, month: int, day: int, hour: int, minute: int, secon
         "vimshottari": dasha,
         "nakshatra_of_moon": nakshatra,
         "karana": karana_data,
+        "tithi": tithi_data,
+        "nithya_yoga": yoga_data,
+        "sunrise": sun_data.get("sunrise"),
+        "sunset": sun_data.get("sunset"),
         "moon_sign": moon_sign,
         "asc_sidereal": asc_sidereal,  # For use by calling code (e.g., lucky factors)
         "asc_sign": asc_sign  # For use by calling code

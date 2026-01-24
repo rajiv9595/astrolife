@@ -87,6 +87,10 @@ def compute(
         "vimshottari": chart_data["vimshottari"],
         "nakshatra_of_moon": chart_data["nakshatra_of_moon"],
         "karana": chart_data["karana"],
+        "tithi": chart_data.get("tithi"),
+        "nithya_yoga": chart_data.get("nithya_yoga"),
+        "sunrise": chart_data.get("sunrise"),
+        "sunset": chart_data.get("sunset"),
         "moon_sign": chart_data["moon_sign"],
         "yogas": yogas,
         "lucky_factors": lucky_factors_data
