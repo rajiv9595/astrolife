@@ -61,7 +61,7 @@ const GuestKundliPage = () => {
                             Kundli for {name || 'Guest'}
                         </h1>
                         <p className="text-stone-500 mt-2 text-sm">
-                            {new Date().toLocaleDateString()} • {params.lat.toFixed(2)}°N, {params.lon.toFixed(2)}°E
+                            {new Date().toLocaleDateString()} • {params?.lat?.toFixed(2)}°N, {params?.lon?.toFixed(2)}°E
                         </p>
                     </div>
 
@@ -138,8 +138,10 @@ const GuestKundliPage = () => {
                                             <tr key={planet}>
                                                 <td className="p-3 font-medium text-vedic-blue">{planet}</td>
                                                 <td className="p-3 text-stone-600">
-                                                    {/* We need a helper for sign name or just use index. Assuming details has it or we compute */}
-                                                    {Math.floor(details.current_sign)} ({details.current_sign.toFixed(0)}) (Placeholder)
+                                                    {/* Safely handle sign numbering */}
+                                                    {details.current_sign !== undefined
+                                                        ? `${Math.floor(details.current_sign)} (${details.current_sign?.toFixed(0)})`
+                                                        : '--'}
                                                 </td>
                                                 <td className="p-3 text-stone-600">{details.normDegree?.toFixed(2)}°</td>
                                                 <td className="p-3 text-stone-600">{details.nakshatra}</td>
