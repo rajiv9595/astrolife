@@ -297,13 +297,15 @@ def compute_sunrise_sunset(jd_ut: float, lat: float, lon: float, tz_name: str) -
     jd_noon = swe.julday(noon_utc.year, noon_utc.month, noon_utc.day, ut_dec, swe.GREG_CAL)
     
     # Search for sunrise backwards from noon (usually morning)
-    # rise_trans returns ((jd_rise, ...), status)
+    # rise_trans signature in pyswisseph:
+    # rise_trans(tjdut, body, rsmi, geopos, atpress, attemp, flags)
+    # Returns: (int_status, (tjd_event, ...))
     try:
-        res_rise = swe.rise_trans(jd_noon, swe.SUN, "", flags, swe.CALC_RISE, (lon, lat, 0))
-        jd_rise = res_rise[0][0]
+        res_rise = swe.rise_trans(jd_noon, swe.SUN, swe.CALC_RISE, (lon, lat, 0), 0, 0, flags)
+        jd_rise = res_rise[1][0]
         
-        res_set = swe.rise_trans(jd_noon, swe.SUN, "", flags, swe.CALC_SET, (lon, lat, 0))
-        jd_set = res_set[0][0]
+        res_set = swe.rise_trans(jd_noon, swe.SUN, swe.CALC_SET, (lon, lat, 0), 0, 0, flags)
+        jd_set = res_set[1][0]
         
         # Convert JDs to local formatted strings
         rise_dt = jd_to_datetime(jd_rise).replace(tzinfo=pytz.utc).astimezone(tz)
