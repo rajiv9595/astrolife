@@ -81,18 +81,7 @@ const YogasPage = () => {
     useEffect(() => {
         const fetchYogas = async () => {
             try {
-                // Check cache first
-                const cachedData = localStorage.getItem('chartData');
-                if (cachedData) {
-                    const data = JSON.parse(cachedData);
-                    if (data.yogas) {
-                        setYogas(data.yogas);
-                        setLoading(false);
-                        return;
-                    }
-                }
-
-                // If not in cache or incomplete, fetch fresh
+                // Always fetch fresh data to ensure we have the latest Yogas from backend
                 const formData = await authService.getChartDataParams();
                 if (!formData) {
                     toast.error("Please enter birth details.");
@@ -101,6 +90,7 @@ const YogasPage = () => {
                 }
                 const data = await astroService.computeChart(formData);
                 setYogas(data.yogas || []);
+                // Update cache with fresh data
                 localStorage.setItem('chartData', JSON.stringify(data));
                 setLoading(false);
 
