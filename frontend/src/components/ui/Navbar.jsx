@@ -43,9 +43,6 @@ const Navbar = () => {
                         <Link to="/services" className="text-sm font-bold text-vedic-text hover:text-vedic-orange transition-colors uppercase tracking-wide">
                             Services
                         </Link>
-                        <Link to="/learning" className="text-sm font-bold text-vedic-text hover:text-vedic-orange transition-colors uppercase tracking-wide">
-                            Learning
-                        </Link>
                         <Link to="/blog" className="text-sm font-bold text-vedic-text hover:text-vedic-orange transition-colors uppercase tracking-wide">Blog</Link>
 
                         {isAuth ? (

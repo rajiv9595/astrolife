@@ -16,7 +16,7 @@ const tools = [
     { name: 'Your Info', icon: User, description: 'Your personal birth details and settings.', link: '/tools/info' },
     { name: 'Match Checker', icon: Heart, description: 'Check compatibility with a partner.', link: '/match' },
     { name: 'AI Astrologer', icon: Bot, description: 'Chat with our AI for instant insights.', link: '/tools/ai-astrologer' },
-    { name: 'AI Guru Teacher', icon: BookOpen, description: 'Learn astrology from an AI tutor.', link: '/tools/ai-guru' },
+    { name: 'AI Guru Teacher', icon: BookOpen, description: 'Learn astrology from an AI tutor.', link: '/learning' },
     { name: 'AI Horary Prasna', icon: MessageCircle, description: 'Ask specific questions and get answers.', link: '/tools/ai-horary' },
     { name: 'Life Predictor', icon: SparklesIcon, description: 'Get predictions about your life path.', link: '/tools/life-predictor' },
     { name: 'Horoscope', icon: SunIcon, description: 'Daily, weekly, and monthly horoscopes.', link: '/tools/horoscope' },
