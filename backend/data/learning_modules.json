@@ -1,0 +1,85 @@
+[
+    {
+        "id": "module_1",
+        "title": "Module 1: The Foundations",
+        "description": "Understand the basic building blocks of Vedic Astrology.",
+        "lessons": [
+            {
+                "id": "1_1",
+                "title": "Introduction to Vedic Astrology (Jyotish)",
+                "content": "Vedic Astrology, or Jyotish (the Science of Light), is an ancient Indian system of astronomy and astrology. Unlike Western astrology which uses the Tropical Zodiac, Vedic Astrology uses the Sidereal Zodiac, which aligns with the current position of constellations. It is based on the Vedas, the oldest scriptures of India."
+            },
+            {
+                "id": "1_2",
+                "title": "The 4 Purusharthas",
+                "content": "Life in Vedic philosophy is guided by four aims: Dharma (Righteousness/Duty), Artha (Wealth/Resources), Kama (Desire/Pleasure), and Moksha (Liberation). Analyzing a horoscope helps understand the balance of these four aims in a person's life."
+            },
+            {
+                "id": "1_3",
+                "title": "North vs South Indian Charts",
+                "content": "There are two main styles of drawing charts. The South Indian chart is square, with fixed signs (Mesha is always second box from top left) and moving planets. The North Indian chart is diamond-shaped, with fixed houses (Ascendant is always top diamond) and moving signs."
+            }
+        ]
+    },
+    {
+        "id": "module_2",
+        "title": "Module 2: The Grahas (Planets)",
+        "description": "Meet the celestial influencers.",
+        "lessons": [
+            {
+                "id": "2_1",
+                "title": "The 9 Grahas",
+                "content": "Vedic astrology uses 7 physical planets (Sun, Moon, Mars, Mercury, Jupiter, Venus, Saturn) and 2 shadow planets (Rahu, Ketu). Each planet represents a specific energy or 'Karaka' in life."
+            },
+            {
+                "id": "2_2",
+                "title": "Sun (Surya) & Moon (Chandra)",
+                "content": "Sun represents the Soul (Atman), father, authority, and vitality. It is the King. Moon represents the Mind (Manas), mother, emotions, and comfort. It is the Queen."
+            },
+            {
+                "id": "2_3",
+                "title": "Mars, Mercury, Jupiter, Venus, Saturn",
+                "content": "Mars (soldier): Energy, logic, anger. Mercury (prince): Intellect, communication. Jupiter (guru): Wisdom, expansion. Venus (minister): Love, luxury, art. Saturn (servant): Discipline, delay, karma."
+            }
+        ]
+    },
+    {
+        "id": "module_3",
+        "title": "Module 3: The Rashis (Zodiac Signs)",
+        "description": "The environments where planets operate.",
+        "lessons": [
+            {
+                "id": "3_1",
+                "title": "The 12 Signs",
+                "content": "Aries (Mesha), Taurus (Vrishabha), Gemini (Mithuna), Cancer (Karka), Leo (Simha), Virgo (Kanya), Libra (Tula), Scorpio (Vrishchika), Sagittarius (Dhanu), Capricorn (Makara), Aquarius (Kumbha), Pisces (Meena)."
+            },
+            {
+                "id": "3_2",
+                "title": "Elements and Modalities",
+                "content": "Signs are grouped by Element: Fire (Aries, Leo, Sag), Earth (Taurus, Virgo, Cap), Air (Gemini, Libra, Aqua), Water (Cancer, Scorpio, Pisces). And by Modality: Movable (Chara), Fixed (Sthira), Dual (Dwiswabhava)."
+            }
+        ]
+    },
+    {
+        "id": "module_4",
+        "title": "Module 4: The Bhavas (Houses)",
+        "description": "The areas of life affected.",
+        "lessons": [
+            {
+                "id": "4_1",
+                "title": "Kendra Houses (1, 4, 7, 10)",
+                "content": "These are the pillars of the chart. 1st: Self/Body. 4th: Home/Mother. 7th: Marriage/Business. 10th: Career/Public Status. Planets here are strong."
+            },
+            {
+                "id": "4_2",
+                "title": "Trikona Houses (1, 5, 9)",
+                "content": "The houses of luck and dharma. 1st: Self. 5th: Creativity/Children/Past Karma. 9th: Luck/Guru/Father/Higher Learning. These are the most auspicious houses."
+            },
+            {
+                "id": "4_3",
+                "title": "Dusthana Houses (6, 8, 12)",
+                "content": "The houses of suffering or transformation. 6th: Enemies/Debt/Disease. 8th: Death/Transformation/Occult. 12th: Loss/Liberation/Foreign Lands."
+            }
+        ]
+    }
+]

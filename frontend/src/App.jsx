@@ -7,6 +7,7 @@ import BirthInputPage from './pages/BirthInputPage'
 import DashboardPage from './pages/DashboardPage'
 import MatchPage from './pages/MatchPage'
 import ServicesPage from './pages/ServicesPage'
+import LearningPage from './pages/LearningPage'
 import DashaPage from './pages/DashaPage'
 import ToolsLayout from './components/layout/ToolsLayout'
 import AIAstrologerPage from './pages/AIAstrologerPage'
@@ -52,6 +53,7 @@ function App() {
                             </ProtectedRoute>
                         } />
                         <Route path="/services" element={<ServicesPage />} />
+                        <Route path="/learning" element={<LearningPage />} />
                         <Route path="/blog" element={<BlogPage />} />
                         <Route path="/about" element={<AboutPage />} />
 
