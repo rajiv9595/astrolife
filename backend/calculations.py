@@ -288,23 +288,29 @@ def compute_sunrise_sunset(jd_ut: float, lat: float, lon: float, tz_name: str) -
     tz = pytz.timezone(tz_name)
     local_dt = ut_dt.astimezone(tz)
     
-    # Construct JD for Local Noon of that day
-    noon_local = local_dt.replace(hour=12, minute=0, second=0, microsecond=0)
-    noon_utc = noon_local.astimezone(pytz.utc)
+    # Construct JD for Local Midnight (Start of the day)
+    # We want to find the sunrise that happens on this specific calendar day.
+    # Searching from midnight ensures we find the morning sunrise (around 6-7 AM).
+    # If we search from Noon, we might find the NEXT sunrise (Tomorrow).
+    midnight_local = local_dt.replace(hour=0, minute=0, second=0, microsecond=0)
+    midnight_utc = midnight_local.astimezone(pytz.utc)
     
-    # Get JD for noon utc
-    ut_dec = noon_utc.hour + noon_utc.minute/60.0 + noon_utc.second/3600.0
-    jd_noon = swe.julday(noon_utc.year, noon_utc.month, noon_utc.day, ut_dec, swe.GREG_CAL)
+    # Get JD for midnight utc
+    ut_dec = midnight_utc.hour + midnight_utc.minute/60.0 + midnight_utc.second/3600.0
+    jd_start = swe.julday(midnight_utc.year, midnight_utc.month, midnight_utc.day, ut_dec, swe.GREG_CAL)
     
     # Search for sunrise backwards from noon (usually morning)
     # rise_trans signature in pyswisseph:
     # rise_trans(tjdut, body, rsmi, geopos, atpress, attemp, flags)
     # Returns: (int_status, (tjd_event, ...))
     try:
-        res_rise = swe.rise_trans(jd_noon, swe.SUN, swe.CALC_RISE, (lon, lat, 0), 0, 0, flags)
+        # Search for sunrise from midnight
+        res_rise = swe.rise_trans(jd_start, swe.SUN, swe.CALC_RISE, (lon, lat, 0), 0, 0, flags)
         jd_rise = res_rise[1][0]
         
-        res_set = swe.rise_trans(jd_noon, swe.SUN, swe.CALC_SET, (lon, lat, 0), 0, 0, flags)
+        # Search for sunset from midnight? 
+        # Usually sunset is afternoon. Searching from midnight will find today's sunset (e.g. 18:00)
+        res_set = swe.rise_trans(jd_start, swe.SUN, swe.CALC_SET, (lon, lat, 0), 0, 0, flags)
         jd_set = res_set[1][0]
         
         # Convert JDs to local formatted strings
@@ -327,31 +333,22 @@ def compute_sunrise_sunset(jd_ut: float, lat: float, lon: float, tz_name: str) -
 # ---------------------------
 def jd_to_datetime(jd):
     """Convert Julian Day to datetime object."""
-    jd_int = int(jd)
-    jd_frac = jd - jd_int
+    # Use swisseph's built-in conversion which handles the 12-hour offset correctly.
+    # revjul returns (year, month, day, hour_decimal)
+    year, month, day, hour_decimal = swe.revjul(jd, swe.GREG_CAL)
     
-    # Convert to Gregorian calendar
-    # swe.revjul returns (year, month, day, hour) as integers
-    result = swe.revjul(jd_int, swe.GREG_CAL)
-    year = int(result[0])
-    month = int(result[1])
-    day = int(result[2])
-    
-    # Add fractional part (time of day) from JD
-    total_seconds = jd_frac * 86400.0
-    hour = int(total_seconds // 3600) % 24
-    minute = int((total_seconds % 3600) // 60)
-    second = int(total_seconds % 60)
+    hour = int(hour_decimal)
+    min_decimal = (hour_decimal - hour) * 60.0
+    minute = int(min_decimal)
+    sec_decimal = (min_decimal - minute) * 60.0
+    second = int(sec_decimal)
     
     try:
         dt = datetime(year, month, day, hour, minute, second)
         return dt
     except (ValueError, TypeError):
-        # Fallback to date only if time conversion fails
-        try:
-            return datetime(year, month, day, 0, 0, 0)
-        except:
-            return datetime(1900, 1, 1, 0, 0, 0)
+        # Fallback
+        return datetime(1900, 1, 1, 0, 0, 0)
 
 
 def calculate_antar_dasha(mahadasha_lord, mahadasha_years, start_jd, days_in_year):

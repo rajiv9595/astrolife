@@ -394,134 +394,363 @@ def evaluate_condition(condition_str: str, signal_results: Dict[str, bool]) -> b
 def evaluate_named_pattern(pattern_name: str, planet_data: Dict, whole_sign_houses: Dict, asc_sign: str) -> bool:
     """Evaluate specific named patterns for complicated yogas"""
     
+    # --- Constants ---
+    benefics = ["Jupiter", "Venus", "Mercury", "Moon"]
+    malefics = ["Sun", "Mars", "Saturn", "Rahu", "Ketu"]
+
+    # --- Aliases ---
+    if pattern_name == "brahma_complex":
+        pattern_name = "brahma_pattern"
+    elif pattern_name == "complex_placement_indra":
+        pattern_name = "indra_pattern"
+
+    # --- Helpers ---
+    def get_h(p): return get_planet_house(planet_data, p, asc_sign)
+    def get_sgn(p): return get_planet_sign(planet_data, p)
+    def check_house_has(h, p_list):
+        in_h = [p for p in planet_data if get_h(p) == h]
+        return any(x in p_list for x in in_h)
+    
+    # --- Patterns ---
+    
     if pattern_name == "hari_pattern":
         # Benefics in 2nd, 12th, 8th from 2nd Lord
         lord_2 = get_house_lord(2, asc_sign, planet_data)
         if not lord_2: return False
+        h_l2 = get_h(lord_2)
+        if not h_l2: return False
         
-        house_l2 = get_planet_house(planet_data, lord_2, asc_sign)
-        if not house_l2: return False
+        targets = [((h_l2 + 1) % 12) or 12, ((h_l2 + 7) % 12) or 12, ((h_l2 + 11) % 12) or 12]
+        for h in targets:
+             curr_ps = [p for p in planet_data if get_h(p) == h]
+             if not any(p in benefics for p in curr_ps): return False
+        return True
+
+    elif pattern_name == "hara_pattern":
+        # Benefics in 4, 8, 9 from 7th Lord of Ascendant
+        l7 = get_house_lord(7, asc_sign, planet_data)
+        if not l7: return False
+        h_l7 = get_h(l7)
+        if not h_l7: return False
         
-        # Check 2nd from 2nd Lord (House X + 2 - 1)
-        # Check 8th from 2nd Lord
-        # Check 12th from 2nd Lord
-        targets = [
-            ((house_l2 + 1) % 12) or 12, # 2nd
-            ((house_l2 + 7) % 12) or 12, # 8th
-            ((house_l2 + 11) % 12) or 12 # 12th
-        ]
-        benefics = ["Jupiter", "Venus", "Mercury", "Moon"]
-        
-        for h_num in targets:
-             # Check if house has benefic
-             planets_in_house = [p for p in planet_data if get_planet_house(planet_data, p, asc_sign) == h_num]
-             if not any(p in benefics for p in planets_in_house):
-                 return False
+        offsets = [3, 7, 8] # 4th, 8th, 9th (0-based: 3, 7, 8)
+        # 4th from X = (X + 3)
+        targets = [((h_l7 + off) % 12) or 12 for off in offsets]
+        for h in targets:
+             curr_ps = [p for p in planet_data if get_h(p) == h]
+             if not any(p in benefics for p in curr_ps): return False
         return True
 
     elif pattern_name == "gandharva_pattern":
-        # 10th Lord in Kama Trikona (3, 7, 11), Sun strong (exalted/own), Moon in 9th
+        # 10th Lord in Kama Trikona (3, 7, 11), Sun strong, Moon 9th
         lord_10 = get_house_lord(10, asc_sign, planet_data)
-        house_l10 = get_planet_house(planet_data, lord_10, asc_sign)
-        if not house_l10 or house_l10 not in [3, 7, 11]: return False
+        if not get_h(lord_10) in [3, 7, 11]: return False
         
-        sun_sign = get_planet_sign(planet_data, "Sun")
-        if not sun_sign or (sun_sign != "Leo" and sun_sign != "Aries"): return False # Own or Exalted
-        
-        moon_house = get_planet_house(planet_data, "Moon", asc_sign)
-        if moon_house != 9: return False
+        sun_sign = get_sgn("Sun")
+        if not sun_sign or (sun_sign != "Leo" and sun_sign != "Aries"): return False
+        if get_h("Moon") != 9: return False
         return True
 
     elif pattern_name == "shiva_pattern":
-        # 5th Lord in 9th, 9th Lord in 10th, 10th Lord in 5th
-        l5 = get_house_lord(5, asc_sign, planet_data)
-        l9 = get_house_lord(9, asc_sign, planet_data)
-        l10 = get_house_lord(10, asc_sign, planet_data)
-        
-        return (get_planet_house(planet_data, l5, asc_sign) == 9 and
-                get_planet_house(planet_data, l9, asc_sign) == 10 and
-                get_planet_house(planet_data, l10, asc_sign) == 5)
+        # 5L in 9, 9L in 10, 10L in 5
+        l5, l9, l10 = get_house_lord(5, asc_sign, planet_data), get_house_lord(9, asc_sign, planet_data), get_house_lord(10, asc_sign, planet_data)
+        return get_h(l5) == 9 and get_h(l9) == 10 and get_h(l10) == 5
 
     elif pattern_name == "vishnu_pattern":
-        # 9th and 10th Lords in 2nd house
-        l9 = get_house_lord(9, asc_sign, planet_data)
-        l10 = get_house_lord(10, asc_sign, planet_data)
-        return (get_planet_house(planet_data, l9, asc_sign) == 2 and
-                get_planet_house(planet_data, l10, asc_sign) == 2)
+        # 9L and 10L in 2nd
+        l9, l10 = get_house_lord(9, asc_sign, planet_data), get_house_lord(10, asc_sign, planet_data)
+        return get_h(l9) == 2 and get_h(l10) == 2
 
     elif pattern_name == "brahma_pattern":
-        # Jupiter, Venus, Mercury in Kendras from Lagna Lords
-        # Simplified: Check if Ju, Ve, Me are in Kendras from Ascendant (Classic variation)
-        # Proper: Kendras from Lagna Lord
+        # Ju, Ve, Me in Kendras from Lagna Lord
         l1 = get_house_lord(1, asc_sign, planet_data)
-        h_l1 = get_planet_house(planet_data, l1, asc_sign)
+        h_l1 = get_h(l1)
         if not h_l1: return False
-        
-        # Houses that are Kendra from Lagna Lord
-        kendras_from_l1 = [
-            h_l1, 
-            ((h_l1 + 3 - 1) % 12) + 1,
-            ((h_l1 + 6 - 1) % 12) + 1,
-            ((h_l1 + 9 - 1) % 12) + 1
-        ]
+        kendras = [h_l1, ((h_l1 + 3 - 1) % 12) + 1, ((h_l1 + 6 - 1) % 12) + 1, ((h_l1 + 9 - 1) % 12) + 1]
         
         for p in ["Jupiter", "Venus", "Mercury"]:
-            h_p = get_planet_house(planet_data, p, asc_sign)
-            if h_p not in kendras_from_l1:
-                return False
+            if get_h(p) not in kendras: return False
         return True
 
     elif pattern_name == "indra_pattern":
-         # Mars in 3rd from Moon, Saturn in 7th from Mars, Venus in 7th from Saturn
-         h_moon = get_planet_house(planet_data, "Moon", asc_sign)
-         h_mars = get_planet_house(planet_data, "Mars", asc_sign)
-         h_sat = get_planet_house(planet_data, "Saturn", asc_sign)
-         h_ven = get_planet_house(planet_data, "Venus", asc_sign)
-         
-         if not (h_moon and h_mars and h_sat and h_ven): return False
-         
-         # 3rd from Moon
-         target_mars = ((h_moon + 2) % 12) or 12
-         if h_mars != target_mars: return False
-         
-         # 7th from Mars
-         target_sat = ((h_mars + 6) % 12) or 12
-         if h_sat != target_sat: return False
-         
-         # 7th from Saturn
-         target_ven = ((h_sat + 6) % 12) or 12
-         if h_ven != target_ven: return False
-         
+         # Mars 3 from Moon, Sat 7 from Mars, Ven 7 from Sat
+         h_m = get_h("Moon")
+         if not h_m: return False
+         h_ma = get_h("Mars")
+         if h_ma != (((h_m + 2) % 12) or 12): return False # 3rd
+         h_sa = get_h("Saturn")
+         if h_sa != (((h_ma + 6) % 12) or 12): return False # 7th
+         h_ve = get_h("Venus")
+         if h_ve != (((h_sa + 6) % 12) or 12): return False # 7th
          return True
     
     elif pattern_name == "matsya_pattern":
-        # Malefics in Lagna/9th, Mix in 5th, Malefics in 4th/8th
-        # Strict classical check is complex, simplified:
-        # Benefics in 5th, Malefics in 1 & 9
-        benefics = ["Jupiter", "Venus", "Mercury", "Moon"]
-        malefics = ["Sun", "Mars", "Saturn", "Rahu", "Ketu"]
-        
-        def check_house(h, type_list, mode="any"):
-             ps = [p for p in planet_data if get_planet_house(planet_data, p, asc_sign) == h]
-             if not ps: return False
-             if mode == "all": return all(p in type_list for p in ps)
-             return any(p in type_list for p in ps)
-
-        return (check_house(1, malefics) and check_house(9, malefics) and check_house(5, benefics))
+        # Malefics in 1, 9; Benefics in 5
+        return (check_house_has(1, malefics) and check_house_has(9, malefics) and check_house_has(5, benefics))
 
     elif pattern_name == "kurma_pattern":
-        # Benefics in 5, 6, 7; Malefics in 1, 3, 11
-        benefics = ["Jupiter", "Venus", "Mercury", "Moon"]
-        malefics = ["Sun", "Mars", "Saturn", "Rahu", "Ketu"]
+        # Benefics 5,6,7; Malefics 1,3,11
+        # Simplified to ANY benefic in 5,6,7 and ANY malefic in 1,3,11 for now
+        # Strict rule: Benefics occupying 5,6,7 (and no malefics?)
+        # We will follow: All of 5,6,7 have benefics AND All of 1,3,11 have malefics.
+        # Actually standard definition requires planets to be PRESENT.
+        good = all(check_house_has(h, benefics) for h in [5, 6, 7])
+        bad = all(check_house_has(h, malefics) for h in [1, 3, 11])
+        return good and bad
+
+    elif pattern_name == "viparita_raja_yoga_check":
+        # Lords of 6, 8, 12 in 6, 8, 12
+        dusthanas = [6, 8, 12]
+        for idx in dusthanas:
+            lord = get_house_lord(idx, asc_sign, planet_data)
+            if not lord: continue
+            if get_h(lord) in dusthanas: return True
+        return False
+
+    elif pattern_name == "akhanda_samrajya_check":
+        # 1. One of the lords of 11, 2, 9 is in Kendra from Moon
+        # 2. Jupiter is Lord of 2, 5, or 11
+        # Check rule 2 first
+        l2 = get_house_lord(2, asc_sign, planet_data)
+        l5 = get_house_lord(5, asc_sign, planet_data)
+        l11 = get_house_lord(11, asc_sign, planet_data)
         
-        def has_type(h_list, type_list):
-            for h in h_list:
-                ps = [p for p in planet_data if get_planet_house(planet_data, p, asc_sign) == h]
-                if not ps: return False
-                if not any(p in type_list for p in ps): return False
+        is_ju_ruler = ("Jupiter" in [l2, l5, l11])
+        if not is_ju_ruler: return False
+        
+        # Check rule 1
+        lords_to_check = [l11, l2, get_house_lord(9, asc_sign, planet_data)]
+        h_moon = get_h("Moon")
+        if not h_moon: return False
+        
+        moon_kendras = [h_moon, ((h_moon+3-1)%12)+1, ((h_moon+6-1)%12)+1, ((h_moon+9-1)%12)+1]
+        
+        for lord in lords_to_check:
+            if not lord: continue
+            if get_h(lord) in moon_kendras:
+                return True
+        return False
+
+    elif pattern_name == "benefics_in_kendras" or pattern_name == "benefics_kendra_quad":
+        # Benefics occupy Kendras (1, 4, 7, 10).
+        # Loose: Check if ANY kendra has benefic? No, usually implies Kendras are dominated by benefics or at least one is present and strong.
+        # Chamara: "Benefics in Kendras" usually means Benefics occupy 1, 4, 7, 10 (or some of them) not ill-associated.
+        # Let's check: Are there benefics in Kendras and NO malefics in Kendras? Or just Benefics presence.
+        # Strict Chamara: TWO benefics in Lagna, 7th, 9th, 10th?
+        # Let's implement: At least 2 Kendras occupied by Benefics.
+        count = 0
+        for k in KENDRA_HOUSES:
+            if check_house_has(k, benefics): count += 1
+        return count >= 2
+
+    elif pattern_name == "benefics_in_upachaya":
+        # Benefics in 3, 6, 10, 11
+        # Vasumati: All benefics in Upachayas.
+        bs = ["Jupiter", "Venus", "Mercury", "Moon"] # Moon is benefic if bright, check phase? Assume yes.
+        for b in bs:
+            if get_h(b) not in [3, 6, 10, 11]: return False
+        return True
+
+    elif pattern_name == "dhana_yoga_check":
+        # Connection between lords of 1, 2, 5, 9, 11
+        wealth_houses = [1, 2, 5, 9, 11]
+        wealth_lords = set()
+        for h in wealth_houses:
+            l = get_house_lord(h, asc_sign, planet_data)
+            if l: wealth_lords.add(l)
+        
+        # Check for conjunctions or mutual aspects between these lords
+        # Simple conj check for now
+        wl_list = list(wealth_lords)
+        for i in range(len(wl_list)):
+            for j in range(i+1, len(wl_list)):
+                l1, l2 = wl_list[i], wl_list[j]
+                if get_h(l1) == get_h(l2): return True # Conjunct
+                # Mutual Aspect (7th)
+                if abs(get_h(l1) - get_h(l2)) == 6: return True
+        return False
+
+    elif pattern_name == "dispositor_exalt":
+        # Dispositor of Moon is Exalted? Or Dispositor of Lagna Lord?
+        # Usually "Dispositor of X is Exalted". Param 'planet' needed in JSON.
+        # Since this is a named pattern without params in JSON calls (usually), we assume Dispositor of Lagna Lord or Moon.
+        # Kahala Yoga often involves Dispositor of Jupiter or Lord of 4th/9th.
+        # Let's check Lagna Lord Dispositor
+        l1 = get_house_lord(1, asc_sign, planet_data)
+        if not l1: return False
+        sign_l1 = get_sgn(l1)
+        disp_l1 = SIGN_LORDS.get(sign_l1)
+        if not disp_l1: return False
+        sign_disp = get_sgn(disp_l1)
+        return is_planet_exalted(disp_l1, sign_disp)
+
+    elif pattern_name == "kalpadruma_chain":
+        # Lagna Lord -> Dispositor -> Dispositor -> In Kendra/Trikona/Exalted
+        l1 = get_house_lord(1, asc_sign, planet_data)
+        if not l1: return False
+        
+        d1 = SIGN_LORDS.get(get_sgn(l1)) # Disp 1
+        if not d1: return False
+        d2 = SIGN_LORDS.get(get_sgn(d1)) # Disp 2
+        if not d2: return False
+        
+        h_d2 = get_h(d2)
+        s_d2 = get_sgn(d2)
+        
+        if h_d2 in KENDRA_HOUSES or h_d2 in TRIKONA_HOUSES or is_planet_exalted(d2, s_d2):
             return True
+        return False
+
+    elif pattern_name == "malefics_in_kendras":
+        # Sarpa Yoga: Malefics in 3 or more Kendras
+        count = 0
+        for k in KENDRA_HOUSES:
+            if check_house_has(k, malefics): count += 1
+        return count >= 3
+
+    elif pattern_name == "moon_navamsa_exalt":
+        # Moon in Exalted Navamsa
+        # Use simple exaltation check on d9_sign
+        moon_data = planet_data.get("Moon", {})
+        d9_sign = moon_data.get("d9_sign")
+        if not d9_sign: return False
+        return is_planet_exalted("Moon", d9_sign)
+
+    elif pattern_name == "mridanga_complex":
+        # Lagna Lord strong, etc.
+        # Simplified: Lagna Lord Exalted or Own House
+        l1 = get_house_lord(1, asc_sign, planet_data)
+        if not l1: return False
+        s_l1 = get_sgn(l1)
+        return is_planet_exalted(l1, s_l1) or (SIGN_LORDS.get(s_l1) == l1)
+
+    elif pattern_name == "neechabhanga_check":
+        # Check if ANY debilitated planet has cancellation
+        debilitated_planets = []
+        for p in planet_data:
+            if is_planet_debilitated(p, get_sgn(p)):
+                debilitated_planets.append(p)
+        
+        if not debilitated_planets: return False # No neecha = No Yoga (Technically correct)
+        
+        for p in debilitated_planets:
+            is_cancelled = False
+            s_p = get_sgn(p)
+            l_s = SIGN_LORDS.get(s_p) # Lord of debilitation sign
             
-        return has_type([5, 6, 7], benefics) and has_type([1, 3, 11], malefics)
+            exalt_sign = EXALTATION.get(p)
+            l_exalt = SIGN_LORDS.get(exalt_sign) # Lord of exaltation sign
+            
+            # 1. Lord of Dep Sign in Kendra from Lagna/Moon
+            for ref in ["Ascendant", "Moon"]:
+                h_ref = 1 if ref == "Ascendant" else get_h("Moon")
+                if not h_ref: continue
+                
+                h_ls = get_h(l_s)
+                h_le = get_h(l_exalt)
+                
+                # Check Kendras from Ref
+                kendras = [((h_ref + i) % 12) or 12 for i in [0, 3, 6, 9]]
+                
+                if h_ls in kendras or h_le in kendras:
+                    is_cancelled = True
+                    break
+            
+            # 2. Parivartana with Lord of Dep Sign
+            # handled via generic logic? No, specific check.
+            # If P is in Sign A (Dep), and Lord of A is in Sign of P (Not possible since P has no sign here), wait. P is a planet.
+            # Parivartana: P is in L_S's sign (yes, definition of deb). L_S is in P's own sign?
+            # Example: Sun in Libra (Deb). Lord Venus in Leo (Sun's sign).
+            own_s = [] 
+            for s, l in SIGN_LORDS.items(): 
+                if l == p: own_s.append(s)
+            
+            if l_s and get_sgn(l_s) in own_s:
+                 is_cancelled = True
+
+            if is_cancelled: return True
+            
+        return False
+
+    elif pattern_name.startswith("parivartana"):
+        # Generic Parivartana check + filters
+        pairs = []
+        # Find all pairs exchanging signs
+        planets = list(planet_data.keys())
+        for i in range(len(planets)):
+            for j in range(i+1, len(planets)):
+                p1, p2 = planets[i], planets[j]
+                s1, s2 = get_sgn(p1), get_sgn(p2)
+                l1, l2 = SIGN_LORDS.get(s1), SIGN_LORDS.get(s2)
+                if l1 == p2 and l2 == p1:
+                    pairs.append((p1, p2))
+        
+        if not pairs: return False
+        
+        if pattern_name == "parivartana_3rd":
+            # Khala Yoga: 3rd Lord with others
+            l3 = get_house_lord(3, asc_sign, planet_data)
+            for p1, p2 in pairs:
+                if p1 == l3 or p2 == l3: return True
+            return False
+            
+        elif pattern_name == "parivartana_dusthana":
+            # Dainya Yoga: 6, 8, 12 Lords
+            bad_lords = [get_house_lord(h, asc_sign, planet_data) for h in [6,8,12]]
+            for p1, p2 in pairs:
+                if p1 in bad_lords or p2 in bad_lords: return True
+            return False
+            
+        elif pattern_name == "parivartana_kendra_trikona":
+            # Maha Yoga: 1, 2, 4, 5, 7, 9, 10, 11 (Good houses)
+            good_houses = [1, 2, 4, 5, 7, 9, 10, 11]
+            good_lords = [get_house_lord(h, asc_sign, planet_data) for h in good_houses]
+            # Must contain ONLY good lords
+            for p1, p2 in pairs:
+                if p1 in good_lords and p2 in good_lords: return True
+            return False
+
+        return False # Fallback
+
+    elif pattern_name == "parvata_def":
+        # 1. Benefics in Kendras
+        # 2. 6th and 8th houses empty
+        ben_in_kendra = False
+        for k in KENDRA_HOUSES:
+             if check_house_has(k, benefics): ben_in_kendra = True
+        
+        h6_empty = not [p for p in planet_data if get_h(p) == 6]
+        h8_empty = not [p for p in planet_data if get_h(p) == 8]
+        
+        return ben_in_kendra and h6_empty and h8_empty
+
+    elif pattern_name == "pushkala_def":
+        # Lord of Moon Sign (L_M) with Lord of Lagna (L_1)
+        # In Kendra or Friend's house? Simplified: Conjunct in Kendra
+        moon_sign = get_sgn("Moon")
+        l_moon = SIGN_LORDS.get(moon_sign)
+        l_1 = get_house_lord(1, asc_sign, planet_data)
+        
+        if not l_moon or not l_1: return False
+        
+        h_lm = get_h(l_moon)
+        h_l1 = get_h(l_1)
+        
+        if h_lm == h_l1 and h_lm in KENDRA_HOUSES: return True
+        return False
+
+    elif pattern_name == "raja_yoga_9_10":
+        # 9th and 10th Lord Conjunct or Exchange
+        l9 = get_house_lord(9, asc_sign, planet_data)
+        l10 = get_house_lord(10, asc_sign, planet_data)
+        if not l9 or not l10: return False
+        
+        # Conjunction
+        if get_h(l9) == get_h(l10): return True
+        
+        # Exchange
+        s9, s10 = get_sgn(l9), get_sgn(l10)
+        return (SIGN_LORDS.get(s9) == l10 and SIGN_LORDS.get(s10) == l9)
 
     return False
 

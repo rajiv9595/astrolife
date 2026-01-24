@@ -94,7 +94,7 @@ const LandingPage = () => {
 
             {/* Panchang / Daily Strip */}
             <section className="bg-white py-8 border-b border-stone-200 shadow-sm relative z-20 -mt-8 mx-6 md:mx-12 rounded-xl">
-                <div className="max-w-7xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-8 text-center divide-x divide-stone-100">
+                <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-8 text-center divide-y md:divide-y-0 md:divide-x divide-stone-100">
                     <PanchangItem
                         label="Tithi"
                         value={panchang?.tithi?.paksha || "Loading..."}
@@ -108,11 +108,6 @@ const LandingPage = () => {
                     <PanchangItem
                         label="Yoga"
                         value={panchang?.nithya_yoga?.name || "Loading..."}
-                    />
-                    <PanchangItem
-                        label="Sunrise"
-                        value={panchang?.sunrise || "Loading..."}
-                        color="text-vedic-orange"
                     />
                 </div>
             </section>
