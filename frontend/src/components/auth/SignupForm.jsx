@@ -42,9 +42,15 @@ const SignupForm = ({ isEmbedded = false }) => {
     const handleGoogleSuccess = async (credentialResponse) => {
         setLoading(true);
         try {
-            await authService.googleLogin(credentialResponse.credential);
+            const data = await authService.googleLogin(credentialResponse.credential);
             toast.success("Welcome.");
-            navigate('/dashboard');
+
+            // Check if birth details are present
+            if (!data.user.date_of_birth) {
+                navigate('/tools/info');
+            } else {
+                navigate('/dashboard');
+            }
         } catch (err) {
             console.error(err);
             toast.error("Google Signup Failed");
