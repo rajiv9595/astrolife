@@ -56,13 +56,13 @@ class UserResponse(BaseModel):
     id: int
     email: str
     name: str
-    mobile_number: str
-    date_of_birth: str
-    time_of_birth: str
-    location: str
-    latitude: Optional[float]
-    longitude: Optional[float]
-    timezone: str
+    mobile_number: Optional[str] = None
+    date_of_birth: Optional[str] = None
+    time_of_birth: Optional[str] = None
+    location: Optional[str] = None
+    latitude: Optional[float] = None
+    longitude: Optional[float] = None
+    timezone: Optional[str] = "Asia/Kolkata"
 
     class Config:
         from_attributes = True
