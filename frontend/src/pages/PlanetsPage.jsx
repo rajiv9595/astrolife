@@ -211,6 +211,71 @@ const PlanetsPage = () => {
                     </div>
                 </VedicCard>
 
+                {/* Table 3: Planetary Strength & Analysis */}
+                <VedicCard className="overflow-hidden p-0 bg-white mt-8">
+                    <div className="bg-vedic-blue px-6 py-4 border-b border-white/10">
+                        <h2 className="text-white font-serif font-bold text-lg">Planetary Strength & Analysis</h2>
+                    </div>
+                    {chartData?.strengths && chartData.strengths.length > 0 ? (
+                        <div className="overflow-x-auto">
+                            <table className="w-full text-left text-sm">
+                                <thead className="bg-vedic-blue/5 text-vedic-blue font-bold uppercase text-xs tracking-wider">
+                                    <tr>
+                                        <th className="px-6 py-4">Planet</th>
+                                        <th className="px-6 py-4">Nature</th>
+                                        <th className="px-6 py-4">Strength</th>
+                                        <th className="px-6 py-4">Score</th>
+                                        <th className="px-6 py-4 w-1/3">Detailed Analysis</th>
+                                    </tr>
+                                </thead>
+                                <tbody className="divide-y divide-stone-100">
+                                    {chartData.strengths.map((str, idx) => (
+                                        <tr key={idx} className="hover:bg-vedic-orange/5 transition-colors">
+                                            <td className="px-6 py-4 font-bold text-vedic-blue">{str.planet}</td>
+                                            <td className="px-6 py-4">
+                                                <span className={`px-2 py-1 rounded text-xs font-bold ${str.nature === 'Exalted' ? 'bg-green-100 text-green-700' :
+                                                        str.nature === 'Own Sign' ? 'bg-blue-100 text-blue-700' :
+                                                            str.nature === 'Debilitated' ? 'bg-red-100 text-red-700' :
+                                                                str.nature === 'Friend Sign' ? 'bg-yellow-50 text-yellow-700' :
+                                                                    'bg-stone-100 text-stone-500'
+                                                    }`}>
+                                                    {str.nature}
+                                                </span>
+                                            </td>
+                                            <td className="px-6 py-4">
+                                                <div className="flex items-center gap-2">
+                                                    <span className={`font-bold ${str.label === 'Very Strong' ? 'text-green-600' :
+                                                            str.label === 'Strong' ? 'text-blue-600' :
+                                                                str.label === 'Weak' ? 'text-orange-500' :
+                                                                    str.label === 'Very Weak' ? 'text-red-500' :
+                                                                        'text-stone-600'
+                                                        }`}>{str.label}</span>
+                                                </div>
+                                            </td>
+                                            <td className="px-6 py-4 font-mono font-bold text-stone-700">
+                                                {str.score}/100
+                                            </td>
+                                            <td className="px-6 py-4 text-stone-600 text-xs">
+                                                <div className="flex flex-wrap gap-1">
+                                                    {str.reasons.map((reason, rIdx) => (
+                                                        <span key={rIdx} className="bg-stone-50 border border-stone-200 px-2 py-0.5 rounded text-[10px]">
+                                                            {reason}
+                                                        </span>
+                                                    ))}
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+                    ) : (
+                        <div className="p-8 text-center text-stone-500">
+                            Calculation available after chart update.
+                        </div>
+                    )}
+                </VedicCard>
+
             </main>
         </div>
     );

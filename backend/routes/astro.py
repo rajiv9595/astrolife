@@ -7,6 +7,7 @@ from backend.models import User
 from backend.dependencies import get_current_user_optional
 from backend.calculations import compute_chart, compute_match_for_birth_data
 from backend.tables import compute_lucky_factors, SIGN_LORDS as TABLES_SIGN_LORDS
+from backend.strength_evaluator import calculate_chart_strengths
 
 router = APIRouter()
 
@@ -34,15 +35,15 @@ def compute(
         topo_alt=req.topo_alt or 0.0
     )
 
+    # Calculate Signs & Strengths
+    planet_strengths = calculate_chart_strengths(chart_data)
+
     # Evaluate yogas using rulesets - ONLY for authenticated users
     yogas = []
     if current_user is not None:
         # User is authenticated, compute yogas
         # We need to find the ruleset dir. Since this file is in backend/routes/, 
         # we need to go up one level then into rulesets.
-        # Original: os.path.dirname(__file__) was backend/main.py -> backend/
-        # New: __file__ is backend/routes/astro.py -> backend/routes/
-        # So we need to go up to backend/ first.
         
         backend_dir = os.path.dirname(os.path.dirname(__file__))
         ruleset_dir = os.path.join(backend_dir, "rulesets")
@@ -93,7 +94,8 @@ def compute(
         "sunset": chart_data.get("sunset"),
         "moon_sign": chart_data["moon_sign"],
         "yogas": yogas,
-        "lucky_factors": lucky_factors_data
+        "lucky_factors": lucky_factors_data,
+        "strengths": planet_strengths
     }
 
 
