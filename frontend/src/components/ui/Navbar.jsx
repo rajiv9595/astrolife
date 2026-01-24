@@ -13,7 +13,7 @@ const Navbar = () => {
         <>
             {/* Top Bar (Panchang Strip) - Hidden on mobile */}
             <div className="hidden md:flex justify-between items-center px-8 py-2 bg-vedic-blue text-white text-xs tracking-wider">
-                <div>Talk to Astrologers: +91 98765 43210</div>
+                <div>Talk to Developer: +91 9614346666</div>
                 <div className="flex gap-4">
                     <span>info@lifepath.com</span>
                     <span>Follow us on FB In Tw</span>
