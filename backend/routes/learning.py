@@ -88,7 +88,8 @@ Answer as Guru-ji:
 """
         
         # Call Gemini
-        model = genai.GenerativeModel('gemini-2.0-flash-exp')
+        from backend.config import GEMINI_MODEL
+        model = genai.GenerativeModel(GEMINI_MODEL)
         response = model.generate_content(system_prompt)
         
         return {

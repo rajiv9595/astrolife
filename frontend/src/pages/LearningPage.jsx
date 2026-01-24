@@ -155,6 +155,7 @@ const LearningPage = () => {
 };
 
 // --- Guru Chat Component ---
+// --- Guru Chat Component (Dark Mode) ---
 const GuruChat = ({ onClose, activeModuleId, activeLessonId }) => {
     const [messages, setMessages] = useState([
         { role: 'assistant', content: 'Namaste! I am your AI Guru. Do you have any doubts about this lesson?' }
@@ -194,31 +195,31 @@ const GuruChat = ({ onClose, activeModuleId, activeLessonId }) => {
     };
 
     return (
-        <div className="flex flex-col h-full font-sans">
+        <div className="flex flex-col h-full font-sans bg-slate-900 text-white">
             {/* Header */}
-            <div className="bg-vedic-blue p-4 flex justify-between items-center text-white">
+            <div className="p-4 bg-gradient-to-r from-indigo-900 to-purple-900 flex justify-between items-center shadow-lg border-b border-white/10">
                 <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-full border border-white/20 bg-vedic-orange/20 flex items-center justify-center">
+                    <div className="w-8 h-8 rounded-full border border-white/20 bg-white/10 flex items-center justify-center">
                         <span className="text-lg">🧘</span>
                     </div>
                     <div>
-                        <h3 className="font-serif font-bold text-sm">AI Guru-ji</h3>
+                        <h3 className="font-serif font-bold text-sm text-white">AI Guru-ji</h3>
                         <div className="flex items-center gap-1 text-[10px] text-green-400">
-                            <span className="w-1.5 h-1.5 rounded-full bg-green-400"></span> Online
+                            <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse"></span> Online
                         </div>
                     </div>
                 </div>
-                <button onClick={onClose} className="text-white/70 hover:text-white"><X size={18} /></button>
+                <button onClick={onClose} className="text-white/60 hover:text-white transition-colors"><X size={18} /></button>
             </div>
 
             {/* Messages */}
-            <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-stone-50" ref={scrollRef}>
+            <div className="flex-1 overflow-y-auto p-4 space-y-4 custom-scrollbar bg-slate-900/50" ref={scrollRef}>
                 {messages.map((msg, i) => (
                     <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
                         <div
                             className={`max-w-[85%] rounded-2xl p-3 text-sm leading-relaxed shadow-sm ${msg.role === 'user'
-                                ? 'bg-vedic-blue text-white rounded-br-none'
-                                : 'bg-white text-stone-800 border border-stone-100 rounded-bl-none'
+                                ? 'bg-indigo-600 text-white rounded-br-none'
+                                : 'bg-slate-800 text-gray-200 border border-white/10 rounded-bl-none'
                                 }`}
                         >
                             <ReactMarkdown>{msg.content}</ReactMarkdown>
@@ -227,28 +228,28 @@ const GuruChat = ({ onClose, activeModuleId, activeLessonId }) => {
                 ))}
                 {loading && (
                     <div className="flex justify-start">
-                        <div className="bg-white rounded-2xl rounded-bl-none p-3 border border-stone-100 shadow-sm flex gap-1">
-                            <span className="w-1.5 h-1.5 bg-stone-400 rounded-full animate-bounce"></span>
-                            <span className="w-1.5 h-1.5 bg-stone-400 rounded-full animate-bounce delay-100"></span>
-                            <span className="w-1.5 h-1.5 bg-stone-400 rounded-full animate-bounce delay-200"></span>
+                        <div className="bg-slate-800 p-3 rounded-2xl rounded-bl-none border border-white/10 flex gap-1">
+                            <span className="w-1.5 h-1.5 bg-indigo-400 rounded-full animate-bounce"></span>
+                            <span className="w-1.5 h-1.5 bg-indigo-400 rounded-full animate-bounce delay-100"></span>
+                            <span className="w-1.5 h-1.5 bg-indigo-400 rounded-full animate-bounce delay-200"></span>
                         </div>
                     </div>
                 )}
             </div>
 
             {/* Input */}
-            <form onSubmit={handleSend} className="p-3 bg-white border-t border-stone-200 flex gap-2">
+            <form onSubmit={handleSend} className="p-3 bg-slate-900 border-t border-white/10 flex gap-2">
                 <input
                     type="text"
                     value={input}
                     onChange={e => setInput(e.target.value)}
                     placeholder="Ask a doubt..."
-                    className="flex-1 bg-stone-100 rounded-full px-4 text-sm focus:outline-none focus:ring-1 focus:ring-vedic-orange"
+                    className="flex-1 bg-slate-800 border border-white/10 rounded-full px-4 text-sm text-white placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
                 />
                 <button
                     disabled={loading}
                     type="submit"
-                    className="bg-vedic-orange text-white w-10 h-10 rounded-full flex items-center justify-center hover:bg-orange-600 disabled:opacity-50"
+                    className="bg-indigo-600 text-white w-10 h-10 rounded-full flex items-center justify-center hover:bg-indigo-500 disabled:opacity-50 transition-colors"
                 >
                     <Send size={16} />
                 </button>
