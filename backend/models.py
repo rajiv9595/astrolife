@@ -11,16 +11,16 @@ class User(Base):
     id = Column(Integer, primary_key=True, index=True)
     email = Column(String, unique=True, index=True, nullable=False)
     name = Column(String, nullable=False)
-    password_hash = Column(String, nullable=False)
-    mobile_number = Column(String, nullable=False)
+    password_hash = Column(String, nullable=True)
+    mobile_number = Column(String, nullable=True)
     
-    # Birth details
-    date_of_birth = Column(String, nullable=False)  # YYYY-MM-DD
-    time_of_birth = Column(String, nullable=False)  # HH:MM
-    location = Column(String, nullable=False)
-    latitude = Column(Float)
-    longitude = Column(Float)
-    timezone = Column(String, default="Asia/Kolkata")
+    # Birth details - Nullable for OAuth users initially
+    date_of_birth = Column(String, nullable=True)  # YYYY-MM-DD
+    time_of_birth = Column(String, nullable=True)  # HH:MM
+    location = Column(String, nullable=True)
+    latitude = Column(Float, nullable=True)
+    longitude = Column(Float, nullable=True)
+    timezone = Column(String, default="Asia/Kolkata", nullable=True)
     
     # Timestamps
     created_at = Column(DateTime(timezone=True), server_default=func.now())

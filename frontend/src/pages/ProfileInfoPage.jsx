@@ -25,6 +25,12 @@ const ProfileInfoPage = () => {
                 const data = await authService.getCurrentUser();
                 setUser(data);
                 setFormData(data);
+
+                // If birth details are missing (e.g. from Google Login), auto-enable edit mode
+                if (!data.date_of_birth) {
+                    setIsEditing(true);
+                    toast.info("Please set your birth details to continue.");
+                }
             } catch (error) {
                 console.error("Failed to fetch user", error);
                 if (error.response && error.response.status === 401) {

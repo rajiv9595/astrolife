@@ -8,6 +8,9 @@ from typing import Optional
 from datetime import timedelta
 from backend.database import get_db
 from backend.models import User, ChartData
+from google.oauth2 import id_token
+from google.auth.transport import requests
+import os
 from backend.auth import (
     authenticate_user,
     get_password_hash,
@@ -37,6 +40,10 @@ class SignUpRequest(BaseModel):
 class SignInRequest(BaseModel):
     email: EmailStr
     password: str
+
+
+class GoogleLoginRequest(BaseModel):
+    token: str
 
 
 class Token(BaseModel):
@@ -217,6 +224,78 @@ def login(request: SignInRequest, db: Session = Depends(get_db)):
     }
 
 
+@router.post("/google", response_model=Token)
+def google_login(request: GoogleLoginRequest, db: Session = Depends(get_db)):
+    """Authenticate user with Google OAuth."""
+    try:
+        # Verify the token
+        # Get Client ID from env or use a placeholder that the user must replace
+        GOOGLE_CLIENT_ID = os.getenv("GOOGLE_CLIENT_ID", "YOUR_GOOGLE_CLIENT_ID")
+        
+        id_info = id_token.verify_oauth2_token(
+            request.token, requests.Request(), GOOGLE_CLIENT_ID, clock_skew_in_seconds=10
+        )
+
+        email = id_info.get("email")
+        name = id_info.get("name")
+        
+        if not email:
+            raise HTTPException(status_code=400, detail="Invalid Google Token: No email found")
+
+        # Check if user exists
+        user = get_user_by_email(db, email=email)
+        
+        if not user:
+            # Create new user
+            # We don't have password or birth details yet
+            user = User(
+                email=email,
+                name=name,
+                password_hash=None, # No password for Google users initially
+                mobile_number=None,
+                date_of_birth=None,
+                time_of_birth=None,
+                location=None,
+                latitude=None,
+                longitude=None
+            )
+            db.add(user)
+            db.commit()
+            db.refresh(user)
+        
+        # Create access token
+        access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+        access_token = create_access_token(
+            data={"sub": user.email}, expires_delta=access_token_expires
+        )
+        
+        return {
+            "access_token": access_token,
+            "token_type": "bearer",
+            "user": {
+                "id": user.id,
+                "email": user.email,
+                "name": user.name,
+                "mobile_number": user.mobile_number,
+                "date_of_birth": user.date_of_birth,
+                "time_of_birth": user.time_of_birth,
+                "location": user.location,
+                "latitude": user.latitude,
+                "longitude": user.longitude,
+                "timezone": user.timezone
+            }
+        }
+        
+    except ValueError as e:
+        # Invalid token
+        raise HTTPException(status_code=400, detail=f"Invalid Google Token: {str(e)}")
+    except Exception as e:
+        import traceback
+        print(f"Google Login error: {str(e)}")
+        print(traceback.format_exc())
+        raise HTTPException(status_code=500, detail=str(e))
+
+
 @router.get("/me", response_model=UserResponse)
 def get_current_user_info(current_user: User = Depends(get_current_user)):
     """Get current authenticated user information."""
@@ -287,8 +366,15 @@ def update_user_profile(
             lon = request.longitude if request.longitude is not None else current_user.longitude
             tz = request.timezone or current_user.timezone
             
-            dob_parts = dob.split("-")
-            time_parts = tob.split(":")
+            if not dob or not tob:
+                # Can't create chart data without full birth details
+                # If we are here, it means we are updating partial data, but still missing core fields
+                # So we just skip chart update or raise error? 
+                # Let's skip chart update if data is incomplete
+                pass
+            else:
+                dob_parts = dob.split("-")
+                time_parts = tob.split(":")
             
             # Find existing latest chart data
             chart_data = db.query(ChartData).filter(
@@ -345,6 +431,9 @@ def get_user_chart_data(
     
     if not chart_data:
         # Return user's birth details from user table
+        if not current_user.date_of_birth or not current_user.time_of_birth:
+             return None # Or raise 404, frontend should handle "profile incomplete"
+
         dob_parts = current_user.date_of_birth.split("-")
         time_parts = current_user.time_of_birth.split(":")
         return {

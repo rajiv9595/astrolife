@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { GoogleLogin } from '@react-oauth/google';
 import { motion, AnimatePresence } from 'framer-motion';
 import { authService } from '../../services/authService';
 import { astroService } from '../../services/astroService';
-import Input from '../ui/Input'; // Now using new light theme Input
+import Input from '../ui/Input';
 import LocationInput from '../ui/LocationInput';
-import VedicButton from '../ui/VedicButton'; // Now using VedicButton
+import VedicButton from '../ui/VedicButton';
 import { User, Mail, Lock, Phone, MapPin, Calendar, Clock, ArrowRight, Check, Search } from 'lucide-react';
 import { toast } from 'react-toastify';
 
@@ -36,6 +37,20 @@ const SignupForm = ({ isEmbedded = false }) => {
             location: place.display_name
         }));
         toast.success(`Location found: ${place.display_name}`);
+    };
+
+    const handleGoogleSuccess = async (credentialResponse) => {
+        setLoading(true);
+        try {
+            await authService.googleLogin(credentialResponse.credential);
+            toast.success("Welcome.");
+            navigate('/dashboard');
+        } catch (err) {
+            console.error(err);
+            toast.error("Google Signup Failed");
+        } finally {
+            setLoading(false);
+        }
     };
 
     const handleSubmit = async (e) => {
@@ -145,6 +160,24 @@ const SignupForm = ({ isEmbedded = false }) => {
                     />
                 </div>
                 <VedicButton type="submit" variant="primary">Register</VedicButton>
+
+                <div className="mt-4">
+                    <div className="relative flex items-center justify-center mb-4">
+                        <span className="bg-white px-2 text-stone-400 text-xs uppercase tracking-wide">Or join with</span>
+                        <div className="absolute inset-x-0 h-[1px] bg-stone-200 -z-10"></div>
+                    </div>
+                    <div className="flex justify-center">
+                        <GoogleLogin
+                            onSuccess={handleGoogleSuccess}
+                            onError={() => toast.error("Google Signup Failed")}
+                            theme="outline"
+                            size="large"
+                            width="100%"
+                            text="signup_with"
+                            shape="rectangular"
+                        />
+                    </div>
+                </div>
             </form>
         </div>
     );

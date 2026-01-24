@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { GoogleLogin } from '@react-oauth/google';
 import { authService } from '../../services/authService';
 import Input from '../ui/Input';
 import VedicButton from '../ui/VedicButton';
@@ -20,6 +21,20 @@ const LoginForm = () => {
             navigate('/dashboard');
         } catch (err) {
             toast.error(err.response?.data?.detail || "Login failed");
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const handleGoogleSuccess = async (credentialResponse) => {
+        setLoading(true);
+        try {
+            await authService.googleLogin(credentialResponse.credential);
+            toast.success("Welcome.");
+            navigate('/dashboard');
+        } catch (err) {
+            console.error(err);
+            toast.error("Google Login failed");
         } finally {
             setLoading(false);
         }
@@ -64,6 +79,24 @@ const LoginForm = () => {
             >
                 {loading ? 'Authenticating...' : 'Login Now'}
             </VedicButton>
+
+            <div className="mt-4">
+                <div className="relative flex items-center justify-center mb-4">
+                    <span className="bg-white px-2 text-stone-400 text-xs uppercase tracking-wide">Or continue with</span>
+                    <div className="absolute inset-x-0 h-[1px] bg-stone-200 -z-10"></div>
+                </div>
+                <div className="flex justify-center">
+                    <GoogleLogin
+                        onSuccess={handleGoogleSuccess}
+                        onError={() => toast.error("Google Login Failed")}
+                        theme="outline"
+                        size="large"
+                        width="100%"
+                        text="signin_with"
+                        shape="rectangular"
+                    />
+                </div>
+            </div>
         </form>
     );
 };

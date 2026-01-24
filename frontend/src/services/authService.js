@@ -11,6 +11,16 @@ export const authService = {
         return response.data;
     },
 
+    // Google Login
+    googleLogin: async (token) => {
+        const response = await api.post('/auth/google', { token });
+        if (response.data.access_token) {
+            localStorage.setItem('token', response.data.access_token);
+            localStorage.setItem('user', JSON.stringify(response.data.user));
+        }
+        return response.data;
+    },
+
     // Signup
     signup: async (userData) => {
         // userData matches schema: name, email, password, mobile_number, date_of_birth, time_of_birth, location, lat, lon, timezone

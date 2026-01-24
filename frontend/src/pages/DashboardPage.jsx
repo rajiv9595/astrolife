@@ -24,7 +24,15 @@ const DashboardPage = () => {
                 setUser(currentUser);
 
                 // Get params for chart
+                // Get params for chart
                 const params = await authService.getChartDataParams();
+
+                if (!params) {
+                    toast.info("Please complete your birth details to view your chart.");
+                    navigate('/tools/info');
+                    return;
+                }
+
                 const data = await astroService.computeChart(params);
                 setChartData(data);
             } catch (err) {
