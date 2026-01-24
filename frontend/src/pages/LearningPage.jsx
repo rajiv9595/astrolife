@@ -64,8 +64,8 @@ const LearningPage = () => {
                                                 setActiveLesson(lesson);
                                             }}
                                             className={`w-full text-left p-3 rounded-lg text-sm font-medium transition-all flex items-center justify-between group ${activeLesson?.id === lesson.id
-                                                    ? 'bg-vedic-orange/10 text-vedic-orange border border-vedic-orange/20'
-                                                    : 'text-stone-600 hover:bg-stone-50'
+                                                ? 'bg-vedic-orange/10 text-vedic-orange border border-vedic-orange/20'
+                                                : 'text-stone-600 hover:bg-stone-50'
                                                 }`}
                                         >
                                             <span className="truncate">{lIdx + 1}. {lesson.title}</span>
@@ -217,8 +217,8 @@ const GuruChat = ({ onClose, activeModuleId, activeLessonId }) => {
                     <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
                         <div
                             className={`max-w-[85%] rounded-2xl p-3 text-sm leading-relaxed shadow-sm ${msg.role === 'user'
-                                    ? 'bg-vedic-blue text-white rounded-br-none'
-                                    : 'bg-white text-stone-700 border border-stone-100 rounded-bl-none'
+                                ? 'bg-vedic-blue text-white rounded-br-none'
+                                : 'bg-white text-stone-800 border border-stone-100 rounded-bl-none'
                                 }`}
                         >
                             <ReactMarkdown>{msg.content}</ReactMarkdown>

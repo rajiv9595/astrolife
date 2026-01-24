@@ -1,84 +1,89 @@
 [
     {
         "id": "module_1",
-        "title": "Module 1: The Foundations",
-        "description": "Understand the basic building blocks of Vedic Astrology.",
+        "title": "Module 1: The Foundations of Vedic Wisdom",
+        "description": "Unlock the ancient secrets of Jyotish Shastra.",
         "lessons": [
             {
                 "id": "1_1",
                 "title": "Introduction to Vedic Astrology (Jyotish)",
-                "content": "Vedic Astrology, or Jyotish (the Science of Light), is an ancient Indian system of astronomy and astrology. Unlike Western astrology which uses the Tropical Zodiac, Vedic Astrology uses the Sidereal Zodiac, which aligns with the current position of constellations. It is based on the Vedas, the oldest scriptures of India."
+                "content": "Vedic Astrology, or **Jyotish** (the Science of Light), is the eye of the Vedas. It is an ancient system of knowledge from India that dates back over 5,000 years. Unlike Western astrology which uses the Tropical Zodiac (based on Seasons), Vedic Astrology uses the **Sidereal Zodiac** (based on the actual position of stars). This makes it highly predictive and structurally different. It believes in the law of Karma—that our soul chooses a birth time to experience specific lessons."
             },
             {
                 "id": "1_2",
-                "title": "The 4 Purusharthas",
-                "content": "Life in Vedic philosophy is guided by four aims: Dharma (Righteousness/Duty), Artha (Wealth/Resources), Kama (Desire/Pleasure), and Moksha (Liberation). Analyzing a horoscope helps understand the balance of these four aims in a person's life."
+                "title": "The 4 Purusharthas (Aims of Life)",
+                "content": "Life is not just about survival. Vedic philosophy categorizes human existence into four goals:\n1. **Dharma** (Righteousness & Duty): Doing what is morally right.\n2. **Artha** (Wealth & Resources): Acquiring material stability.\n3. **Kama** (Desire & Enjoyment): Experiencing emotional and sensory pleasure.\n4. **Moksha** (Liberation): The ultimate goal of freeing the soul from the cycle of rebirth.\n\nYour horoscope reveals which of these aims is dominant in your current life."
             },
             {
                 "id": "1_3",
-                "title": "North vs South Indian Charts",
-                "content": "There are two main styles of drawing charts. The South Indian chart is square, with fixed signs (Mesha is always second box from top left) and moving planets. The North Indian chart is diamond-shaped, with fixed houses (Ascendant is always top diamond) and moving signs."
+                "title": "Chart Styles: North vs South Indian",
+                "content": "You will encounter different chart styles:\n\n**South Indian Chart (Square)**: The signs are FIXED in specific boxes. Aries is always the 2nd box on top row. Planets move through these boxes. It is preferred for seeing planetary transits easily.\n\n**North Indian Chart (Diamond)**: The Houses are FIXED. The Ascendant (Lagna) is always the top diamond. The numbers written inside indicate the Signs. This style is excellent for understanding Aspects (Drishti)."
             }
         ]
     },
     {
         "id": "module_2",
         "title": "Module 2: The Grahas (Planets)",
-        "description": "Meet the celestial influencers.",
+        "description": "Meet the celestial influencers governing your destiny.",
         "lessons": [
             {
                 "id": "2_1",
-                "title": "The 9 Grahas",
-                "content": "Vedic astrology uses 7 physical planets (Sun, Moon, Mars, Mercury, Jupiter, Venus, Saturn) and 2 shadow planets (Rahu, Ketu). Each planet represents a specific energy or 'Karaka' in life."
+                "title": "The 9 Grahas (Planets)",
+                "content": "We consider 7 physical bodies and 2 shadow nodes:\n\n1. **Sun (Surya)**: The Soul, Ego, Father, Authority.\n2. **Moon (Chandra)**: The Mind, Emotions, Mother, Peace.\n3. **Mars (Mangal)**: Energy, Action, Courage, Siblings.\n4. **Mercury (Budha)**: Intellect, Speech, Business.\n5. **Jupiter (Guru)**: Wisdom, Luck, Expansion, Teachers.\n6. **Venus (Shukra)**: Love, Luxury, Arts, Vehicles.\n7. **Saturn (Shani)**: Karma, Discipline, Delay, Hard Work.\n8. **Rahu**: Obsession, Illusion, Foreign Lands.\n9. **Ketu**: Detachment, Spirituality, Past Life."
             },
             {
                 "id": "2_2",
-                "title": "Sun (Surya) & Moon (Chandra)",
-                "content": "Sun represents the Soul (Atman), father, authority, and vitality. It is the King. Moon represents the Mind (Manas), mother, emotions, and comfort. It is the Queen."
-            },
-            {
-                "id": "2_3",
-                "title": "Mars, Mercury, Jupiter, Venus, Saturn",
-                "content": "Mars (soldier): Energy, logic, anger. Mercury (prince): Intellect, communication. Jupiter (guru): Wisdom, expansion. Venus (minister): Love, luxury, art. Saturn (servant): Discipline, delay, karma."
+                "title": "Planetary Relationships",
+                "content": "Planets behave like people; they have friends and enemies.\n\n- **Sun's Friends**: Moon, Mars, Jupiter.\n- **Saturn's Friends**: Venus, Mercury, Rahu.\n- **Enemies**: Sun and Saturn are bitter enemies (Authority vs Rebel). Moon has no enemies, but Mercury dislikes Moon.\n\nUnderstanding these friendships is key to predicting whether a period will be smooth or full of conflict."
             }
         ]
     },
     {
         "id": "module_3",
-        "title": "Module 3: The Rashis (Zodiac Signs)",
+        "title": "Module 3: The 12 Rashis (Zodiac Signs)",
         "description": "The environments where planets operate.",
         "lessons": [
             {
                 "id": "3_1",
-                "title": "The 12 Signs",
-                "content": "Aries (Mesha), Taurus (Vrishabha), Gemini (Mithuna), Cancer (Karka), Leo (Simha), Virgo (Kanya), Libra (Tula), Scorpio (Vrishchika), Sagittarius (Dhanu), Capricorn (Makara), Aquarius (Kumbha), Pisces (Meena)."
+                "title": "Fire Signs (Agni Tattva)",
+                "content": "**Aries, Leo, Sagittarius**.\nThese signs represent energy, enthusiasm, willpower, and leadership. People with many planets in fire signs are often action-oriented, impulsive, and passionate."
             },
             {
                 "id": "3_2",
-                "title": "Elements and Modalities",
-                "content": "Signs are grouped by Element: Fire (Aries, Leo, Sag), Earth (Taurus, Virgo, Cap), Air (Gemini, Libra, Aqua), Water (Cancer, Scorpio, Pisces). And by Modality: Movable (Chara), Fixed (Sthira), Dual (Dwiswabhava)."
+                "title": "Earth Signs (Prithvi Tattva)",
+                "content": "**Taurus, Virgo, Capricorn**.\nThese signs represent stability, practicality, and material structure. They are grounded, reliable, and focused on building tangible results."
+            },
+            {
+                "id": "3_3",
+                "title": "Air Signs (Vayu Tattva)",
+                "content": "**Gemini, Libra, Aquarius**.\nThese signs represent intellect, communication, and social connection. They value ideas, logic, and networking."
+            },
+            {
+                "id": "3_4",
+                "title": "Water Signs (Jala Tattva)",
+                "content": "**Cancer, Scorpio, Pisces**.\nThese signs represent emotion, intuition, and depth. They are sensitive, nurturing, and psychic nature."
             }
         ]
     },
     {
         "id": "module_4",
-        "title": "Module 4: The Bhavas (Houses)",
-        "description": "The areas of life affected.",
+        "title": "Module 4: The 12 Bhavas (Houses)",
+        "description": "The stage where life unfolds.",
         "lessons": [
             {
                 "id": "4_1",
                 "title": "Kendra Houses (1, 4, 7, 10)",
-                "content": "These are the pillars of the chart. 1st: Self/Body. 4th: Home/Mother. 7th: Marriage/Business. 10th: Career/Public Status. Planets here are strong."
+                "content": "These are the pillars of life (Vishnu Sthanas).\n- **1st House**: Self, Body, Personality.\n- **4th House**: Home, Mother, Happiness, Vehicles.\n- **7th House**: Marriage, Partners, Business.\n- **10th House**: Career, Status, Father.\nPlanets here are very strong and active."
             },
             {
                 "id": "4_2",
                 "title": "Trikona Houses (1, 5, 9)",
-                "content": "The houses of luck and dharma. 1st: Self. 5th: Creativity/Children/Past Karma. 9th: Luck/Guru/Father/Higher Learning. These are the most auspicious houses."
+                "content": "These are the houses of luck (Lakshmi Sthanas).\n- **1st**: Self (It is both Kendra and Trikona).\n- **5th**: Intelligence, Children, Creativity, Past Life Merit (Purva Punya).\n- **9th**: Fortune, Guru, Higher Knowledge, Dharma.\nPlanets here bring ease and blessings."
             },
             {
                 "id": "4_3",
                 "title": "Dusthana Houses (6, 8, 12)",
-                "content": "The houses of suffering or transformation. 6th: Enemies/Debt/Disease. 8th: Death/Transformation/Occult. 12th: Loss/Liberation/Foreign Lands."
+                "content": "The 'Bad' houses that bring growth through pain.\n- **6th**: Enemies, Debts, Disease, Service.\n- **8th**: Obstacles, Longevity, Sudden Events, Occult.\n- **12th**: Loss, Isolation, Moksha, Foreign Lands, Sleep."
             }
         ]
     }
