@@ -137,7 +137,7 @@ const LandingPage = () => {
                         {/* Right: The Form */}
                         <div className="p-8 md:p-12">
                             <h3 className="text-xl font-bold text-vedic-blue mb-6">Enter Birth Details</h3>
-                            <SignupForm isEmbedded={true} />
+                            <SignupForm isEmbedded={true} isGuest={true} />
                             {/* Passing prop to adjust form style for landing page context */}
                         </div>
                     </div>

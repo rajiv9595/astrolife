@@ -10,7 +10,7 @@ import VedicButton from '../ui/VedicButton';
 import { User, Mail, Lock, Phone, MapPin, Calendar, Clock, ArrowRight, Check, Search } from 'lucide-react';
 import { toast } from 'react-toastify';
 
-const SignupForm = ({ isEmbedded = false }) => {
+const SignupForm = ({ isEmbedded = false, isGuest = false }) => {
     const navigate = useNavigate();
     const [step, setStep] = useState(1);
     const [loading, setLoading] = useState(false);
@@ -18,7 +18,7 @@ const SignupForm = ({ isEmbedded = false }) => {
     const [formData, setFormData] = useState({
         name: '',
         email: '',
-        password: 'password123', // Default for 'Get Kundli' flow if hidden
+        password: 'password123',
         mobile_number: '',
         date_of_birth: '',
         time_of_birth: '',
@@ -37,6 +37,31 @@ const SignupForm = ({ isEmbedded = false }) => {
             location: place.display_name
         }));
         toast.success(`Location found: ${place.display_name}`);
+    };
+
+    const handleGuestSubmit = async (e) => {
+        e.preventDefault();
+        if (!formData.date_of_birth || !formData.time_of_birth || !formData.latitude) {
+            toast.error("Please enter a valid birth date, time, and location.");
+            return;
+        }
+
+        const dobParts = formData.date_of_birth.split("-");
+        const timeParts = formData.time_of_birth.split(":");
+
+        const params = {
+            year: parseInt(dobParts[0]),
+            month: parseInt(dobParts[1]),
+            day: parseInt(dobParts[2]),
+            hour: parseInt(timeParts[0]),
+            minute: parseInt(timeParts[1]),
+            tz: formData.timezone,
+            lat: parseFloat(formData.latitude),
+            lon: parseFloat(formData.longitude),
+            planets: ["Sun", "Moon", "Mars", "Mercury", "Jupiter", "Venus", "Saturn", "Rahu", "Ketu"]
+        };
+
+        navigate('/free-kundli', { state: { params, name: formData.name } });
     };
 
     const handleGoogleSuccess = async (credentialResponse) => {
@@ -74,39 +99,44 @@ const SignupForm = ({ isEmbedded = false }) => {
     };
 
     // Render a single page grid for the 'Customer Reference' look if embedded
-    if (isEmbedded) {
+    if (isEmbedded || isGuest) {
         return (
-            <form onSubmit={handleSubmit} className="flex flex-col gap-6">
+            <form onSubmit={isGuest ? handleGuestSubmit : handleSubmit} className="flex flex-col gap-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <Input
                         id="name" label="Name" placeholder="Your Name"
                         value={formData.name} onChange={e => setFormData({ ...formData, name: e.target.value })}
                     />
-                    <div className="flex flex-col gap-1.5 w-full">
-                        <label className="text-sm font-bold text-vedic-text ml-1 tracking-wide uppercase text-[11px]">Gender</label>
-                        <div className="flex gap-2">
-                            <button type="button"
-                                onClick={() => setFormData({ ...formData, gender: 'male' })}
-                                className={`flex-1 py-3 border rounded-lg text-sm font-bold ${formData.gender === 'male' ? 'bg-vedic-orange text-white border-vedic-orange' : 'bg-white border-stone-200 text-stone-500'}`}
-                            >Male</button>
-                            <button type="button"
-                                onClick={() => setFormData({ ...formData, gender: 'female' })}
-                                className={`flex-1 py-3 border rounded-lg text-sm font-bold ${formData.gender === 'female' ? 'bg-vedic-orange text-white border-vedic-orange' : 'bg-white border-stone-200 text-stone-500'}`}
-                            >Female</button>
+
+                    {!isGuest && (
+                        <div className="flex flex-col gap-1.5 w-full">
+                            <label className="text-sm font-bold text-vedic-text ml-1 tracking-wide uppercase text-[11px]">Gender</label>
+                            <div className="flex gap-2">
+                                <button type="button"
+                                    onClick={() => setFormData({ ...formData, gender: 'male' })}
+                                    className={`flex-1 py-3 border rounded-lg text-sm font-bold ${formData.gender === 'male' ? 'bg-vedic-orange text-white border-vedic-orange' : 'bg-white border-stone-200 text-stone-500'}`}
+                                >Male</button>
+                                <button type="button"
+                                    onClick={() => setFormData({ ...formData, gender: 'female' })}
+                                    className={`flex-1 py-3 border rounded-lg text-sm font-bold ${formData.gender === 'female' ? 'bg-vedic-orange text-white border-vedic-orange' : 'bg-white border-stone-200 text-stone-500'}`}
+                                >Female</button>
+                            </div>
                         </div>
-                    </div>
+                    )}
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <Input
-                        id="mobile" label="Phone No" placeholder="+91..."
-                        value={formData.mobile_number} onChange={e => setFormData({ ...formData, mobile_number: e.target.value })}
-                    />
-                    <Input
-                        id="email" label="Email" placeholder="you@email.com"
-                        value={formData.email} onChange={e => setFormData({ ...formData, email: e.target.value })}
-                    />
-                </div>
+                {!isGuest && (
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <Input
+                            id="mobile" label="Phone No" placeholder="+91..."
+                            value={formData.mobile_number} onChange={e => setFormData({ ...formData, mobile_number: e.target.value })}
+                        />
+                        <Input
+                            id="email" label="Email" placeholder="you@email.com"
+                            value={formData.email} onChange={e => setFormData({ ...formData, email: e.target.value })}
+                        />
+                    </div>
+                )}
 
                 <div className="p-4 bg-vedic-beige/50 rounded-lg border border-stone-200 grid grid-cols-2 gap-4">
                     <div className="col-span-2 text-xs font-bold text-vedic-blue uppercase tracking-wide mb-1">Birth Details</div>
@@ -130,7 +160,7 @@ const SignupForm = ({ isEmbedded = false }) => {
                 </div>
 
                 <VedicButton type="submit" variant="primary" className="w-full !py-4 text-lg shadow-lg">
-                    {loading ? 'Calculating...' : 'Get Kundli Now'}
+                    {loading ? 'Calculating...' : (isGuest ? 'Get Free Kundli' : 'Register & Get Kundli')}
                 </VedicButton>
             </form>
         );

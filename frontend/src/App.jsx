@@ -1,28 +1,23 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
 
-// Placeholder imports - we will create these pages next
 import LandingPage from './pages/LandingPage'
 import AuthPage from './pages/AuthPage'
 import BirthInputPage from './pages/BirthInputPage'
 import DashboardPage from './pages/DashboardPage'
 import MatchPage from './pages/MatchPage'
 import ServicesPage from './pages/ServicesPage'
-
 import DashaPage from './pages/DashaPage'
 import ToolsLayout from './components/layout/ToolsLayout'
-
 import AIAstrologerPage from './pages/AIAstrologerPage'
-
 import BlogPage from './pages/BlogPage'
-
 import AboutPage from './pages/AboutPage'
-
 import PlanetsPage from './pages/PlanetsPage'
 import YogasPage from './pages/YogasPage'
 import ProfileInfoPage from './pages/ProfileInfoPage'
+import GuestKundliPage from './pages/GuestKundliPage'
 
-// Protected Route Component (Placeholder logic for now)
+// Protected Route Component
 const ProtectedRoute = ({ children }) => {
     const isAuthenticated = localStorage.getItem('token');
     if (!isAuthenticated) {
@@ -39,6 +34,8 @@ function App() {
                     <Routes>
                         <Route path="/" element={<LandingPage />} />
                         <Route path="/auth" element={<AuthPage />} />
+                        <Route path="/free-kundli" element={<GuestKundliPage />} />
+
                         <Route path="/enter-details" element={
                             <ProtectedRoute>
                                 <BirthInputPage />
@@ -69,7 +66,6 @@ function App() {
                             <Route path="yogas" element={<YogasPage />} />
                             <Route path="ai-astrologer" element={<AIAstrologerPage />} />
                             <Route path="info" element={<ProfileInfoPage />} />
-                            {/* Placeholder for other tools to prevent 404s if user clicks them */}
                             <Route path="*" element={<div className="p-8 text-stone-500">Tool coming soon...</div>} />
                         </Route>
 
