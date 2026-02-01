@@ -16,8 +16,6 @@ import AboutPage from './pages/AboutPage'
 import PlanetsPage from './pages/PlanetsPage'
 import YogasPage from './pages/YogasPage'
 import ProfileInfoPage from './pages/ProfileInfoPage'
-import YogasPage from './pages/YogasPage'
-import ProfileInfoPage from './pages/ProfileInfoPage'
 import GuestKundliPage from './pages/GuestKundliPage'
 import HoroscopePage from './pages/HoroscopePage'
 
