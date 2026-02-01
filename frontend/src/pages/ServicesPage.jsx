@@ -125,7 +125,7 @@ function HashIcon(props) {
 
 const ServicesPage = () => {
     const navigate = useNavigate();
-    const isAuthenticated = !!localStorage.getItem('token');
+    const isAuthenticated = !!sessionStorage.getItem('token');
 
     const handleToolClick = (link) => {
         if (link === '/blog') {
