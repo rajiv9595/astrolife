@@ -18,7 +18,7 @@ const SignupForm = ({ isEmbedded = false, isGuest = false }) => {
     const [formData, setFormData] = useState({
         name: '',
         email: '',
-        password: 'password123',
+        password: '',
         mobile_number: '',
         date_of_birth: '',
         time_of_birth: '',
@@ -179,7 +179,7 @@ const SignupForm = ({ isEmbedded = false, isGuest = false }) => {
                     value={formData.email} onChange={e => setFormData({ ...formData, email: e.target.value })}
                 />
                 <Input
-                    id="password" label="Password" type="password"
+                    id="password" label="Password" type="password" autoComplete="new-password"
                     value={formData.password} onChange={e => setFormData({ ...formData, password: e.target.value })}
                 />
                 <div className="bg-stone-50 p-4 rounded-lg">
