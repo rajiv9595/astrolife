@@ -206,7 +206,7 @@ const HoroscopePage = () => {
         <div className="min-h-screen bg-vedic-cream pb-20">
             {/* Custom Navbar Area with Selector embedded or separate? */}
             {/* Sticking to standard layout with Navbar */}
-            <Navbar />
+            {/* Navbar rendered by parent layout */}
 
             <div className="bg-white border-b border-stone-100 shadow-sm sticky top-20 z-40">
                 <div className="max-w-7xl mx-auto px-4 py-4 flex flex-col md:flex-row items-center justify-between gap-4">
@@ -341,7 +341,7 @@ const HoroscopePage = () => {
                             </VedicCard>
 
                             {/* Charts Visualization */}
-                            <div className="lg:col-span-2 space-y-6">
+                            <div className="lg:col-span-2 flex flex-col gap-6">
                                 <div className="flex gap-2 bg-white p-1 rounded-lg w-fit border border-stone-100">
                                     {['D1', 'D9', 'D10'].map(type => (
                                         <button
@@ -353,25 +353,26 @@ const HoroscopePage = () => {
                                         </button>
                                     ))}
                                 </div>
-                                <VedicCard className="p-4 bg-white flex justify-center">
+                                <VedicCard className="p-4 bg-white flex justify-center flex-1 min-h-[400px]">
                                     <SouthIndianChart
                                         chartData={getChartDataByType(chartData, activeChart)}
                                         title={`${activeChart} - ${person.name}`}
                                     />
                                 </VedicCard>
-
-                                <DashaTimeline vimshottari={chartData.vimshottari} />
                             </div>
 
                             {/* Planetary Details */}
-                            <div className="space-y-6">
-                                <VedicCard className="p-0 overflow-hidden bg-white">
-                                    <div className="bg-vedic-blue px-4 py-3">
+                            <div className="flex flex-col gap-6 lg:h-full">
+                                {/* Spacer to push table down to align with chart card (accounting for buttons height ~42px) */}
+                                <div className="h-[42px] hidden lg:block"></div>
+
+                                <VedicCard className="p-0 overflow-hidden bg-white flex-1 flex flex-col h-full">
+                                    <div className="bg-vedic-blue px-4 py-3 shrink-0">
                                         <h3 className="text-white font-bold text-sm">Planetary Positions</h3>
                                     </div>
-                                    <div className="overflow-x-auto">
+                                    <div className="overflow-x-auto flex-1">
                                         <table className="w-full text-sm">
-                                            <thead className="bg-stone-50 text-stone-500 text-xs uppercase font-bold text-left">
+                                            <thead className="bg-stone-50 text-stone-500 text-xs uppercase font-bold text-left sticky top-0">
                                                 <tr>
                                                     <th className="px-4 py-2">Planet</th>
                                                     <th className="px-4 py-2">Sign</th>
@@ -379,19 +380,27 @@ const HoroscopePage = () => {
                                                 </tr>
                                             </thead>
                                             <tbody className="divide-y divide-stone-100">
-                                                {Object.entries(chartData.planets).map(([key, p]) => (
-                                                    <tr key={key} className="hover:bg-vedic-cream/30">
-                                                        <td className="px-4 py-2 font-medium text-vedic-blue">{key}</td>
-                                                        <td className="px-4 py-2 text-stone-600">{p.sign_manual || p.sign}</td>
-                                                        <td className="px-4 py-2 text-stone-500 font-mono text-xs">{Math.floor(p.degree)}°{Math.floor((p.degree % 1) * 60)}'</td>
-                                                    </tr>
-                                                ))}
+                                                {Object.entries(chartData.planets).map(([key, p]) => {
+                                                    const degVal = p.degree !== undefined ? p.degree : (p.longitude !== undefined ? p.longitude : 0);
+                                                    return (
+                                                        <tr key={key} className="hover:bg-vedic-cream/30">
+                                                            <td className="px-4 py-2 font-medium text-vedic-blue">{key}</td>
+                                                            <td className="px-4 py-2 text-stone-600">{p.sign_manual || p.sign}</td>
+                                                            <td className="px-4 py-2 text-stone-500 font-mono text-xs">
+                                                                {Math.floor(degVal)}°{Math.floor((degVal % 1) * 60)}'
+                                                            </td>
+                                                        </tr>
+                                                    );
+                                                })}
                                             </tbody>
                                         </table>
                                     </div>
                                 </VedicCard>
                             </div>
                         </div>
+
+                        {/* Timeline Moved to Bottom */}
+                        <DashaTimeline vimshottari={chartData.vimshottari} />
                     </>
                 ) : (
                     <div className="text-center py-20 text-stone-400">
