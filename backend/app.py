@@ -59,6 +59,10 @@ def create_app() -> FastAPI:
     # ---------------------------
     # ROUTES
     # ---------------------------
+    @app.get("/health")
+    def health_check():
+        return {"status": "active", "message": "Server is running"}
+
     app.include_router(auth_router)
     app.include_router(geocode_router)
     app.include_router(astro_router)
