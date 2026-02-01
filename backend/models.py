@@ -55,7 +55,7 @@ class ChartData(Base):
 
 
 class FamilyMember(Base):
-    __tablename__ = "family_members"
+    __tablename__ = "user_family_members"
 
     id = Column(Integer, primary_key=True, index=True)
     user_id = Column(Integer, index=True, nullable=False)  # ForeignKey logic manually or implicit
