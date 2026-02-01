@@ -68,6 +68,9 @@ def create_app() -> FastAPI:
     app.include_router(astro_router)
     app.include_router(ai_router)
     app.include_router(learning_router)
+    
+    from backend.routes.family import router as family_router
+    app.include_router(family_router)
 
     # ---------------------------
     # EVENTS

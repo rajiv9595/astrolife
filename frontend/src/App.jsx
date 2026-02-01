@@ -16,11 +16,14 @@ import AboutPage from './pages/AboutPage'
 import PlanetsPage from './pages/PlanetsPage'
 import YogasPage from './pages/YogasPage'
 import ProfileInfoPage from './pages/ProfileInfoPage'
+import YogasPage from './pages/YogasPage'
+import ProfileInfoPage from './pages/ProfileInfoPage'
 import GuestKundliPage from './pages/GuestKundliPage'
+import HoroscopePage from './pages/HoroscopePage'
 
 // Protected Route Component
 const ProtectedRoute = ({ children }) => {
-    const isAuthenticated = localStorage.getItem('token');
+    const isAuthenticated = sessionStorage.getItem('token');
     if (!isAuthenticated) {
         return <Navigate to="/auth" replace />;
     }
@@ -68,6 +71,7 @@ function App() {
                             <Route path="yogas" element={<YogasPage />} />
                             <Route path="ai-astrologer" element={<AIAstrologerPage />} />
                             <Route path="info" element={<ProfileInfoPage />} />
+                            <Route path="horoscope" element={<HoroscopePage />} />
                             <Route path="*" element={<div className="p-8 text-stone-500">Tool coming soon...</div>} />
                         </Route>
 

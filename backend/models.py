@@ -53,3 +53,22 @@ class ChartData(Base):
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())
 
 
+
+class FamilyMember(Base):
+    __tablename__ = "family_members"
+
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, index=True, nullable=False)  # ForeignKey logic manually or implicit
+    name = Column(String, nullable=False)
+    relationship = Column(String, nullable=True)  # e.g., "Father", "Spouse"
+    gender = Column(String, nullable=True)  # "Male", "Female", "Other"
+    
+    date_of_birth = Column(String, nullable=False)  # YYYY-MM-DD
+    time_of_birth = Column(String, nullable=False)  # HH:MM
+    location = Column(String, nullable=False)
+    latitude = Column(Float, nullable=False)
+    longitude = Column(Float, nullable=False)
+    timezone = Column(String, default="Asia/Kolkata", nullable=False)
+    
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+    updated_at = Column(DateTime(timezone=True), onupdate=func.now())

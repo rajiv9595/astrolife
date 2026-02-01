@@ -7,7 +7,7 @@ import VedicButton from './VedicButton';
 const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
     const location = useLocation();
-    const isAuth = localStorage.getItem('token');
+    const isAuth = sessionStorage.getItem('token');
 
     return (
         <>
@@ -54,8 +54,8 @@ const Navbar = () => {
                                 </Link>
                                 <button
                                     onClick={() => {
-                                        localStorage.removeItem('token');
-                                        localStorage.removeItem('user');
+                                        sessionStorage.removeItem('token');
+                                        sessionStorage.removeItem('user');
                                         window.location.href = '/';
                                     }}
                                     className="text-sm font-bold text-vedic-muted hover:text-vedic-orange transition-colors uppercase tracking-wide"
@@ -110,8 +110,8 @@ const Navbar = () => {
                                         <Link to="/dashboard" className="text-vedic-orange font-bold">Dashboard</Link>
                                         <button
                                             onClick={() => {
-                                                localStorage.removeItem('token');
-                                                localStorage.removeItem('user');
+                                                sessionStorage.removeItem('token');
+                                                sessionStorage.removeItem('user');
                                                 window.location.href = '/';
                                             }}
                                             className="text-left text-vedic-muted font-bold hover:text-vedic-orange transition-colors"

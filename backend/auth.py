@@ -11,7 +11,7 @@ import bcrypt
 # Secret key for JWT - In production, use environment variable
 SECRET_KEY = "your-secret-key-change-in-production-minimum-32-characters-long"
 ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 30 * 24 * 60  # 30 days
+ACCESS_TOKEN_EXPIRE_MINUTES = 24 * 60  # 24 hours
 
 # Password hashing - Use bcrypt directly to avoid passlib initialization issues
 
