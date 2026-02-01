@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X } from 'lucide-react';
-import Input from '../ui/Input';
-import LocationInput from '../ui/LocationInput';
-import VedicButton from '../ui/VedicButton';
+import Input from '../../ui/Input';
+import LocationInput from '../../ui/LocationInput';
+import VedicButton from '../../ui/VedicButton';
 import { toast } from 'react-toastify';
 
 const FamilyMemberModal = ({ isOpen, onClose, onSubmit, initialData = null }) => {
