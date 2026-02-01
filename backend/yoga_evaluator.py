@@ -565,9 +565,16 @@ def evaluate_named_pattern(pattern_name: str, planet_data: Dict, whole_sign_hous
         for i in range(len(wl_list)):
             for j in range(i+1, len(wl_list)):
                 l1, l2 = wl_list[i], wl_list[j]
-                if get_h(l1) == get_h(l2): return True # Conjunct
+                
+                h1 = get_h(l1)
+                h2 = get_h(l2)
+                
+                if h1 is None or h2 is None:
+                    continue
+
+                if h1 == h2: return True # Conjunct
                 # Mutual Aspect (7th)
-                if abs(get_h(l1) - get_h(l2)) == 6: return True
+                if abs(h1 - h2) == 6: return True
         return False
 
     elif pattern_name == "dispositor_exalt":
