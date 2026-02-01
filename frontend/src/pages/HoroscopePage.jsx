@@ -1,14 +1,14 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Navbar from '../../components/ui/Navbar';
-import VedicCard from '../../components/ui/VedicCard';
-import SouthIndianChart from '../../components/charts/SouthIndianChart';
-import DashaTimeline from '../../components/charts/DashaTimeline';
-import AIAstrologer from '../../components/ai/AIAstrologer';
-import { authService } from '../../services/authService';
-import { astroService } from '../../services/astroService';
-import { familyService } from '../../services/familyService';
-import FamilyMemberModal from '../../components/features/horoscope/FamilyMemberModal';
+import Navbar from '../components/ui/Navbar';
+import VedicCard from '../components/ui/VedicCard';
+import SouthIndianChart from '../components/charts/SouthIndianChart';
+import DashaTimeline from '../components/charts/DashaTimeline';
+import AIAstrologer from '../components/ai/AIAstrologer';
+import { authService } from '../services/authService';
+import { astroService } from '../services/astroService';
+import { familyService } from '../services/familyService';
+import FamilyMemberModal from '../components/features/horoscope/FamilyMemberModal';
 import {
     User, MapPin, Calendar, Clock, ChevronDown, Plus,
     Edit2, Trash2, RefreshCw, Star, Users, Check
