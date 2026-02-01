@@ -54,7 +54,11 @@ function App() {
                             </ProtectedRoute>
                         } />
                         <Route path="/services" element={<ServicesPage />} />
-                        <Route path="/learning" element={<LearningPage />} />
+                        <Route path="/learning" element={
+                            <ProtectedRoute>
+                                <LearningPage />
+                            </ProtectedRoute>
+                        } />
                         <Route path="/blog" element={<BlogPage />} />
                         <Route path="/about" element={<AboutPage />} />
 

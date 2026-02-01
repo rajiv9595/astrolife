@@ -32,6 +32,8 @@ class ChatRequest(BaseModel):
     message: str
     current_module_id: Optional[str] = None
     current_lesson_id: Optional[str] = None
+    book_title: Optional[str] = None
+    book_author: Optional[str] = None
 
 class ChatResponse(BaseModel):
     reply: str
@@ -54,33 +56,48 @@ def chat_with_guru(req: ChatRequest, current_user: User = Depends(get_current_us
     try:
         # Build Context
         context_text = ""
-        
-        # 1. Add specific lesson context if user is reading one
-        if req.current_lesson_id and req.current_module_id:
-            module = next((m for m in modules_cache if m["id"] == req.current_module_id), None)
-            if module:
-                lesson = next((l for l in module["lessons"] if l["id"] == req.current_lesson_id), None)
-                if lesson:
-                    context_text += f"\n[User is currently reading: {module['title']} - {lesson['title']}]\nContent: {lesson['content']}\n"
+        system_instructions = ""
 
-        # 2. Add general context (summary of all titles) to help AI know what's in the course
-        course_outline = "\nCourse Structure:"
-        for m in modules_cache:
-            course_outline += f"\n- {m['title']}"
-            for l in m['lessons']:
-                course_outline += f"\n  -- {l['title']}"
+        # Case A: Book Mode
+        if req.book_title:
+            system_instructions = f"""
+You are 'Guru-ji', an expert scholar of Vedic Astrology, specifically specializing in the text "{req.book_title}" by "{req.book_author or 'Ancient Sages'}".
+You are teaching a student named {current_user.name}.
+Your goal is to answer questions using the specific wisdom, shlokas, and philosophy found strictly within "{req.book_title}".
+If the user asks about a concept not covered in this book, politely mention that this text does not address it, but offer a general Vedic perspective if applicable.
+Maintain a scholarly yet accessible tone. Use Sanskrit terms where appropriate but explain them.
+"""
         
-        # 3. System Prompt
-        system_prompt = f"""
+        # Case B: Course Mode (Legacy)
+        else:
+            # 1. Add specific lesson context if user is reading one
+            if req.current_lesson_id and req.current_module_id:
+                module = next((m for m in modules_cache if m["id"] == req.current_module_id), None)
+                if module:
+                    lesson = next((l for l in module["lessons"] if l["id"] == req.current_lesson_id), None)
+                    if lesson:
+                        context_text += f"\n[User is currently reading: {module['title']} - {lesson['title']}]\nContent: {lesson['content']}\n"
+
+            # 2. Add general context
+            course_outline = "\nCourse Structure:"
+            for m in modules_cache:
+                course_outline += f"\n- {m['title']}"
+                for l in m['lessons']:
+                    course_outline += f"\n  -- {l['title']}"
+            
+            system_instructions = f"""
 You are 'Guru-ji', a wise, patient, and knowledgeable Vedic Astrology Teacher.
 You are teaching a student named {current_user.name}.
 Your goal is to explain astrology concepts clearly, using simple analogies.
 Always refer to the course material if relevant.
-If the user asks something covered in the course, encourage them to read that specific module, but still give a brief answer.
 Context about the course:
 {course_outline}
-
 {context_text}
+"""
+
+        # Final Prompt
+        final_prompt = f"""
+{system_instructions}
 
 User Question: {req.message}
 
@@ -90,11 +107,11 @@ Answer as Guru-ji:
         # Call Gemini
         from backend.config import GEMINI_MODEL
         model = genai.GenerativeModel(GEMINI_MODEL)
-        response = model.generate_content(system_prompt)
+        response = model.generate_content(final_prompt)
         
         return {
             "reply": response.text,
-            "references": [req.current_lesson_id] if req.current_lesson_id else []
+            "references": [req.book_title] if req.book_title else ([req.current_lesson_id] if req.current_lesson_id else [])
         }
 
     except Exception as e:
