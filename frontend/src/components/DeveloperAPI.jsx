@@ -134,9 +134,9 @@ function DeveloperAPI() {
       <div className="api-section docs-section">
         <h3>Quickstart Guide</h3>
         <div className="code-example">
-          <h4>Endpoint: <code>POST /compute</code></h4>
+          <h4>Endpoint: <code>POST https://astrolife.onrender.com/compute</code></h4>
           <pre>
-            {`curl -X POST YOUR_BACKEND_URL/compute \\
+            {`curl -X POST https://astrolife.onrender.com/compute \\
   -H "Content-Type: application/json" \\
   -H "X-API-Key: your_secret_api_key_here" \\
   -d '{

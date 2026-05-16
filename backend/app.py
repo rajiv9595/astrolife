@@ -50,8 +50,9 @@ def create_app() -> FastAPI:
             "http://localhost:4173",
             "https://astrolife-nine.vercel.app",
             "https://astrolife.vercel.app",
-            "https://yourlifepath.vercel.app"
+            "https://yourlifepath.vercel.app",
         ],
+        allow_origin_regex=r"https://.*\.vercel\.app",
         allow_credentials=True,
         allow_methods=["*"],
         allow_headers=["*"],
