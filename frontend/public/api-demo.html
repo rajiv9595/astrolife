@@ -286,24 +286,30 @@ function renderChart(c) {
   const planets = ['Sun','Moon','Mercury','Venus','Mars','Jupiter','Saturn','Rahu','Ketu'];
   const colors = {'Sun':'#f59e0b','Moon':'#e0e7ff','Mercury':'#34d399','Venus':'#f472b6','Mars':'#ef4444','Jupiter':'#fbbf24','Saturn':'#6366f1','Rahu':'#8b5cf6','Ketu':'#a78bfa'};
 
-  let html = `<div class="asc-banner"><div class="label">Ascendant (Lagna)</div><div class="value">${c.ascendant.sign} ${c.ascendant.deg_in_sign.toFixed(1)}°</div></div>`;
+  const ascSign = c.ascendant?.sign || 'N/A';
+  const ascDeg = typeof c.ascendant?.deg_in_sign === 'number' ? c.ascendant.deg_in_sign.toFixed(1) : '0';
+
+  let html = `<div class="asc-banner"><div class="label">Ascendant (Lagna)</div><div class="value">${ascSign} ${ascDeg}°</div></div>`;
   
   html += `<div style="display:grid;grid-template-columns:1fr 1fr;gap:0.5rem;margin-bottom:1rem">
-    <div class="info-row" style="border:none"><span class="lbl">Moon Sign</span><span class="val">${c.moon_sign}</span></div>
-    <div class="info-row" style="border:none"><span class="lbl">Tithi</span><span class="val">${c.tithi.name}</span></div>
-    <div class="info-row" style="border:none"><span class="lbl">Nakshatra</span><span class="val">${c.nakshatra_of_moon.nakshatra}</span></div>
-    <div class="info-row" style="border:none"><span class="lbl">Yoga</span><span class="val">${c.nithya_yoga.name}</span></div>
+    <div class="info-row" style="border:none"><span class="lbl">Moon Sign</span><span class="val">${c.moon_sign || 'N/A'}</span></div>
+    <div class="info-row" style="border:none"><span class="lbl">Tithi</span><span class="val">${c.tithi?.name || 'N/A'}</span></div>
+    <div class="info-row" style="border:none"><span class="lbl">Nakshatra</span><span class="val">${c.nakshatra_of_moon?.nakshatra || 'N/A'}</span></div>
+    <div class="info-row" style="border:none"><span class="lbl">Yoga</span><span class="val">${c.nithya_yoga?.name || 'N/A'}</span></div>
   </div>`;
 
   html += '<div class="chart-result">';
   planets.forEach(p => {
-    const pl = c.planets[p];
+    const pl = c.planets?.[p];
     if (!pl) return;
+    const deg = typeof pl.deg_in_sign === 'number' ? pl.deg_in_sign.toFixed(1) : '0';
+    const nak = pl.nakshatra?.nakshatra || '';
+    const pada = pl.nakshatra?.pada || '';
     html += `<div class="planet-card" style="border-left-color:${colors[p]}">
       <div class="planet-name">${p}</div>
       <div class="planet-detail">
-        <span class="sign">${pl.sign} ${pl.deg_in_sign.toFixed(1)}°</span>
-        <span>${pl.nakshatra?.nakshatra || ''} P${pl.nakshatra?.pada || ''}</span>
+        <span class="sign">${pl.sign || 'N/A'} ${deg}°</span>
+        <span>${nak}${pada ? ' P' + pada : ''}</span>
       </div>
     </div>`;
   });
