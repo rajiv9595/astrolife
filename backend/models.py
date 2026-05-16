@@ -72,3 +72,15 @@ class FamilyMember(Base):
     
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     updated_at = Column(DateTime(timezone=True), onupdate=func.now())
+
+class APIKey(Base):
+    __tablename__ = "api_keys"
+
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, nullable=False, index=True)
+    key_hash = Column(String, unique=True, index=True, nullable=False)
+    name = Column(String, default="Default Key")
+    key_prefix = Column(String, nullable=False) # Store first few chars to identify key
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+    is_active = Column(Boolean, default=True)
+    last_used = Column(DateTime(timezone=True), nullable=True)

@@ -16,6 +16,7 @@ from backend.geocode import router as geocode_router
 from backend.routes.astro import router as astro_router
 from backend.routes.ai_routes import router as ai_router
 from backend.routes.learning import router as learning_router
+from backend.routes.api_keys import router as api_keys_router
 
 def create_app() -> FastAPI:
     """
@@ -68,6 +69,7 @@ def create_app() -> FastAPI:
     app.include_router(astro_router)
     app.include_router(ai_router)
     app.include_router(learning_router)
+    app.include_router(api_keys_router)
     
     from backend.routes.family import router as family_router
     app.include_router(family_router)

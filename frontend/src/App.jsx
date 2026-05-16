@@ -18,6 +18,7 @@ import YogasPage from './pages/YogasPage'
 import ProfileInfoPage from './pages/ProfileInfoPage'
 import GuestKundliPage from './pages/GuestKundliPage'
 import HoroscopePage from './pages/HoroscopePage'
+import DeveloperAPI from './components/DeveloperAPI'
 
 // Protected Route Component
 const ProtectedRoute = ({ children }) => {
@@ -74,6 +75,7 @@ function App() {
                             <Route path="ai-astrologer" element={<AIAstrologerPage />} />
                             <Route path="info" element={<ProfileInfoPage />} />
                             <Route path="horoscope" element={<HoroscopePage />} />
+                            <Route path="api" element={<DeveloperAPI />} />
                             <Route path="*" element={<div className="p-8 text-stone-500">Tool coming soon...</div>} />
                         </Route>
 
