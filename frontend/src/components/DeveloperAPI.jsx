@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
+import api from '../services/api'
 import '../styles/DeveloperAPI.css'
 
-function DeveloperAPI({ userData }) {
+function DeveloperAPI() {
   const [keys, setKeys] = useState([])
   const [newKeyName, setNewKeyName] = useState('')
   const [loading, setLoading] = useState(false)
@@ -16,17 +17,10 @@ function DeveloperAPI({ userData }) {
   const fetchKeys = async () => {
     try {
       setLoading(true)
-      const token = sessionStorage.getItem('token') || localStorage.getItem('token')
-      const res = await fetch('http://localhost:8001/api-keys', {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      })
-      if (!res.ok) throw new Error('Failed to fetch API keys')
-      const data = await res.json()
-      setKeys(data)
+      const res = await api.get('/api-keys')
+      setKeys(res.data)
     } catch (err) {
-      setError(err.message)
+      setError(err.response?.data?.detail || err.message)
     } finally {
       setLoading(false)
     }
@@ -39,22 +33,12 @@ function DeveloperAPI({ userData }) {
     try {
       setLoading(true)
       setError(null)
-      const token = sessionStorage.getItem('token') || localStorage.getItem('token')
-      const res = await fetch('http://localhost:8001/api-keys', {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ name: newKeyName })
-      })
-      if (!res.ok) throw new Error('Failed to create API key')
-      const data = await res.json()
-      setNewlyCreatedKey(data.key)
+      const res = await api.post('/api-keys', { name: newKeyName })
+      setNewlyCreatedKey(res.data.key)
       setNewKeyName('')
       fetchKeys()
     } catch (err) {
-      setError(err.message)
+      setError(err.response?.data?.detail || err.message)
     } finally {
       setLoading(false)
     }
@@ -66,17 +50,10 @@ function DeveloperAPI({ userData }) {
     try {
       setLoading(true)
       setError(null)
-      const token = sessionStorage.getItem('token') || localStorage.getItem('token')
-      const res = await fetch(`http://localhost:8001/api-keys/${id}`, {
-        method: 'DELETE',
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      })
-      if (!res.ok) throw new Error('Failed to revoke API key')
+      await api.delete(`/api-keys/${id}`)
       fetchKeys()
     } catch (err) {
-      setError(err.message)
+      setError(err.response?.data?.detail || err.message)
     } finally {
       setLoading(false)
     }
@@ -86,7 +63,7 @@ function DeveloperAPI({ userData }) {
     <div className="developer-api-container">
       <h2>Developer API</h2>
       <p className="api-subtitle">
-        Generate API keys to integrate our chartgenerator into your own applications.
+        Generate API keys to integrate our chart generator into your own applications.
       </p>
 
       {error && <div className="error-message">{error}</div>}
@@ -157,9 +134,9 @@ function DeveloperAPI({ userData }) {
       <div className="api-section docs-section">
         <h3>Quickstart Guide</h3>
         <div className="code-example">
-          <h4>Endpoint: <code>POST https://yourlifepath.vercel.app/compute</code></h4>
+          <h4>Endpoint: <code>POST /compute</code></h4>
           <pre>
-            {`curl -X POST https://yourlifepath.vercel.app/compute \\
+            {`curl -X POST YOUR_BACKEND_URL/compute \\
   -H "Content-Type: application/json" \\
   -H "X-API-Key: your_secret_api_key_here" \\
   -d '{
