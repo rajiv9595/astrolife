@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import Navbar from '../components/ui/Navbar';
 import VedicCard from '../components/ui/VedicCard';
 import SouthIndianChart from '../components/charts/SouthIndianChart';
+import NorthIndianChart from '../components/charts/NorthIndianChart';
 import DashaTimeline from '../components/charts/DashaTimeline';
 import AIAstrologer from '../components/ai/AIAstrologer';
 import { authService } from '../services/authService';
@@ -25,6 +26,7 @@ const HoroscopePage = () => {
     // selectedId: 'me' for current user, or integer ID for family member
     const [selectedId, setSelectedId] = useState('me');
     const [activeChart, setActiveChart] = useState('D1');
+    const [chartStyle, setChartStyle] = useState('south'); // 'south' or 'north'
     const [chartData, setChartData] = useState(null);
     const [loading, setLoading] = useState(false);
 
@@ -342,22 +344,49 @@ const HoroscopePage = () => {
 
                             {/* Charts Visualization */}
                             <div className="lg:col-span-2 flex flex-col gap-6">
-                                <div className="flex gap-2 bg-white p-1 rounded-lg w-fit border border-stone-100">
-                                    {['D1', 'D9', 'D10'].map(type => (
+                                <div className="flex justify-between items-center flex-wrap gap-4">
+                                    {/* D1 / D9 / D10 Selector */}
+                                    <div className="flex gap-2 bg-white p-1 rounded-lg w-fit border border-stone-100 shadow-xs">
+                                        {['D1', 'D9', 'D10'].map(type => (
+                                            <button
+                                                key={type}
+                                                onClick={() => setActiveChart(type)}
+                                                className={`px-4 py-1.5 rounded-md text-xs font-bold transition-colors ${activeChart === type ? 'bg-vedic-blue text-white shadow-sm' : 'text-stone-500 hover:bg-stone-50'}`}
+                                            >
+                                                {type} Chart
+                                            </button>
+                                        ))}
+                                    </div>
+
+                                    {/* South / North Style Toggle */}
+                                    <div className="flex gap-2 bg-white p-1 rounded-lg w-fit border border-stone-100 shadow-xs">
                                         <button
-                                            key={type}
-                                            onClick={() => setActiveChart(type)}
-                                            className={`px-4 py-1.5 rounded-md text-xs font-bold transition-colors ${activeChart === type ? 'bg-vedic-blue text-white' : 'text-stone-500 hover:bg-stone-50'}`}
+                                            onClick={() => setChartStyle('south')}
+                                            className={`px-3 py-1.5 rounded-md text-xs font-bold transition-colors ${chartStyle === 'south' ? 'bg-vedic-orange text-white shadow-sm font-extrabold' : 'text-stone-500 hover:bg-stone-50'}`}
                                         >
-                                            {type} Chart
+                                            South Indian
                                         </button>
-                                    ))}
+                                        <button
+                                            onClick={() => setChartStyle('north')}
+                                            className={`px-3 py-1.5 rounded-md text-xs font-bold transition-colors ${chartStyle === 'north' ? 'bg-vedic-orange text-white shadow-sm font-extrabold' : 'text-stone-500 hover:bg-stone-50'}`}
+                                        >
+                                            North Indian
+                                        </button>
+                                    </div>
                                 </div>
+
                                 <VedicCard className="p-4 bg-white flex justify-center flex-1 min-h-[400px]">
-                                    <SouthIndianChart
-                                        chartData={getChartDataByType(chartData, activeChart)}
-                                        title={`${activeChart} - ${person.name}`}
-                                    />
+                                    {chartStyle === 'south' ? (
+                                        <SouthIndianChart
+                                            chartData={getChartDataByType(chartData, activeChart)}
+                                            title={`${activeChart} - ${person.name}`}
+                                        />
+                                    ) : (
+                                        <NorthIndianChart
+                                            chartData={getChartDataByType(chartData, activeChart)}
+                                            title={`${activeChart} - ${person.name}`}
+                                        />
+                                    )}
                                 </VedicCard>
                             </div>
 

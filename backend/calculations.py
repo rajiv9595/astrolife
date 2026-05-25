@@ -327,6 +327,7 @@ def compute_sunrise_sunset(jd_ut: float, lat: float, lon: float, tz_name: str) -
         print(f"Error computing sunrise/sunset: {e}")
         return {"sunrise": "N/A", "sunset": "N/A"}
 
+_active_tz = None
 
 # ---------------------------
 # VIMSHOTTARI DASHA
@@ -343,15 +344,66 @@ def jd_to_datetime(jd):
     sec_decimal = (min_decimal - minute) * 60.0
     second = int(sec_decimal)
     
+    if second >= 60: second = 59
+    if minute >= 60: minute = 59
+    if hour >= 24: hour = 23
+    
     try:
         dt = datetime(year, month, day, hour, minute, second)
-        return dt
     except (ValueError, TypeError):
         # Fallback
         return datetime(1900, 1, 1, 0, 0, 0)
+        
+    global _active_tz
+    if _active_tz:
+        try:
+            # Check calling function via stack frame to avoid side-effects in astronomical functions like sunrise/sunset
+            import inspect
+            frame = inspect.currentframe()
+            caller_name = frame.f_back.f_code.co_name
+            if caller_name != "compute_sunrise_sunset" and caller_name != "compute_sunrise_sunset_internal":
+                dt_utc = dt.replace(tzinfo=pytz.utc)
+                return dt_utc.astimezone(pytz.timezone(_active_tz))
+        except Exception:
+            pass
+            
+    return dt
 
 
-def calculate_antar_dasha(mahadasha_lord, mahadasha_years, start_jd, days_in_year):
+def jd_to_local_iso(jd, tz_name="UTC"):
+    """Convert Julian Day to timezone-aware ISO string representation in local timezone."""
+    year, month, day, hour_decimal = swe.revjul(jd, swe.GREG_CAL)
+    hour = int(hour_decimal)
+    min_decimal = (hour_decimal - hour) * 60.0
+    minute = int(min_decimal)
+    sec_decimal = (min_decimal - minute) * 60.0
+    second = int(sec_decimal)
+    
+    # Handle edge boundary cases
+    if second >= 60:
+        second = 59
+    if minute >= 60:
+        minute = 59
+    if hour >= 24:
+        hour = 23
+        
+    try:
+        dt_utc = datetime(year, month, day, hour, minute, second, tzinfo=pytz.utc)
+    except (ValueError, TypeError):
+        dt_utc = datetime(1900, 1, 1, 0, 0, 0, tzinfo=pytz.utc)
+        
+    try:
+        global _active_tz
+        # Use active birth timezone if tz_name is default "UTC"
+        active_tz = tz_name if tz_name != "UTC" else (_active_tz or "UTC")
+        tz = pytz.timezone(active_tz)
+        dt_local = dt_utc.astimezone(tz)
+        return dt_local.isoformat()
+    except Exception:
+        return dt_utc.isoformat()
+
+
+def calculate_antar_dasha(mahadasha_lord, mahadasha_years, start_jd, days_in_year, tz_name="UTC"):
     """
     Calculate Antar Dasha (sub-periods) for a given Mahadasha.
     
@@ -362,6 +414,7 @@ def calculate_antar_dasha(mahadasha_lord, mahadasha_years, start_jd, days_in_yea
         mahadasha_years: Duration of the Mahadasha in years
         start_jd: Start Julian Day for this Mahadasha
         days_in_year: Days per year (365.2425)
+        tz_name: Birth timezone
     
     Returns:
         List of Antar Dasha periods
@@ -377,15 +430,12 @@ def calculate_antar_dasha(mahadasha_lord, mahadasha_years, start_jd, days_in_yea
         antar_years = (VIMSHOTTARI_YEARS[antar_lord] * mahadasha_years) / 120.0
         end_jd = cursor + antar_years * days_in_year
         
-        start_dt = jd_to_datetime(cursor)
-        end_dt = jd_to_datetime(end_jd)
-        
         antar_dashas.append({
             "lord": antar_lord,
             "start_jd": cursor,
             "end_jd": end_jd,
-            "start_date": start_dt.isoformat(),
-            "end_date": end_dt.isoformat(),
+            "start_date": jd_to_local_iso(cursor, tz_name),
+            "end_date": jd_to_local_iso(end_jd, tz_name),
             "years": round(antar_years, 6),
             "is_current": False,  # Will be determined based on current date
             "pratyantar_dashas": []
@@ -395,9 +445,71 @@ def calculate_antar_dasha(mahadasha_lord, mahadasha_years, start_jd, days_in_yea
     return antar_dashas
 
 
-def calculate_pratyantar_dasha(antar_lord, antar_years, start_jd, days_in_year):
+def calculate_sookshma_dasha(pratyantar_lord, pratyantar_years, start_jd, days_in_year, tz_name="UTC"):
+    """
+    Calculate Sookshma Dasha (sub-sub-sub-periods).
+    Formula: Sookshma Dasha duration = (Sookshma Lord years × Pratyantar Dasha years) / 120
+    """
+    seq = VIMSHOTTARI_ORDER
+    start_idx = seq.index(pratyantar_lord)
+    sookshma_dashas = []
+    cursor = start_jd
+    
+    for i in range(len(seq)):
+        idx = (start_idx + i) % len(seq)
+        sookshma_lord = seq[idx]
+        sookshma_years = (VIMSHOTTARI_YEARS[sookshma_lord] * pratyantar_years) / 120.0
+        end_jd = cursor + sookshma_years * days_in_year
+        
+        sookshma_dashas.append({
+            "lord": sookshma_lord,
+            "start_jd": cursor,
+            "end_jd": end_jd,
+            "start_date": jd_to_local_iso(cursor, tz_name),
+            "end_date": jd_to_local_iso(end_jd, tz_name),
+            "years": round(sookshma_years, 8),
+            "is_current": False,
+            "prana_dashas": []
+        })
+        cursor = end_jd
+    
+    return sookshma_dashas
+
+
+def calculate_prana_dasha(sookshma_lord, sookshma_years, start_jd, days_in_year, tz_name="UTC"):
+    """
+    Calculate Prana Dasha (sub-sub-sub-sub-periods).
+    Formula: Prana Dasha duration = (Prana Lord years × Sookshma Dasha years) / 120
+    """
+    seq = VIMSHOTTARI_ORDER
+    start_idx = seq.index(sookshma_lord)
+    prana_dashas = []
+    cursor = start_jd
+    
+    for i in range(len(seq)):
+        idx = (start_idx + i) % len(seq)
+        prana_lord = seq[idx]
+        prana_years = (VIMSHOTTARI_YEARS[prana_lord] * sookshma_years) / 120.0
+        end_jd = cursor + prana_years * days_in_year
+        
+        prana_dashas.append({
+            "lord": prana_lord,
+            "start_jd": cursor,
+            "end_jd": end_jd,
+            "start_date": jd_to_local_iso(cursor, tz_name),
+            "end_date": jd_to_local_iso(end_jd, tz_name),
+            "years": round(prana_years, 10),
+            "is_current": False
+        })
+        cursor = end_jd
+    
+    return prana_dashas
+
+
+def calculate_pratyantar_dasha(antar_lord, antar_years, start_jd, days_in_year, tz_name="UTC"):
     """
     Calculate Pratyantar Dasha (sub-sub-periods) for a given Antar Dasha.
+    Also recursively computes Sookshma Dashas for each Pratyantar period.
     
     Formula: Pratyantar Dasha duration = (Pratyantar Lord years × Antar Dasha years) / 120
     
@@ -406,6 +518,7 @@ def calculate_pratyantar_dasha(antar_lord, antar_years, start_jd, days_in_year):
         antar_years: Duration of the Antar Dasha in years
         start_jd: Start Julian Day for this Antar Dasha
         days_in_year: Days per year (365.2425)
+        tz_name: Birth timezone
     
     Returns:
         List of Pratyantar Dasha periods
@@ -421,17 +534,18 @@ def calculate_pratyantar_dasha(antar_lord, antar_years, start_jd, days_in_year):
         pratyantar_years = (VIMSHOTTARI_YEARS[pratyantar_lord] * antar_years) / 120.0
         end_jd = cursor + pratyantar_years * days_in_year
         
-        start_dt = jd_to_datetime(cursor)
-        end_dt = jd_to_datetime(end_jd)
+        # Recursively calculate Sookshma Dashas for this Pratyantar period
+        sookshma_dashas = calculate_sookshma_dasha(pratyantar_lord, pratyantar_years, cursor, days_in_year, tz_name)
         
         pratyantar_dashas.append({
             "lord": pratyantar_lord,
             "start_jd": cursor,
             "end_jd": end_jd,
-            "start_date": start_dt.isoformat(),
-            "end_date": end_dt.isoformat(),
+            "start_date": jd_to_local_iso(cursor, tz_name),
+            "end_date": jd_to_local_iso(end_jd, tz_name),
             "years": round(pratyantar_years, 6),
-            "is_current": False  # Will be determined based on current date
+            "is_current": False,  # Will be determined based on current date
+            "sookshma_dashas": sookshma_dashas
         })
         cursor = end_jd
     
@@ -528,6 +642,28 @@ def compute_vimshottari_timeline(jd_birth, moon_sidereal_lon, years_ahead=100):
                             pratyantar_years_partial = (pratyantar_end - pratyantar_start) / days_in_year
                             pratyantar_start_dt = jd_to_datetime(pratyantar_start)
                             pratyantar_end_dt = jd_to_datetime(pratyantar_end)
+                            
+                            # Filter and subset Sookshma Dashas for the partial period
+                            sookshmas_partial = []
+                            for sookshma in pratyantar.get("sookshma_dashas", []):
+                                if sookshma["end_jd"] > pratyantar_start and sookshma["start_jd"] < pratyantar_end:
+                                    s_start = max(sookshma["start_jd"], pratyantar_start)
+                                    s_end = min(sookshma["end_jd"], pratyantar_end)
+                                    if s_start < s_end:
+                                        s_years = (s_end - s_start) / days_in_year
+                                        s_start_dt = jd_to_datetime(s_start)
+                                        s_end_dt = jd_to_datetime(s_end)
+                                        sookshmas_partial.append({
+                                            "lord": sookshma["lord"],
+                                            "start_jd": s_start,
+                                            "end_jd": s_end,
+                                            "start_date": s_start_dt.isoformat(),
+                                            "end_date": s_end_dt.isoformat(),
+                                            "years": round(s_years, 8),
+                                            "is_current": False,
+                                            "prana_dashas": []
+                                        })
+                            
                             pratyantar_dashas_partial.append({
                                 "lord": pratyantar["lord"],
                                 "start_jd": pratyantar_start,
@@ -535,7 +671,8 @@ def compute_vimshottari_timeline(jd_birth, moon_sidereal_lon, years_ahead=100):
                                 "start_date": pratyantar_start_dt.isoformat(),
                                 "end_date": pratyantar_end_dt.isoformat(),
                                 "years": round(pratyantar_years_partial, 6),
-                                "is_current": False  # Will be determined based on current date
+                                "is_current": False,  # Will be determined based on current date
+                                "sookshma_dashas": sookshmas_partial
                             })
                 
                 antar_dashas_partial.append({
@@ -639,6 +776,28 @@ def compute_vimshottari_timeline(jd_birth, moon_sidereal_lon, years_ahead=100):
                                 for pratyantar in antar["pratyantar_dashas"]:
                                     if pratyantar["start_jd"] <= jd_now < pratyantar["end_jd"]:
                                         pratyantar["is_current"] = True
+                                        
+                                        # Find current active Sookshma Dasha
+                                        if pratyantar.get("sookshma_dashas"):
+                                            for sookshma in pratyantar["sookshma_dashas"]:
+                                                if sookshma["start_jd"] <= jd_now < sookshma["end_jd"]:
+                                                    sookshma["is_current"] = True
+                                                    
+                                                    # Calculate its 9 Prana Dashas!
+                                                    prana_dashas = calculate_prana_dasha(
+                                                        sookshma["lord"],
+                                                        sookshma["years"],
+                                                        sookshma["start_jd"],
+                                                        days_in_year
+                                                    )
+                                                    sookshma["prana_dashas"] = prana_dashas
+                                                    
+                                                    # Find current active Prana Dasha
+                                                    for prana in prana_dashas:
+                                                        if prana["start_jd"] <= jd_now < prana["end_jd"]:
+                                                            prana["is_current"] = True
+                                                            break
+                                                    break
             break
     
     # If no current Mahadasha found, check if we're before the first period or after the last
@@ -1052,6 +1211,8 @@ def compute_chart(year: int, month: int, day: int, hour: int, minute: int, secon
     Returns:
         Dictionary containing all chart data including planets, houses, d9, dasha, etc.
     """
+    global _active_tz
+    _active_tz = tz
     swe.set_sid_mode(swe.SIDM_LAHIRI, 0, 0)
     
     # Convert to UTC and get Julian Day
@@ -1080,7 +1241,7 @@ def compute_chart(year: int, month: int, day: int, hour: int, minute: int, secon
     sun_sid = res_planets.get("Sun", {}).get("lon_sidereal_manual")
     
     nakshatra = compute_nakshatra_pada(moon_sid) if moon_sid else None
-    dasha = compute_vimshottari_timeline(jd_ut, moon_sid) if moon_sid else None
+    dasha = compute_vimshottari_timeline(jd_ut, moon_sid, tz_name=tz) if moon_sid else None
     
     # Calculate Karana, Tithi, Nithya Yoga
     karana_data = None
@@ -1209,7 +1370,7 @@ def compute_chart(year: int, month: int, day: int, hour: int, minute: int, secon
             ascendant_data["d10_sign"] = asc_d10_sign
             ascendant_data["d10_sign_lord"] = SIGN_LORDS_MAP.get(asc_d10_sign, "")
     
-    return {
+    res = {
         "jd_ut": jd_ut,
         "utc_at_birth": dt_utc.isoformat(),
         "ayanamsha_deg": ay,
@@ -1229,6 +1390,9 @@ def compute_chart(year: int, month: int, day: int, hour: int, minute: int, secon
         "asc_sidereal": asc_sidereal,  # For use by calling code (e.g., lucky factors)
         "asc_sign": asc_sign  # For use by calling code
     }
+    global _active_tz
+    _active_tz = None
+    return res
 
 
 # ---------------------------

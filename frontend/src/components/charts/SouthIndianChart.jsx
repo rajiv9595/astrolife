@@ -20,15 +20,9 @@ const HOUSE_POSITIONS = {
     "Aquarius": { row: 2, col: 1 },
 };
 
-const ZODIAC_SYMBOLS = {
-    "Aries": "♈", "Taurus": "♉", "Gemini": "♊", "Cancer": "♋",
-    "Leo": "♌", "Virgo": "♍", "Libra": "♎", "Scorpio": "♏",
-    "Sagittarius": "♐", "Capricorn": "♑", "Aquarius": "♒", "Pisces": "♓"
-};
-
-const PLANET_SYMBOLS = {
-    "Sun": "☉", "Moon": "☾", "Mars": "♂", "Mercury": "☿",
-    "Jupiter": "♃", "Venus": "♀", "Saturn": "♄", "Rahu": "☊", "Ketu": "☋"
+const PLANET_SHORT = {
+    "Sun": "Su", "Moon": "Mo", "Mars": "Ma", "Mercury": "Me",
+    "Jupiter": "Ju", "Venus": "Ve", "Saturn": "Sa", "Rahu": "Ra", "Ketu": "Ke"
 };
 
 const SouthIndianChart = ({ chartData, title = "Rasi Chart" }) => {
@@ -49,8 +43,10 @@ const SouthIndianChart = ({ chartData, title = "Rasi Chart" }) => {
                 signContent[sign].push({
                     type: 'Planet',
                     name: planetName,
-                    symbol: PLANET_SYMBOLS[planetName] || planetName.substring(0, 2),
+                    short: PLANET_SHORT[planetName] || planetName.substring(0, 2),
                     retrograde: data.retrograde,
+                    combust: data.combust,
+                    degree: data.degree !== undefined ? data.degree : (data.longitude !== undefined ? data.longitude : 0),
                     details: data
                 });
             }
@@ -58,51 +54,63 @@ const SouthIndianChart = ({ chartData, title = "Rasi Chart" }) => {
     }
 
     return (
-        <div className="w-full aspect-square max-w-lg mx-auto bg-vedic-cream border-2 border-vedic-gold/50 rounded-lg shadow-vedic relative overflow-hidden grid grid-cols-4 grid-rows-4 gap-0">
+        <div className="w-full aspect-square max-w-lg mx-auto bg-vedic-cream border-2 border-vedic-gold/50 rounded-lg shadow-vedic relative overflow-hidden grid grid-cols-4 grid-rows-4 gap-0 p-1">
 
             {/* Render all 12 signs fixed */}
             {Object.entries(HOUSE_POSITIONS).map(([sign, pos]) => (
                 <div
                     key={sign}
-                    className="border border-vedic-gold/20 relative p-1 flex flex-wrap content-start gap-1 hover:bg-white/50 transition-colors"
+                    className="border border-vedic-gold/20 relative p-1.5 flex flex-wrap content-start gap-1 hover:bg-white/50 transition-colors"
                     style={{ gridRow: pos.row, gridColumn: pos.col }}
                 >
-                    {/* Sign Label (Subtle, now dark) */}
-                    <span className="absolute bottom-0 right-1 text-[10px] text-vedic-muted uppercase tracking-widest pointer-events-none opacity-50">
+                    {/* Sign Label (Subtle, bottom right) */}
+                    <span className="absolute bottom-0.5 right-1 text-[9px] text-stone-400 font-bold uppercase tracking-wider pointer-events-none opacity-60">
                         {sign.substring(0, 3)}
                     </span>
 
-                    {/* Planets & Ascendant - Updated colors for light theme */}
+                    {/* Planets & Ascendant - Compact Degree Layout */}
                     {signContent[sign].map((item, idx) => {
-                        const degreeVal = item.details?.degree || item.details?.norm_deg || item.details?.degree_in_sign || item.details?.degree_in_sign_manual || 0;
+                        const degreeVal = item.degree || 0;
+                        const formattedDeg = `${Math.floor(degreeVal)}°${Math.floor((degreeVal % 1) * 60)}'`;
+                        
                         return (
                             <motion.div
-                                key={`${item.name}-${idx}`}
+                                key={`${item.name || 'Asc'}-${idx}`}
                                 initial={{ scale: 0 }}
                                 animate={{ scale: 1 }}
                                 className={classNames(
-                                    "text-[10px] font-bold px-2 py-0.5 rounded-full cursor-help flex items-center justify-center gap-0.5 shadow-sm border transition-shadow hover:shadow-md",
-                                    item.type === 'Asc' ? "bg-vedic-orange text-white border-vedic-orange" : "bg-white text-vedic-blue border-stone-200",
-                                    item.retrograde && "text-red-600 border-red-200"
+                                    "text-[9px] font-extrabold px-1.5 py-0.5 rounded cursor-help flex items-center justify-center gap-0.5 shadow-xs border transition-all hover:shadow-sm",
+                                    item.type === 'Asc' 
+                                        ? "bg-vedic-orange text-white border-vedic-orange ring-1 ring-vedic-orange/20" 
+                                        : "bg-white text-vedic-blue border-stone-200",
+                                    item.retrograde && "text-red-600 border-red-200 bg-red-50/50"
                                 )}
-                                title={item.type === 'Planet' ? `Degree: ${Number(degreeVal).toFixed(2)}°` : 'Ascendant'}
+                                title={item.type === 'Planet' ? `${item.name} in ${sign}: ${formattedDeg}` : 'Ascendant (Lagna)'}
                             >
-                                {item.type === 'Asc' ? 'Lagna' : item.name}
-                                {item.retrograde && <span className="text-[8px] opacity-75 ml-0.5">(R)</span>}
+                                <span>{item.type === 'Asc' ? 'Lagn' : item.short}</span>
+                                {item.retrograde && <span className="text-[7px] text-red-500 font-bold">(R)</span>}
+                                {item.type === 'Planet' && (
+                                    <span className="text-[7px] text-stone-400 font-mono font-normal">
+                                        {Math.floor(degreeVal)}°
+                                    </span>
+                                )}
                             </motion.div>
                         );
                     })}
                 </div>
             ))}
 
-            {/* Center Info Panel - Updated background */}
+            {/* Center Info Panel */}
             <div className="col-start-2 col-span-2 row-start-2 row-span-2 flex flex-col items-center justify-center p-4 text-center border border-vedic-gold/20 bg-white shadow-inner">
-                <div className="w-12 h-12 mb-2 opacity-20">
-                    <img src="https://cdn-icons-png.flaticon.com/512/2857/2857434.png" alt="Om" />
-                    {/* Simple Om icon placeholder or similar */}
+                <div className="w-10 h-10 mb-2 text-vedic-orange opacity-80 flex items-center justify-center">
+                    <svg viewBox="0 0 24 24" className="w-full h-full stroke-current fill-none stroke-[1.5]" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="12" cy="12" r="4" />
+                        <circle cx="12" cy="12" r="8" strokeDasharray="3 3" />
+                        <path d="M12 2v3M12 19v3M2 12h3M19 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1" />
+                    </svg>
                 </div>
-                <h3 className="text-xl font-serif font-bold text-vedic-orange mb-1">{title}</h3>
-                <div className="text-xs text-vedic-muted font-bold">
+                <h3 className="text-lg font-serif font-bold text-vedic-orange leading-tight mb-0.5">{title}</h3>
+                <div className="text-[10px] text-stone-400 font-bold uppercase tracking-wider">
                     South Indian Style<br />
                     Lahiri Ayanamsha
                 </div>
