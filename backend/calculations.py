@@ -1241,7 +1241,7 @@ def compute_chart(year: int, month: int, day: int, hour: int, minute: int, secon
     sun_sid = res_planets.get("Sun", {}).get("lon_sidereal_manual")
     
     nakshatra = compute_nakshatra_pada(moon_sid) if moon_sid else None
-    dasha = compute_vimshottari_timeline(jd_ut, moon_sid, tz_name=tz) if moon_sid else None
+    dasha = compute_vimshottari_timeline(jd_ut, moon_sid) if moon_sid else None
     
     # Calculate Karana, Tithi, Nithya Yoga
     karana_data = None
@@ -1388,10 +1388,178 @@ def compute_chart(year: int, month: int, day: int, hour: int, minute: int, secon
         "sunset": sun_data.get("sunset"),
         "moon_sign": moon_sign,
         "asc_sidereal": asc_sidereal,  # For use by calling code (e.g., lucky factors)
-        "asc_sign": asc_sign  # For use by calling code
+        "asc_sign": asc_sign,  # For use by calling code
+        "mangal_dosha": calculate_mangal_dosha(res_planets, houses_data["whole_sign_houses"], asc_sign)
     }
     _active_tz = None
     return res
+
+
+def calculate_mangal_dosha(planets: Dict[str, Any], whole_sign_houses: Dict[str, Any], asc_sign: str) -> Dict[str, Any]:
+    """
+    Calculate Mangal Dosha (Kuja Dosha) from Lagna, Moon, and Venus reference points.
+    Includes comprehensive exception and cancellation rulesets.
+    """
+    if "Mars" not in planets:
+        return {
+            "has_dosha": False,
+            "verdict": "No Dosha",
+            "details": {},
+            "cancellations_found": []
+        }
+
+    mars_data = planets["Mars"]
+    mars_sign = mars_data.get("sign_manual") or mars_data.get("sign")
+    if not mars_sign:
+        return {
+            "has_dosha": False,
+            "verdict": "No Dosha",
+            "details": {},
+            "cancellations_found": []
+        }
+    
+    # 1. Determine reference points
+    moon_data = planets.get("Moon", {})
+    moon_sign = moon_data.get("sign_manual") or moon_data.get("sign")
+    
+    venus_data = planets.get("Venus", {})
+    venus_sign = venus_data.get("sign_manual") or venus_data.get("sign")
+    
+    references = {
+        "Lagna": asc_sign,
+        "Moon": moon_sign,
+        "Venus": venus_sign
+    }
+    
+    dosha_houses_set = {1, 2, 4, 7, 8, 12}
+    details = {}
+    total_dosha_houses = 0
+    all_cancellations = []
+    
+    for ref_name, ref_sign in references.items():
+        if not ref_sign:
+            details[ref_name] = {
+                "is_present": False,
+                "house": None,
+                "is_cancelled": False,
+                "cancellation_reasons": []
+            }
+            continue
+            
+        try:
+            ref_idx = SIGNS.index(ref_sign)
+            mars_idx = SIGNS.index(mars_sign)
+            mars_house = ((mars_idx - ref_idx) % 12) + 1
+        except Exception:
+            mars_house = 1
+            
+        is_present = mars_house in dosha_houses_set
+        is_cancelled = False
+        reasons = []
+        
+        if is_present:
+            total_dosha_houses += 1
+            
+            # 1. Own Sign placement
+            if mars_sign in ["Aries", "Scorpio"]:
+                is_cancelled = True
+                reasons.append(f"Mars is in its own sign ({mars_sign})")
+                
+            # 2. Exaltation placement
+            elif mars_sign == "Capricorn":
+                is_cancelled = True
+                reasons.append("Mars is in its exaltation sign (Capricorn)")
+                
+            # 3. Yoga Karaka / Friendly sign
+            elif mars_sign in ["Leo", "Cancer"]:
+                is_cancelled = True
+                reasons.append(f"Mars is in an auspicious sign ({mars_sign})")
+                
+            # 4. House-Specific Sign Exceptions
+            if mars_house == 2 and mars_sign in ["Gemini", "Virgo"]:
+                is_cancelled = True
+                reasons.append(f"Mars in 2nd house is in Mercury's sign ({mars_sign})")
+            elif mars_house == 4 and mars_sign in ["Taurus", "Libra"]:
+                is_cancelled = True
+                reasons.append(f"Mars in 4th house is in Venus's sign ({mars_sign})")
+            elif mars_house == 7 and mars_sign in ["Cancer", "Capricorn"]:
+                is_cancelled = True
+                reasons.append(f"Mars in 7th house is cancelled in ({mars_sign})")
+            elif mars_house == 8 and mars_sign in ["Sagittarius", "Pisces"]:
+                is_cancelled = True
+                reasons.append(f"Mars in 8th house is in Jupiter's sign ({mars_sign})")
+            elif mars_house == 12 and mars_sign in ["Taurus", "Libra"]:
+                is_cancelled = True
+                reasons.append(f"Mars in 12th house is in Venus's sign ({mars_sign})")
+                
+            # 5. Conjunction with Jupiter or Moon
+            jupiter_data = planets.get("Jupiter", {})
+            jupiter_sign = jupiter_data.get("sign_manual") or jupiter_data.get("sign")
+            if jupiter_sign == mars_sign:
+                is_cancelled = True
+                reasons.append("Mars is conjunct with Jupiter (Guru)")
+                
+            if moon_sign == mars_sign:
+                is_cancelled = True
+                reasons.append("Mars is conjunct with Chandra (Moon)")
+                
+            # 6. Aspects from Jupiter
+            if jupiter_sign:
+                try:
+                    jup_idx = SIGNS.index(jupiter_sign)
+                    mars_from_jup = ((mars_idx - jup_idx) % 12) + 1
+                    if mars_from_jup in [5, 7, 9]:
+                        is_cancelled = True
+                        reasons.append("Mars is aspected by benefic Jupiter")
+                except Exception:
+                    pass
+            
+            # Aspect from Moon (opposite house)
+            if moon_sign:
+                try:
+                    moon_idx = SIGNS.index(moon_sign)
+                    mars_from_moon = ((mars_idx - moon_idx) % 12) + 1
+                    if mars_from_moon == 7:
+                        is_cancelled = True
+                        reasons.append("Mars is aspected by the Moon from the 7th house")
+                except Exception:
+                    pass
+                    
+        # Append unique reasons to global list
+        for r in reasons:
+            if r not in all_cancellations:
+                all_cancellations.append(r)
+                
+        details[ref_name] = {
+            "is_present": is_present,
+            "house": mars_house,
+            "is_cancelled": is_cancelled,
+            "cancellation_reasons": reasons
+        }
+
+    active_dosha_count = sum(1 for v in details.values() if v["is_present"] and not v["is_cancelled"])
+    
+    if total_dosha_houses == 0:
+        verdict = "No Dosha"
+        has_dosha = False
+    elif active_dosha_count == 0:
+        verdict = "Cancelled"
+        has_dosha = False
+    else:
+        has_dosha = True
+        if active_dosha_count == 1:
+            verdict = "Mild Dosha"
+        elif active_dosha_count == 2:
+            verdict = "Medium Dosha"
+        else:
+            verdict = "High Dosha"
+            
+    return {
+        "has_dosha": has_dosha,
+        "verdict": verdict,
+        "details": details,
+        "cancellations_found": all_cancellations
+    }
 
 
 # ---------------------------

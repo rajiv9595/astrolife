@@ -6,6 +6,7 @@ import SouthIndianChart from '../components/charts/SouthIndianChart';
 import NorthIndianChart from '../components/charts/NorthIndianChart';
 import DashaTimeline from '../components/charts/DashaTimeline';
 import AIAstrologer from '../components/ai/AIAstrologer';
+import MangalDoshaCard from '../components/features/horoscope/MangalDoshaCard';
 import { authService } from '../services/authService';
 import { astroService } from '../services/astroService';
 import { familyService } from '../services/familyService';
@@ -425,6 +426,9 @@ const HoroscopePage = () => {
                                         </table>
                                     </div>
                                 </VedicCard>
+
+                                {/* Mangal Dosha (Kuja Dosha) Card */}
+                                <MangalDoshaCard mangalDosha={chartData.mangal_dosha} />
                             </div>
                         </div>
 
