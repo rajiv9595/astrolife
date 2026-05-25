@@ -1390,7 +1390,6 @@ def compute_chart(year: int, month: int, day: int, hour: int, minute: int, secon
         "asc_sidereal": asc_sidereal,  # For use by calling code (e.g., lucky factors)
         "asc_sign": asc_sign  # For use by calling code
     }
-    global _active_tz
     _active_tz = None
     return res
 
