@@ -68,8 +68,9 @@ const ProfileInput = ({ title, data, setData, icon, color }) => {
         setData(prev => ({
             ...prev,
             lat: place.latitude,
-            lon: place.longitude, // Corrected property name from fetched place
-            location: place.display_name // Use full name
+            lon: place.longitude,
+            location: place.display_name,
+            tz: place.timezone || prev.tz || 'Asia/Kolkata'
         }));
     };
 
@@ -197,7 +198,7 @@ const formatParams = (data) => {
         second: 0,
         lat: parseFloat(data.lat),
         lon: parseFloat(data.lon),
-        tz: 'Asia/Kolkata'
+        tz: data.tz || 'Asia/Kolkata'
     };
 };
 

@@ -77,7 +77,8 @@ const ProfileInfoPage = () => {
             ...prev,
             latitude: place.latitude,
             longitude: place.longitude,
-            location: place.display_name
+            location: place.display_name,
+            timezone: place.timezone || prev.timezone || 'Asia/Kolkata'
         }));
     };
 
