@@ -10,6 +10,9 @@ import MangalDoshaCard from '../components/features/horoscope/MangalDoshaCard';
 import JaiminiCard from '../components/features/horoscope/JaiminiCard';
 import AshtakavargaCard from '../components/features/horoscope/AshtakavargaCard';
 import ShadbalaCard from '../components/features/horoscope/ShadbalaCard';
+import MaitriCard from '../components/features/horoscope/MaitriCard';
+import PanchangaCard from '../components/features/horoscope/PanchangaCard';
+import AdvancedDoshasCard from '../components/features/horoscope/AdvancedDoshasCard';
 import { authService } from '../services/authService';
 import { astroService } from '../services/astroService';
 import { familyService } from '../services/familyService';
@@ -495,9 +498,20 @@ const HoroscopePage = () => {
                                 {/* Mangal Dosha (Kuja Dosha) Card */}
                                 <MangalDoshaCard mangalDosha={chartData.mangal_dosha} />
                                 
+                                {/* Advanced Doshas */}
+                                <AdvancedDoshasCard doshas={chartData.advanced_doshas} />
+                                
                                 {/* Jaimini & Ashtakavarga Advanced Math */}
                                 <JaiminiCard jaimini={chartData.jaimini} />
                                 <AshtakavargaCard ashtakavarga={chartData.ashtakavarga} />
+                                
+                                {/* Maitri Chakra */}
+                                <MaitriCard maitri={chartData.maitri} />
+                                
+                                {/* Advanced Panchanga */}
+                                <PanchangaCard panchanga={chartData.panchanga_advanced} />
+                                
+                                {/* Shadbala */}
                                 <ShadbalaCard shadbala={chartData.shadbala} />
                             </div>
                         </div>

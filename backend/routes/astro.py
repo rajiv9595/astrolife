@@ -11,6 +11,9 @@ from backend.strength_evaluator import calculate_chart_strengths
 from backend.jaimini import compute_jaimini_system
 from backend.ashtakavarga import compute_ashtakavarga
 from backend.shadbala import compute_shadbala
+from backend.maitri import compute_maitri_chakra
+from backend.panchanga_advanced import compute_advanced_panchanga
+from backend.doshas_advanced import compute_advanced_doshas
 
 router = APIRouter()
 
@@ -85,6 +88,17 @@ def compute(
     is_day = 6 <= req.hour < 18
     shadbala_data = compute_shadbala(chart_data["planets"], chart_data["asc_sign"], is_day)
 
+    maitri_data = compute_maitri_chakra(chart_data["planets"])
+    
+    moon_nakshatra = ""
+    if "Moon" in chart_data["planets"]:
+        n_data = chart_data["planets"]["Moon"].get("nakshatra", {})
+        if isinstance(n_data, dict):
+            moon_nakshatra = n_data.get("nakshatra", "")
+    panchanga_advanced_data = compute_advanced_panchanga(chart_data["moon_sign"], moon_nakshatra)
+    
+    advanced_doshas_data = compute_advanced_doshas(chart_data["planets"], chart_data["asc_sign"])
+
     # Return response with all computed data
     return {
         "request": req.dict(),
@@ -111,7 +125,10 @@ def compute(
         "strengths": planet_strengths,
         "jaimini": jaimini_data,
         "ashtakavarga": ashtakavarga_data,
-        "shadbala": shadbala_data
+        "shadbala": shadbala_data,
+        "maitri": maitri_data,
+        "panchanga_advanced": panchanga_advanced_data,
+        "advanced_doshas": advanced_doshas_data
     }
 
 
