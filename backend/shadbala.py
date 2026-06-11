@@ -136,7 +136,7 @@ def compute_shadbala(planets: Dict[str, Dict], asc_sign: str, is_day_birth: bool
             "drig_bala": round(drig_bala, 1),
             "total_virupas": round(total_virupas, 1),
             "total_rupas": total_rupas,
-            "strength_level": "High" if total_rupas >= 6 else ("Medium" if total_rupas >= 4 else "Low")
+            "strength_level": "High" if total_rupas >= 3.8 else ("Medium" if total_rupas >= 3.2 else "Low")
         }
 
     return shadbala_results

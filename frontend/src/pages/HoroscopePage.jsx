@@ -449,7 +449,7 @@ const HoroscopePage = () => {
                                             </thead>
                                             <tbody className="divide-y divide-stone-100">
                                                 {Object.entries(chartData.planets).map(([key, p]) => {
-                                                    const degVal = p.degree !== undefined ? p.degree : (p.longitude !== undefined ? p.longitude : 0);
+                                                    const degVal = p.degree_in_sign_manual !== undefined ? p.degree_in_sign_manual : (p.degree !== undefined ? p.degree : 0);
                                                     const pSign = p.sign_manual || p.sign;
                                                     
                                                     const SIGNS_LIST = [
@@ -477,7 +477,7 @@ const HoroscopePage = () => {
                                                             </td>
                                                             <td className="px-4 py-3 text-stone-600">{pSign}</td>
                                                             <td className="px-4 py-3 text-stone-500 font-mono text-xs">
-                                                                {Math.floor(degVal)}°{Math.floor((degVal % 1) * 60)}'
+                                                                {Math.floor(degVal)}°{Math.round((degVal % 1) * 60)}'
                                                             </td>
                                                             <td className="px-4 py-3 text-stone-600 text-center font-bold text-md">{houseNum || "--"}</td>
                                                             <td className="px-4 py-3 text-stone-500 text-xs">
