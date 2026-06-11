@@ -54,7 +54,7 @@ class AIEngine:
             return self._fallback_response(user_data)
 
     def _fallback_response(self, user_data_str: str) -> str:
-        """
+        """Fallback response."""
         return "I apologize, but I'm having trouble connecting to the cosmic intelligence network regarding Gemini. Please try again in a moment."
 
     def generate_expert_report(self, user_data: str) -> str:
