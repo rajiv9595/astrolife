@@ -123,6 +123,25 @@ def normalize_deg(d):
     return float(d) % 360.0
 
 
+def jd_to_datetime_naive(jd):
+    """Convert Julian Day to naive UTC datetime object."""
+    year, month, day, hour_decimal = swe.revjul(jd, swe.GREG_CAL)
+    hour = int(hour_decimal)
+    min_decimal = (hour_decimal - hour) * 60.0
+    minute = int(min_decimal)
+    sec_decimal = (min_decimal - minute) * 60.0
+    second = int(sec_decimal)
+    
+    if second >= 60: second = 59
+    if minute >= 60: minute = 59
+    if hour >= 24: hour = 23
+    
+    try:
+        return datetime(year, month, day, hour, minute, second)
+    except (ValueError, TypeError):
+        return datetime(1900, 1, 1, 0, 0, 0)
+
+
 def deg_to_sign_and_degree(lon_deg):
     """Convert longitude to sign and degree within sign."""
     lon = normalize_deg(lon_deg)
@@ -280,8 +299,8 @@ def compute_sunrise_sunset(jd_ut: float, lat: float, lon: float, tz_name: str) -
     # But usually UI shows "Sunrise: 06:xx AM" which implies the morning of that calendar date.
     
     # convert jd_ut to local datetime to get the date
-    dt = jd_to_datetime(jd_ut) # this returns UTC datetime from JD?
-    # No, jd_to_datetime returns the datetime corresponding to the JD. JD is UT based.
+    dt = jd_to_datetime_naive(jd_ut) # this returns UTC datetime from JD
+    # No, jd_to_datetime_naive returns the naive datetime corresponding to the JD. JD is UT based.
     # So dt is UTC.
     # We need local date.
     ut_dt = pytz.utc.localize(dt)
@@ -314,8 +333,8 @@ def compute_sunrise_sunset(jd_ut: float, lat: float, lon: float, tz_name: str) -
         jd_set = res_set[1][0]
         
         # Convert JDs to local formatted strings
-        rise_dt = jd_to_datetime(jd_rise).replace(tzinfo=pytz.utc).astimezone(tz)
-        set_dt = jd_to_datetime(jd_set).replace(tzinfo=pytz.utc).astimezone(tz)
+        rise_dt = jd_to_datetime_naive(jd_rise).replace(tzinfo=pytz.utc).astimezone(tz)
+        set_dt = jd_to_datetime_naive(jd_set).replace(tzinfo=pytz.utc).astimezone(tz)
         
         return {
             "sunrise": rise_dt.strftime("%I:%M %p"),
@@ -1016,9 +1035,390 @@ def build_chart_d10(asc_sidereal_deg: float, d1_planets: List[Dict[str, Any]]) -
     }
 
 
+
+# ---------------------------
+# GENERAL VARGA GENERATION (D1 to D60)
+# ---------------------------
+def get_varga_sign(varga_num: int, d1_sign: int, deg_in_sign: float) -> int:
+    """
+    Calculate the sign number (1-12) for a given varga and planet position.
+    d1_sign: 1-12
+    deg_in_sign: 0-30
+    """
+    if varga_num == 1:
+        return d1_sign
+        
+    elif varga_num == 2:  # Hora
+        is_odd = d1_sign % 2 == 1
+        if deg_in_sign < 15.0:
+            return 5 if is_odd else 4  # Sun (Leo) or Moon (Cancer)
+        else:
+            return 4 if is_odd else 5  # Moon (Cancer) or Sun (Leo)
+            
+    elif varga_num == 3:  # Drekkana
+        part = int(deg_in_sign // 10.0)  # 0, 1, 2
+        if part == 0:
+            return d1_sign
+        elif part == 1:
+            return ((d1_sign + 4 - 1) % 12) + 1  # 5th from
+        else:
+            return ((d1_sign + 8 - 1) % 12) + 1  # 9th from
+            
+    elif varga_num == 4:  # Chaturthamsa
+        part = int(deg_in_sign // 7.5)  # 0, 1, 2, 3
+        return ((d1_sign + (part * 3) - 1) % 12) + 1  # 1st, 4th, 7th, 10th from
+        
+    elif varga_num == 7:  # Saptamsa
+        part = int(deg_in_sign / (30.0 / 7.0))  # 0..6
+        start = d1_sign if d1_sign % 2 == 1 else ((d1_sign + 6 - 1) % 12) + 1
+        return ((start - 1 + part) % 12) + 1
+        
+    elif varga_num == 9:  # Navamsa
+        return navamsa_sign_num(d1_sign, deg_in_sign)
+        
+    elif varga_num == 10:  # Dasamsa
+        return dashamsha_sign_num(d1_sign, deg_in_sign)
+        
+    elif varga_num == 12:  # Dwadasamsa
+        part = int(deg_in_sign // 2.5)  # 0..11
+        return ((d1_sign - 1 + part) % 12) + 1
+        
+    elif varga_num == 16:  # Shodasamsa
+        part = int(deg_in_sign / 1.875)  # 0..15
+        is_movable = d1_sign in (1, 4, 7, 10)
+        is_fixed = d1_sign in (2, 5, 8, 11)
+        start = 1 if is_movable else (5 if is_fixed else 9)
+        return ((start - 1 + part) % 12) + 1
+        
+    elif varga_num == 20:  # Vimsamsa
+        part = int(deg_in_sign / 1.5)  # 0..19
+        is_movable = d1_sign in (1, 4, 7, 10)
+        is_fixed = d1_sign in (2, 5, 8, 11)
+        start = 1 if is_movable else (9 if is_fixed else 5)
+        return ((start - 1 + part) % 12) + 1
+        
+    elif varga_num == 24:  # Chaturvimsamsa (Siddhamsa)
+        part = int(deg_in_sign / 1.25)  # 0..23
+        start = 5 if d1_sign % 2 == 1 else 4  # Odd: Leo (5), Even: Cancer (4)
+        return ((start - 1 + part) % 12) + 1
+        
+    elif varga_num == 27:  # Saptavimsamsa (Nakshatramsa)
+        part = int(deg_in_sign / (30.0 / 27.0))  # 0..26
+        element = (d1_sign - 1) % 4  # 0=Fire, 1=Earth, 2=Air, 3=Water
+        start = [1, 4, 7, 10][element]
+        return ((start - 1 + part) % 12) + 1
+        
+    elif varga_num == 30:  # Trimsamsa
+        is_odd = d1_sign % 2 == 1
+        d = deg_in_sign
+        if is_odd:
+            if d < 5.0: return 1  # Mars (Aries)
+            elif d < 10.0: return 11  # Saturn (Aquarius)
+            elif d < 18.0: return 9  # Jupiter (Sagittarius)
+            elif d < 25.0: return 3  # Mercury (Gemini)
+            else: return 2  # Venus (Taurus)
+        else:
+            if d < 5.0: return 2  # Venus (Taurus)
+            elif d < 12.0: return 6  # Mercury (Virgo)
+            elif d < 20.0: return 12  # Jupiter (Pisces)
+            elif d < 25.0: return 10  # Saturn (Capricorn)
+            else: return 8  # Mars (Scorpio)
+            
+    elif varga_num == 40:  # Khavedamsa
+        part = int(deg_in_sign / 0.75)  # 0..39
+        start = 1 if d1_sign % 2 == 1 else 7
+        return ((start - 1 + part) % 12) + 1
+        
+    elif varga_num == 45:  # Akshavedamsa
+        part = int(deg_in_sign / (30.0 / 45.0))  # 0..44
+        is_movable = d1_sign in (1, 4, 7, 10)
+        is_fixed = d1_sign in (2, 5, 8, 11)
+        start = 1 if is_movable else (5 if is_fixed else 9)
+        return ((start - 1 + part) % 12) + 1
+        
+    elif varga_num == 60:  # Shastiamsa
+        part = int(deg_in_sign / 0.5)  # 0..59
+        return ((d1_sign - 1 + part) % 12) + 1
+        
+    return d1_sign
+
+
+def build_chart_varga(varga_num: int, asc_sidereal_deg: float, d1_planets: List[Dict[str, Any]]) -> Dict[str, Any]:
+    """Build any divisional chart structure."""
+    asc_sign_d1 = int(asc_sidereal_deg // 30) + 1
+    if asc_sign_d1 > 12: asc_sign_d1 = 12
+    elif asc_sign_d1 < 1: asc_sign_d1 = 1
+    
+    asc_deg_in_sign = deg_in_sign(asc_sidereal_deg)
+    lagna_sign = get_varga_sign(varga_num, asc_sign_d1, asc_deg_in_sign)
+    
+    ascendant = {
+        "degree": round(asc_sidereal_deg, 4),
+        "sign": SIGNS[lagna_sign - 1],
+        "sign_num": lagna_sign
+    }
+    
+    planets = []
+    for p in d1_planets:
+        lon_sid_used = p.get("lon_sidereal_flag") or p.get("lon_sidereal_manual")
+        if lon_sid_used is None:
+            continue
+            
+        lon = float(lon_sid_used)
+        d1_sign = int(lon // 30) + 1
+        if d1_sign > 12: d1_sign = 12
+        elif d1_sign < 1: d1_sign = 1
+        
+        dins = deg_in_sign(lon)
+        sign_num = get_varga_sign(varga_num, d1_sign, dins)
+        sign_name = SIGNS[sign_num - 1]
+        
+        planets.append({
+            "name": p["name"],
+            "longitude": lon,
+            "sign": sign_name,
+            "sign_num": sign_num,
+            "retro": bool(p.get("retrograde", False)),
+            "combust": bool(p.get("combust", False)),
+            "debilitated": is_debilitated(p["name"], sign_name),
+            "exalted": is_exalted(p["name"], sign_name)
+        })
+        
+    houses = whole_sign_houses_from(lagna_sign)
+    houses_signs = [
+        {"house": h["house"], "sign": h["sign"], "sign_num": h["sign_num"]}
+        for h in houses
+    ]
+    
+    varga_data = {}
+    for p in planets:
+        varga_data[p["name"]] = {
+            f"d{varga_num}_sign": p["sign"],
+            f"d{varga_num}_sign_num": p["sign_num"],
+            f"d{varga_num}_longitude": p["longitude"],
+            "retrograde": p["retro"],
+            "combust": p["combust"],
+            "debilitated": p["debilitated"],
+            "exalted": p["exalted"]
+        }
+    
+    varga_data["_ascendant"] = ascendant
+    varga_data["_houses"] = houses
+    varga_data["_houses_signs"] = houses_signs
+    varga_data["planets"] = planets  # Expose list form too
+    
+    return varga_data
+
+
+# ---------------------------
+# SUNRISE, SUNSET, MAANDI & GULIKA CALCULATIONS
+# ---------------------------
+def compute_sunrise_sunset_internal(jd_start: float, lat: float, lon: float) -> Dict[str, float]:
+    """Calculate Sunrise and Sunset JDs for the day beginning at jd_start."""
+    swe.set_topo(lon, lat, 0)
+    flags = swe.FLG_SWIEPH
+    try:
+        res_rise = swe.rise_trans(jd_start, swe.SUN, swe.CALC_RISE, (lon, lat, 0), 0, 0, flags)
+        jd_rise = res_rise[1][0]
+        res_set = swe.rise_trans(jd_start, swe.SUN, swe.CALC_SET, (lon, lat, 0), 0, 0, flags)
+        jd_set = res_set[1][0]
+        return {"sunrise_jd": jd_rise, "sunset_jd": jd_set}
+    except Exception as e:
+        print(f"Error in compute_sunrise_sunset_internal: {e}")
+        return {"sunrise_jd": jd_start + 0.25, "sunset_jd": jd_start + 0.75}
+
+
+def calculate_maandi_and_gulika_positions(jd_birth: float, lat: float, lon: float, tz_name: str, ay: float) -> Dict[str, Dict[str, Any]]:
+    """
+    Calculate the positions of Maandi and Gulika.
+    Based on standard division of dinamana/ratrimana into 8 equal parts.
+    """
+    dt_utc = jd_to_datetime_naive(jd_birth)
+    
+    # Get local birth date timezone aware
+    tz = pytz.timezone(tz_name)
+    ut_dt = pytz.utc.localize(dt_utc)
+    local_dt = ut_dt.astimezone(tz)
+    
+    # Local Midnight start
+    midnight_local = local_dt.replace(hour=0, minute=0, second=0, microsecond=0)
+    midnight_utc = midnight_local.astimezone(pytz.utc)
+    ut_dec = midnight_utc.hour + midnight_utc.minute/60.0 + midnight_utc.second/3600.0
+    jd_start = swe.julday(midnight_utc.year, midnight_utc.month, midnight_utc.day, ut_dec, swe.GREG_CAL)
+    
+    today_sun = compute_sunrise_sunset_internal(jd_start, lat, lon)
+    sunrise_jd = today_sun["sunrise_jd"]
+    sunset_jd = today_sun["sunset_jd"]
+    
+    is_day = sunrise_jd <= jd_birth < sunset_jd
+    cal_weekday = local_dt.weekday()  # 0=Monday, 6=Sunday
+    
+    # If birth is before sunrise, the weekday is the previous day
+    if jd_birth < sunrise_jd:
+        vedic_weekday = (cal_weekday - 1) % 7
+    else:
+        vedic_weekday = cal_weekday
+        
+    if is_day:
+        duration = sunset_jd - sunrise_jd
+        start_jd = sunrise_jd
+        day_parts = {
+            0: 6,  # Monday -> 6th part
+            1: 5,  # Tuesday -> 5th part
+            2: 4,  # Wednesday -> 4th part
+            3: 3,  # Thursday -> 3rd part
+            4: 2,  # Friday -> 2nd part
+            5: 1,  # Saturday -> 1st part
+            6: 7   # Sunday -> 7th part
+        }
+        part_idx = day_parts[vedic_weekday]
+    else:
+        # Night birth
+        if jd_birth >= sunset_jd:
+            start_jd = sunset_jd
+            tomorrow_start_jd = jd_start + 1.0
+            tomorrow_sun = compute_sunrise_sunset_internal(tomorrow_start_jd, lat, lon)
+            end_jd = tomorrow_sun["sunrise_jd"]
+        else:
+            end_jd = sunrise_jd
+            yesterday_start_jd = jd_start - 1.0
+            yesterday_sun = compute_sunrise_sunset_internal(yesterday_start_jd, lat, lon)
+            start_jd = yesterday_sun["sunset_jd"]
+            
+        duration = end_jd - start_jd
+        night_parts = {
+            0: 2,  # Monday -> 2nd part
+            1: 1,  # Tuesday -> 1st part
+            2: 7,  # Wednesday -> 7th part
+            3: 6,  # Thursday -> 6th part
+            4: 5,  # Friday -> 5th part
+            5: 4,  # Saturday -> 4th part
+            6: 3   # Sunday -> 3rd part
+        }
+        part_idx = night_parts[vedic_weekday]
+        
+    # Gulika is at the beginning of the Saturn portion
+    # Maandi is at the middle of the Saturn portion
+    gulika_jd = start_jd + (part_idx - 1) * (duration / 8.0)
+    maandi_jd = start_jd + (part_idx - 0.5) * (duration / 8.0)
+    
+    def get_ascendant_at_jd(target_jd):
+        cusps, ascmc = swe.houses(target_jd, lat, lon, b'P')
+        asc_trop = float(ascmc[0])
+        ay_target = swe.get_ayanamsa_ut(target_jd)
+        asc_sid = normalize_deg(asc_trop - ay_target)
+        sign, deg = deg_to_sign_and_degree(asc_sid)
+        return asc_sid, sign, deg
+        
+    gulika_sid, gulika_sign, gulika_deg = get_ascendant_at_jd(gulika_jd)
+    maandi_sid, maandi_sign, maandi_deg = get_ascendant_at_jd(maandi_jd)
+    
+    return {
+        "Gulika": {
+            "lon_tropical": gulika_sid + ay,
+            "speed_lon": 0.0,
+            "retrograde": False,
+            "combust": False,
+            "lon_sidereal_manual": gulika_sid,
+            "lon_sidereal_flag": gulika_sid,
+            "chosen_sidereal": gulika_sid,
+            "sign_manual": gulika_sign,
+            "degree_in_sign_manual": gulika_deg,
+            "sign_flag": gulika_sign,
+            "degree_in_sign_flag": gulika_deg,
+            "debilitated": False,
+            "exalted": False
+        },
+        "Maandi": {
+            "lon_tropical": maandi_sid + ay,
+            "speed_lon": 0.0,
+            "retrograde": False,
+            "combust": False,
+            "lon_sidereal_manual": maandi_sid,
+            "lon_sidereal_flag": maandi_sid,
+            "chosen_sidereal": maandi_sid,
+            "sign_manual": maandi_sign,
+            "degree_in_sign_manual": maandi_deg,
+            "sign_flag": maandi_sign,
+            "degree_in_sign_flag": maandi_deg,
+            "debilitated": False,
+            "exalted": False
+        }
+    }
+
+
+# ---------------------------
+# GRAHA ASPECTS (DRISHTI) CALCULATIONS
+# ---------------------------
+def calculate_aspects_data(planets: Dict[str, Any], asc_sign: str) -> Dict[str, Any]:
+    """
+    Calculate Graha aspects (Drishti) for each planet and house.
+    """
+    planet_houses = {}
+    house_planets = {i: [] for i in range(1, 13)}
+    
+    try:
+        asc_idx = SIGNS.index(asc_sign)
+    except ValueError:
+        return {"planet_aspects": {}, "house_aspects": {}, "planet_aspected_by": {}}
+        
+    for p_name, p_data in planets.items():
+        if p_name in ["Sun", "Moon", "Mars", "Mercury", "Jupiter", "Venus", "Saturn", "Rahu", "Ketu", "Maandi", "Gulika"]:
+            sign = p_data.get("sign_manual") or p_data.get("sign") or p_data.get("sign_flag")
+            if sign:
+                try:
+                    sign_idx = SIGNS.index(sign)
+                    house = ((sign_idx - asc_idx) % 12) + 1
+                    planet_houses[p_name] = house
+                    house_planets[house].append(p_name)
+                except ValueError:
+                    pass
+
+    planet_aspects = {}
+    house_aspects = {i: [] for i in range(1, 13)}
+    planet_aspected_by = {p: [] for p in planet_houses}
+
+    for p_name, house in planet_houses.items():
+        # Standard aspect is 7th house
+        aspected_houses = [((house + 7 - 1) % 12) + 1]
+        
+        # Special aspects
+        if p_name == "Mars":
+            aspected_houses.extend([((house + 4 - 1) % 12) + 1, ((house + 8 - 1) % 12) + 1])
+        elif p_name in ["Jupiter", "Rahu", "Ketu"]:
+            aspected_houses.extend([((house + 5 - 1) % 12) + 1, ((house + 9 - 1) % 12) + 1])
+        elif p_name == "Saturn":
+            aspected_houses.extend([((house + 3 - 1) % 12) + 1, ((house + 10 - 1) % 12) + 1])
+            
+        aspected_houses = sorted(list(set(aspected_houses)))
+        
+        aspected_planets = []
+        for h in aspected_houses:
+            aspected_planets.extend(house_planets[h])
+            if p_name not in house_aspects[h]:
+                house_aspects[h].append(p_name)
+                
+        planet_aspects[p_name] = {
+            "house": house,
+            "aspected_houses": aspected_houses,
+            "aspected_planets": aspected_planets
+        }
+        
+        for ap in aspected_planets:
+            if ap != p_name:
+                planet_aspected_by[ap].append(p_name)
+                
+    return {
+        "planet_aspects": planet_aspects,
+        "house_aspects": house_aspects,
+        "planet_aspected_by": planet_aspected_by
+    }
+
+
 # ---------------------------
 # PLANET CALCULATIONS
 # ---------------------------
+
 def calculate_planets(jd_ut: float, ay: float, planets: List[str], topo_lon: float = 0.0, 
                       topo_lat: float = 0.0, topo_alt: float = 0.0) -> Dict[str, Any]:
     """Calculate positions for all requested planets."""
@@ -1207,9 +1607,6 @@ def compute_chart(year: int, month: int, day: int, hour: int, minute: int, secon
                   topo_alt: float = 0.0) -> Dict[str, Any]:
     """
     Compute complete astrological chart including planets, houses, dasha, etc.
-    
-    Returns:
-        Dictionary containing all chart data including planets, houses, d9, dasha, etc.
     """
     global _active_tz
     _active_tz = tz
@@ -1228,9 +1625,17 @@ def compute_chart(year: int, month: int, day: int, hour: int, minute: int, secon
         "Jupiter", "Saturn", "Rahu", "Ketu"
     ]
     
-    # Calculate planets
+    # Calculate standard planets
     res_planets = calculate_planets(jd_ut, ay, planets, lon, lat, topo_alt)
     
+    # Calculate Maandi and Gulika positions
+    try:
+        mg_positions = calculate_maandi_and_gulika_positions(jd_ut, lat, lon, tz, ay)
+        res_planets["Gulika"] = mg_positions["Gulika"]
+        res_planets["Maandi"] = mg_positions["Maandi"]
+    except Exception as e:
+        print(f"Error calculating Maandi and Gulika: {e}")
+        
     # Calculate houses and ascendant
     houses_data = calculate_houses(jd_ut, lat, lon, ay)
     asc_sidereal = houses_data["asc_sidereal"]
@@ -1243,7 +1648,6 @@ def compute_chart(year: int, month: int, day: int, hour: int, minute: int, secon
     nakshatra = compute_nakshatra_pada(moon_sid) if moon_sid else None
     dasha = compute_vimshottari_timeline(jd_ut, moon_sid) if moon_sid else None
     
-    # Calculate Karana, Tithi, Nithya Yoga
     karana_data = None
     tithi_data = None
     yoga_data = None
@@ -1261,7 +1665,7 @@ def compute_chart(year: int, month: int, day: int, hour: int, minute: int, secon
     if moon_sid is not None:
         moon_sign, moon_deg = deg_to_sign_and_degree(moon_sid)
 
-    # D9 chart calculation
+    # Prepare list form of planets for varga calculations
     d1_planets_list = []
     for name, pdata in res_planets.items():
         lon_sid_used = pdata.get("lon_sidereal_flag") or pdata.get("lon_sidereal_manual")
@@ -1273,102 +1677,68 @@ def compute_chart(year: int, month: int, day: int, hour: int, minute: int, secon
                 "retrograde": pdata.get("retrograde", False),
                 "combust": pdata.get("combust", False)
             })
+            
+    # Calculate all 16 divisional charts
+    vargas_list = [1, 2, 3, 4, 7, 9, 10, 12, 16, 20, 24, 27, 30, 40, 45, 60]
+    vargas = {}
+    for v_num in vargas_list:
+        vargas[f"d{v_num}"] = build_chart_varga(v_num, asc_sidereal, d1_planets_list)
+        
+    # Maintain root-level d9 and d10 for backwards compatibility
+    d9 = vargas["d9"]
+    d10 = vargas["d10"]
     
-    # Build complete D9 chart structure
-    d9_chart = build_chart_d9(asc_sidereal, d1_planets_list)
-    
-    # Transform to current API format for backward compatibility
-    d9 = {}
-    for p in d9_chart["planets"]:
-        planet_name = p["name"]
-        d9[planet_name] = {
-            "d9_sign": p["sign"],
-            "d9_sign_num": p["sign_num"],
-            "d9_longitude": p["longitude"],
-            "retrograde": p.get("retro", False),
-            "combust": p.get("combust", False),
-            "debilitated": p.get("debilitated", False),
-            "exalted": p.get("exalted", False)
-        }
-    
-    # Add D9 ascendant and houses (new fields for future frontend use)
-    d9["_ascendant"] = d9_chart["ascendant"]
-    d9["_houses"] = d9_chart["houses"]
-    d9["_houses_signs"] = d9_chart["houses_signs"]
-    
-    # D10 chart calculation
-    d10_chart = build_chart_d10(asc_sidereal, d1_planets_list)
-    
-    # Transform to current API format for backward compatibility
-    d10 = {}
-    for p in d10_chart["planets"]:
-        planet_name = p["name"]
-        d10[planet_name] = {
-            "d10_sign": p["sign"],
-            "d10_sign_num": p["sign_num"],
-            "d10_longitude": p["longitude"],
-            "retrograde": p.get("retro", False),
-            "combust": p.get("combust", False),
-            "debilitated": p.get("debilitated", False),
-            "exalted": p.get("exalted", False)
-        }
-    
-    # Add D10 ascendant and houses (new fields for future frontend use)
-    d10["_ascendant"] = d10_chart["ascendant"]
-    d10["_houses"] = d10_chart["houses"]
-    d10["_houses_signs"] = d10_chart["houses_signs"]
-    
-    # Add nakshatra, sign lord, and d9 info for each planet
+    # Add nakshatra, sign lord, varga info for each planet
     for planet_name, planet_data in res_planets.items():
-        if planet_data.get("lon_sidereal_manual"):
+        if planet_data.get("lon_sidereal_manual") is not None:
             lon_sid = planet_data["lon_sidereal_manual"]
-            # Calculate nakshatra for this planet
             nak_data = compute_nakshatra_pada(lon_sid)
             planet_data["nakshatra"] = nak_data
+            planet_data["star_lord"] = nak_data["lord"]
             
-            # Add sign lord for D1 sign
             sign_d1 = planet_data.get("sign_manual")
             if sign_d1:
                 planet_data["sign_lord"] = SIGN_LORDS_MAP.get(sign_d1, "")
-        
-        # Add D9 sign and its lord
+                
+        # Link sign and sign lord details for D9 and D10
         if planet_name in d9:
             d9_sign = d9[planet_name].get("d9_sign")
             if d9_sign:
                 planet_data["d9_sign"] = d9_sign
                 planet_data["d9_sign_lord"] = SIGN_LORDS_MAP.get(d9_sign, "")
-        
-        # Add D10 sign and its lord
         if planet_name in d10:
             d10_sign = d10[planet_name].get("d10_sign")
             if d10_sign:
                 planet_data["d10_sign"] = d10_sign
                 planet_data["d10_sign_lord"] = SIGN_LORDS_MAP.get(d10_sign, "")
-    
-    # Add nakshatra and sign lord for ascendant
+
+    # Add nakshatra, sign lord, star lord for Ascendant
     asc_nakshatra = None
     asc_sign_lord = None
-    if asc_sidereal:
+    if asc_sidereal is not None:
         asc_nakshatra = compute_nakshatra_pada(asc_sidereal)
         asc_sign_lord = SIGN_LORDS_MAP.get(asc_sign, "")
-    
-    # Add ascendant info with nakshatra and sign lord
+        
     ascendant_data = houses_data["ascendant"].copy()
     if asc_nakshatra:
         ascendant_data["nakshatra"] = asc_nakshatra
+        ascendant_data["star_lord"] = asc_nakshatra["lord"]
     if asc_sign_lord:
         ascendant_data["sign_lord"] = asc_sign_lord
+        
     if d9.get("_ascendant"):
         asc_d9_sign = d9["_ascendant"].get("sign")
         if asc_d9_sign:
             ascendant_data["d9_sign"] = asc_d9_sign
             ascendant_data["d9_sign_lord"] = SIGN_LORDS_MAP.get(asc_d9_sign, "")
-    
+            
     if d10.get("_ascendant"):
         asc_d10_sign = d10["_ascendant"].get("sign")
         if asc_d10_sign:
             ascendant_data["d10_sign"] = asc_d10_sign
             ascendant_data["d10_sign_lord"] = SIGN_LORDS_MAP.get(asc_d10_sign, "")
+            
+    aspects_data = calculate_aspects_data(res_planets, asc_sign)
     
     res = {
         "jd_ut": jd_ut,
@@ -1379,6 +1749,8 @@ def compute_chart(year: int, month: int, day: int, hour: int, minute: int, secon
         "whole_sign_houses": houses_data["whole_sign_houses"],
         "d9": d9,
         "d10": d10,
+        "vargas": vargas,
+        "aspects": aspects_data,
         "vimshottari": dasha,
         "nakshatra_of_moon": nakshatra,
         "karana": karana_data,
@@ -1387,10 +1759,11 @@ def compute_chart(year: int, month: int, day: int, hour: int, minute: int, secon
         "sunrise": sun_data.get("sunrise"),
         "sunset": sun_data.get("sunset"),
         "moon_sign": moon_sign,
-        "asc_sidereal": asc_sidereal,  # For use by calling code (e.g., lucky factors)
-        "asc_sign": asc_sign,  # For use by calling code
+        "asc_sidereal": asc_sidereal,
+        "asc_sign": asc_sign,
         "mangal_dosha": calculate_mangal_dosha(res_planets, houses_data["whole_sign_houses"], asc_sign)
     }
+    
     _active_tz = None
     return res
 

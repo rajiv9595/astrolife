@@ -180,6 +180,15 @@ def signup(request: SignUpRequest, db: Session = Depends(get_db)):
     except Exception as e:
         # Rollback on error
         db.rollback()
+        
+        # Intercept database unique constraint race conditions and convert to clean 400 Bad Request
+        err_str = str(e)
+        if "UniqueViolation" in err_str or "unique constraint" in err_str.lower() or "ix_users_email" in err_str:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Email already registered. Please login instead."
+            )
+            
         # Log the error for debugging
         import traceback
         print(f"Signup error: {str(e)}")

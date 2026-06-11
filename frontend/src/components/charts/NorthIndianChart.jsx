@@ -14,7 +14,8 @@ const SIGNS_NUM = {
 
 const PLANET_SHORT = {
     "Sun": "Su", "Moon": "Mo", "Mars": "Ma", "Mercury": "Me",
-    "Jupiter": "Ju", "Venus": "Ve", "Saturn": "Sa", "Rahu": "Ra", "Ketu": "Ke"
+    "Jupiter": "Ju", "Venus": "Ve", "Saturn": "Sa", "Rahu": "Ra", "Ketu": "Ke",
+    "Maandi": "Mn", "Gulika": "Gu"
 };
 
 const NorthIndianChart = ({ chartData, title = "Rasi Chart (North Indian)" }) => {

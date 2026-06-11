@@ -22,7 +22,8 @@ const HOUSE_POSITIONS = {
 
 const PLANET_SHORT = {
     "Sun": "Su", "Moon": "Mo", "Mars": "Ma", "Mercury": "Me",
-    "Jupiter": "Ju", "Venus": "Ve", "Saturn": "Sa", "Rahu": "Ra", "Ketu": "Ke"
+    "Jupiter": "Ju", "Venus": "Ve", "Saturn": "Sa", "Rahu": "Ra", "Ketu": "Ke",
+    "Maandi": "Mn", "Gulika": "Gu"
 };
 
 const SouthIndianChart = ({ chartData, title = "Rasi Chart" }) => {

@@ -87,6 +87,10 @@ const SignupForm = ({ isEmbedded = false, isGuest = false }) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        if (!formData.latitude || !formData.longitude) {
+            toast.error("Please select a location from the dropdown suggestions list.");
+            return;
+        }
         setLoading(true);
         try {
             await authService.signup(formData);
@@ -160,7 +164,7 @@ const SignupForm = ({ isEmbedded = false, isGuest = false }) => {
                     </div>
                 </div>
 
-                <VedicButton type="submit" variant="primary" className="w-full !py-4 text-lg shadow-lg">
+                <VedicButton type="submit" variant="primary" disabled={loading} className="w-full !py-4 text-lg shadow-lg">
                     {loading ? 'Calculating...' : (isGuest ? 'Get Free Kundli' : 'Register & Get Kundli')}
                 </VedicButton>
             </form>
@@ -196,7 +200,7 @@ const SignupForm = ({ isEmbedded = false, isGuest = false }) => {
                         onLocationSelect={handleLocationSelect}
                     />
                 </div>
-                <VedicButton type="submit" variant="primary">Register</VedicButton>
+                <VedicButton type="submit" variant="primary" disabled={loading}>Register</VedicButton>
 
                 <div className="mt-4">
                     <div className="relative flex items-center justify-center mb-4">

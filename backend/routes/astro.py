@@ -85,6 +85,8 @@ def compute(
         "whole_sign_houses": chart_data["whole_sign_houses"],
         "d9": chart_data["d9"],
         "d10": chart_data.get("d10", {}),
+        "vargas": chart_data.get("vargas", {}),
+        "aspects": chart_data.get("aspects", {}),
         "vimshottari": chart_data["vimshottari"],
         "nakshatra_of_moon": chart_data["nakshatra_of_moon"],
         "karana": chart_data["karana"],

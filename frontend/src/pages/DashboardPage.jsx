@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import Navbar from '../components/ui/Navbar';
 import VedicCard from '../components/ui/VedicCard';
 import SouthIndianChart from '../components/charts/SouthIndianChart';
+import NorthIndianChart from '../components/charts/NorthIndianChart';
 import DashaTimeline from '../components/charts/DashaTimeline';
 import AIAstrologer from '../components/ai/AIAstrologer';
 import { authService } from '../services/authService';
@@ -16,6 +17,7 @@ const DashboardPage = () => {
     const [chartData, setChartData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [activeChart, setActiveChart] = useState('D1'); // D1, D9, D10
+    const [chartStyle, setChartStyle] = useState('south'); // 'south' or 'north'
 
     useEffect(() => {
         const fetchData = async () => {
@@ -107,23 +109,47 @@ const DashboardPage = () => {
 
                     {/* Chart Visualizer */}
                     <div className="lg:col-span-2 flex flex-col">
-                        <div className="flex gap-2 mb-6 bg-white p-2 rounded-lg shadow-sm w-fit mx-auto lg:mx-0 border border-stone-100">
-                            {['D1', 'D9', 'D10'].map(type => (
+                        <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mb-6">
+                            <div className="flex gap-2 bg-white p-2 rounded-lg shadow-sm w-fit border border-stone-100">
+                                {['D1', 'D9', 'D10'].map(type => (
+                                    <button
+                                        key={type}
+                                        onClick={() => setActiveChart(type)}
+                                        className={`px-6 py-2 rounded-md text-sm font-bold transition-colors ${activeChart === type ? 'bg-vedic-orange text-white shadow-md' : 'text-stone-500 hover:text-vedic-blue hover:bg-stone-50'}`}
+                                    >
+                                        {type === 'D1' ? 'Lagna (D1)' : type === 'D9' ? 'Navamsa (D9)' : 'Dashamsha (D10)'}
+                                    </button>
+                                ))}
+                            </div>
+                            
+                            <div className="flex gap-2 bg-white p-1 rounded-lg w-fit border border-stone-100 shadow-xs">
                                 <button
-                                    key={type}
-                                    onClick={() => setActiveChart(type)}
-                                    className={`px-6 py-2 rounded-md text-sm font-bold transition-colors ${activeChart === type ? 'bg-vedic-orange text-white shadow-md' : 'text-stone-500 hover:text-vedic-blue hover:bg-stone-50'}`}
+                                    onClick={() => setChartStyle('south')}
+                                    className={`px-3 py-1.5 rounded-md text-xs font-bold transition-colors ${chartStyle === 'south' ? 'bg-vedic-orange text-white shadow-sm font-extrabold' : 'text-stone-500 hover:bg-stone-50'}`}
                                 >
-                                    {type === 'D1' ? 'Lagna (D1)' : type === 'D9' ? 'Navamsa (D9)' : 'Dashamsha (D10)'}
+                                    South Indian
                                 </button>
-                            ))}
+                                <button
+                                    onClick={() => setChartStyle('north')}
+                                    className={`px-3 py-1.5 rounded-md text-xs font-bold transition-colors ${chartStyle === 'north' ? 'bg-vedic-orange text-white shadow-sm font-extrabold' : 'text-stone-500 hover:bg-stone-50'}`}
+                                >
+                                    North Indian
+                                </button>
+                            </div>
                         </div>
 
                         <VedicCard className="p-4 sm:p-8 flex-1 flex items-center justify-center bg-white border-2 border-vedic-gold/20">
-                            <SouthIndianChart
-                                chartData={getChartDataByType(chartData, activeChart)}
-                                title={activeChart === 'D1' ? 'Janma Kundli (D1)' : activeChart === 'D9' ? 'Navamsa Chart (D9)' : 'Dashamsha Chart (D10)'}
-                            />
+                            {chartStyle === 'south' ? (
+                                <SouthIndianChart
+                                    chartData={getChartDataByType(chartData, activeChart)}
+                                    title={activeChart === 'D1' ? 'Janma Kundli (D1)' : activeChart === 'D9' ? 'Navamsa Chart (D9)' : 'Dashamsha Chart (D10)'}
+                                />
+                            ) : (
+                                <NorthIndianChart
+                                    chartData={getChartDataByType(chartData, activeChart)}
+                                    title={activeChart === 'D1' ? 'Janma Kundli (D1)' : activeChart === 'D9' ? 'Navamsa Chart (D9)' : 'Dashamsha Chart (D10)'}
+                                />
+                            )}
                         </VedicCard>
                     </div>
 
@@ -199,46 +225,28 @@ const getActiveDasha = (vim) => {
 
 const getChartDataByType = (fullData, type) => {
     if (!fullData) return {};
-    // D1 is the main data
-    if (type === 'D1') return fullData;
-
-    // D9 and D10 have specific structures in backend response
-    if (type === 'D9' && fullData.d9) {
-        // Backend returns simplified d9 object { Planet: { d9_sign: ... } }
-        // We need to transform it to match SouthIndianChart expected format { planets: { Name: { sign_manual: ... } } }
+    const vKey = type.toLowerCase();
+    if (fullData.vargas && fullData.vargas[vKey]) {
+        const vData = fullData.vargas[vKey];
         const transformedPlanets = {};
-        Object.entries(fullData.d9).forEach(([name, data]) => {
-            if (name.startsWith('_')) return; // Skip metadata like _ascendant
-            transformedPlanets[name] = {
-                ...data,
-                sign_manual: data.d9_sign,
-                degree: data.d9_longitude
+        Object.entries(vData).forEach(([name, data]) => {
+            if (name.startsWith('_') || name === 'planets') return;
+            transformedPlanets[name] = { 
+                ...data, 
+                sign_manual: data[`${vKey}_sign`], 
+                degree: data[`${vKey}_longitude`] 
             };
         });
-        return {
-            ...fullData,
-            planets: transformedPlanets,
-            ascendant: fullData.d9._ascendant || { sign: 'Aries' } // Fallback
+        return { 
+            ...fullData, 
+            planets: transformedPlanets, 
+            ascendant: vData._ascendant || { sign: 'Aries' },
+            whole_sign_houses: vData._houses ? vData._houses.reduce((acc, h) => {
+                acc[`house_${h.house}`] = { sign: h.sign, start_deg_sidereal: (h.sign_num - 1) * 30.0, end_deg_sidereal: h.sign_num * 30.0 };
+                return acc;
+            }, {}) : fullData.whole_sign_houses
         };
     }
-
-    if (type === 'D10' && fullData.d10) {
-        const transformedPlanets = {};
-        Object.entries(fullData.d10).forEach(([name, data]) => {
-            if (name.startsWith('_')) return;
-            transformedPlanets[name] = {
-                ...data,
-                sign_manual: data.d10_sign,
-                degree: data.d10_longitude
-            };
-        });
-        return {
-            ...fullData,
-            planets: transformedPlanets,
-            ascendant: fullData.d10._ascendant || { sign: 'Aries' }
-        };
-    }
-
     return fullData;
 };
 

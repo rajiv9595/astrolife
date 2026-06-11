@@ -179,22 +179,27 @@ const HoroscopePage = () => {
 
     const getChartDataByType = (fullData, type) => {
         if (!fullData) return {};
-        if (type === 'D1') return fullData;
-        if (type === 'D9' && fullData.d9) {
+        const vKey = type.toLowerCase();
+        if (fullData.vargas && fullData.vargas[vKey]) {
+            const vData = fullData.vargas[vKey];
             const transformedPlanets = {};
-            Object.entries(fullData.d9).forEach(([name, data]) => {
-                if (name.startsWith('_')) return;
-                transformedPlanets[name] = { ...data, sign_manual: data.d9_sign, degree: data.d9_longitude };
+            Object.entries(vData).forEach(([name, data]) => {
+                if (name.startsWith('_') || name === 'planets') return;
+                transformedPlanets[name] = { 
+                    ...data, 
+                    sign_manual: data[`${vKey}_sign`], 
+                    degree: data[`${vKey}_longitude`] 
+                };
             });
-            return { ...fullData, planets: transformedPlanets, ascendant: fullData.d9._ascendant || { sign: 'Aries' } };
-        }
-        if (type === 'D10' && fullData.d10) {
-            const transformedPlanets = {};
-            Object.entries(fullData.d10).forEach(([name, data]) => {
-                if (name.startsWith('_')) return;
-                transformedPlanets[name] = { ...data, sign_manual: data.d10_sign, degree: data.d10_longitude };
-            });
-            return { ...fullData, planets: transformedPlanets, ascendant: fullData.d10._ascendant || { sign: 'Aries' } };
+            return { 
+                ...fullData, 
+                planets: transformedPlanets, 
+                ascendant: vData._ascendant || { sign: 'Aries' },
+                whole_sign_houses: vData._houses ? vData._houses.reduce((acc, h) => {
+                    acc[`house_${h.house}`] = { sign: h.sign, start_deg_sidereal: (h.sign_num - 1) * 30.0, end_deg_sidereal: h.sign_num * 30.0 };
+                    return acc;
+                }, {}) : fullData.whole_sign_houses
+            };
         }
         return fullData;
     };
@@ -346,17 +351,46 @@ const HoroscopePage = () => {
                             {/* Charts Visualization */}
                             <div className="lg:col-span-2 flex flex-col gap-6">
                                 <div className="flex justify-between items-center flex-wrap gap-4">
-                                    {/* D1 / D9 / D10 Selector */}
-                                    <div className="flex gap-2 bg-white p-1 rounded-lg w-fit border border-stone-100 shadow-xs">
-                                        {['D1', 'D9', 'D10'].map(type => (
-                                            <button
-                                                key={type}
-                                                onClick={() => setActiveChart(type)}
-                                                className={`px-4 py-1.5 rounded-md text-xs font-bold transition-colors ${activeChart === type ? 'bg-vedic-blue text-white shadow-sm' : 'text-stone-500 hover:bg-stone-50'}`}
+                                    {/* D1 / D9 / D10 / Vargas Selector */}
+                                    <div className="flex gap-2 items-center flex-wrap">
+                                        <div className="flex gap-1 bg-white p-1 rounded-lg border border-stone-100 shadow-xs">
+                                            {['D1', 'D9', 'D10'].map(type => (
+                                                <button
+                                                    key={type}
+                                                    onClick={() => setActiveChart(type)}
+                                                    className={`px-4 py-1.5 rounded-md text-xs font-bold transition-colors ${activeChart === type ? 'bg-vedic-blue text-white shadow-sm' : 'text-stone-500 hover:bg-stone-50'}`}
+                                                >
+                                                    {type} Chart
+                                                </button>
+                                            ))}
+                                        </div>
+
+                                        <div className="relative">
+                                            <select
+                                                value={['D1', 'D9', 'D10'].includes(activeChart) ? '' : activeChart}
+                                                onChange={(e) => { if (e.target.value) setActiveChart(e.target.value); }}
+                                                className="bg-white border border-stone-200 rounded-lg px-3 py-1.5 text-xs font-bold text-stone-600 focus:outline-none focus:border-vedic-orange hover:border-stone-300 transition-colors"
                                             >
-                                                {type} Chart
-                                            </button>
-                                        ))}
+                                                <option value="" disabled>Other Vargas...</option>
+                                                {[
+                                                    { key: 'D2', label: 'D2 - Hora (Wealth)' },
+                                                    { key: 'D3', label: 'D3 - Drekkana (Siblings)' },
+                                                    { key: 'D4', label: 'D4 - Chaturthamsa (Property)' },
+                                                    { key: 'D7', label: 'D7 - Saptamsa (Children)' },
+                                                    { key: 'D12', label: 'D12 - Dwadasamsa (Parents)' },
+                                                    { key: 'D16', label: 'D16 - Shodasamsa (Vehicles)' },
+                                                    { key: 'D20', label: 'D20 - Vimsamsa (Spirituality)' },
+                                                    { key: 'D24', label: 'D24 - Siddhamsa (Education)' },
+                                                    { key: 'D27', label: 'D27 - Saptavimsamsa (Strengths)' },
+                                                    { key: 'D30', label: 'D30 - Trimsamsa (Evils)' },
+                                                    { key: 'D40', label: 'D40 - Khavedamsa (Auspiciousness)' },
+                                                    { key: 'D45', label: 'D45 - Akshavedamsa (Character)' },
+                                                    { key: 'D60', label: 'D60 - Shastiamsa (Past Karma)' }
+                                                ].map(v => (
+                                                    <option key={v.key} value={v.key}>{v.label}</option>
+                                                ))}
+                                            </select>
+                                        </div>
                                     </div>
 
                                     {/* South / North Style Toggle */}
@@ -392,33 +426,61 @@ const HoroscopePage = () => {
                             </div>
 
                             {/* Planetary Details */}
-                            <div className="flex flex-col gap-6 lg:h-full">
-                                {/* Spacer to push table down to align with chart card (accounting for buttons height ~42px) */}
-                                <div className="h-[42px] hidden lg:block"></div>
-
-                                <VedicCard className="p-0 overflow-hidden bg-white flex-1 flex flex-col h-full">
-                                    <div className="bg-vedic-blue px-4 py-3 shrink-0">
-                                        <h3 className="text-white font-bold text-sm">Planetary Positions</h3>
+                            <div className="flex flex-col gap-6 lg:h-full lg:col-span-3">
+                                <VedicCard className="p-0 overflow-hidden bg-white flex-1 flex flex-col h-full shadow-md">
+                                    <div className="bg-vedic-blue px-4 py-3 shrink-0 flex justify-between items-center">
+                                        <h3 className="text-white font-bold text-sm">Planetary Positions & Star Lords</h3>
+                                        <span className="text-[10px] text-white/70 font-mono">Ayanamsha: Lahiri</span>
                                     </div>
                                     <div className="overflow-x-auto flex-1">
                                         <table className="w-full text-sm">
-                                            <thead className="bg-stone-50 text-stone-500 text-xs uppercase font-bold text-left sticky top-0">
+                                            <thead className="bg-stone-50 text-stone-500 text-xs uppercase font-bold text-left sticky top-0 border-b border-stone-200">
                                                 <tr>
-                                                    <th className="px-4 py-2">Planet</th>
-                                                    <th className="px-4 py-2">Sign</th>
-                                                    <th className="px-4 py-2">Deg</th>
+                                                    <th className="px-4 py-3">Planet</th>
+                                                    <th className="px-4 py-3">Sign</th>
+                                                    <th className="px-4 py-3">Degree</th>
+                                                    <th className="px-4 py-3 text-center">House</th>
+                                                    <th className="px-4 py-3">Nakshatra</th>
+                                                    <th className="px-4 py-3">Star Lord</th>
                                                 </tr>
                                             </thead>
                                             <tbody className="divide-y divide-stone-100">
                                                 {Object.entries(chartData.planets).map(([key, p]) => {
                                                     const degVal = p.degree !== undefined ? p.degree : (p.longitude !== undefined ? p.longitude : 0);
+                                                    const pSign = p.sign_manual || p.sign;
+                                                    
+                                                    const SIGNS_LIST = [
+                                                        "Aries", "Taurus", "Gemini", "Cancer", "Leo", "Virgo",
+                                                        "Libra", "Scorpio", "Sagittarius", "Capricorn", "Aquarius", "Pisces"
+                                                    ];
+                                                    
+                                                    let houseNum = "";
+                                                    if (chartData.ascendant?.sign && pSign) {
+                                                        try {
+                                                            const ascIdx = SIGNS_LIST.indexOf(chartData.ascendant.sign);
+                                                            const pIdx = SIGNS_LIST.indexOf(pSign);
+                                                            if (ascIdx !== -1 && pIdx !== -1) {
+                                                                houseNum = ((pIdx - ascIdx + 12) % 12) + 1;
+                                                            }
+                                                        } catch (e) {}
+                                                    }
+                                                    
                                                     return (
-                                                        <tr key={key} className="hover:bg-vedic-cream/30">
-                                                            <td className="px-4 py-2 font-medium text-vedic-blue">{key}</td>
-                                                            <td className="px-4 py-2 text-stone-600">{p.sign_manual || p.sign}</td>
-                                                            <td className="px-4 py-2 text-stone-500 font-mono text-xs">
+                                                        <tr key={key} className="hover:bg-vedic-cream/30 transition-colors">
+                                                            <td className="px-4 py-3 font-semibold text-vedic-blue flex items-center gap-1.5">
+                                                                {key}
+                                                                {p.retrograde && <span className="text-[9px] px-1 py-0.2 bg-red-50 text-red-600 border border-red-100 rounded font-bold">R</span>}
+                                                                {p.combust && <span className="text-[9px] px-1 py-0.2 bg-orange-50 text-orange-600 border border-orange-100 rounded font-bold">C</span>}
+                                                            </td>
+                                                            <td className="px-4 py-3 text-stone-600">{pSign}</td>
+                                                            <td className="px-4 py-3 text-stone-500 font-mono text-xs">
                                                                 {Math.floor(degVal)}°{Math.floor((degVal % 1) * 60)}'
                                                             </td>
+                                                            <td className="px-4 py-3 text-stone-600 text-center font-bold text-md">{houseNum || "--"}</td>
+                                                            <td className="px-4 py-3 text-stone-500 text-xs">
+                                                                {p.nakshatra?.nakshatra ? `${p.nakshatra.nakshatra} (Pada ${p.nakshatra.pada})` : "--"}
+                                                            </td>
+                                                            <td className="px-4 py-3 text-stone-600 font-medium">{p.star_lord || "--"}</td>
                                                         </tr>
                                                     );
                                                 })}
