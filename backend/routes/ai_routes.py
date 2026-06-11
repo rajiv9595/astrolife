@@ -187,6 +187,20 @@ def summarize_context(data: Dict[str, Any]) -> Dict[str, Any]:
 
     return summary
 
+def build_expert_context(data: Dict[str, Any]) -> Dict[str, Any]:
+    """
+    Builds a highly detailed context specifically for the Expert Report.
+    Retains all advanced mathematical modules (Jaimini, Shadbala, etc.).
+    """
+    summary = summarize_context(data)
+    
+    # Inject advanced modules for the expert AI
+    for key in ["jaimini", "ashtakavarga", "shadbala", "maitri", "panchanga_advanced", "mangal_dosha", "advanced_doshas"]:
+        if key in data:
+            summary[key] = data[key]
+            
+    return summary
+
 @router.post("/analyze")
 def analyze_astrology(
     req: AIRequest,
@@ -215,3 +229,33 @@ def analyze_astrology(
     response_text = ai_engine.generate_analysis(final_prompt, data_str)
     
     return {"response": response_text}
+
+class ExpertReportRequest(BaseModel):
+    context_data: Dict[str, Any]
+
+@router.post("/expert_report")
+def generate_expert_report(
+    req: ExpertReportRequest,
+    current_user: Optional[User] = Depends(get_current_user_optional)
+):
+    """
+    Generates a massive, structured JSON life reading based on all advanced chart data.
+    """
+    try:
+        expert_context = build_expert_context(req.context_data)
+        data_str = json.dumps(expert_context, indent=2)
+        
+        json_response = ai_engine.generate_expert_report(data_str)
+        
+        # We need to return this as a parsed dictionary because FastAPI will re-serialize it
+        try:
+            parsed = json.loads(json_response)
+            return {"report": parsed}
+        except json.JSONDecodeError:
+            print("Failed to parse Gemini JSON:", json_response)
+            return {"error": "AI returned malformed JSON.", "raw": json_response}
+            
+    except Exception as e:
+        import traceback
+        traceback.print_exc()
+        raise HTTPException(status_code=500, detail=str(e))

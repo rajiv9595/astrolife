@@ -18,6 +18,12 @@ export const astroService = {
         return response.data;
     },
 
+    // AI Expert Report
+    generateExpertReport: async (chartData) => {
+        const response = await api.post('/ai/expert_report', { context_data: chartData });
+        return response.data;
+    },
+
     // Get location suggestions for dropdown
     getLocationSuggestions: async (query) => {
         const response = await api.get(`/geocode/suggestions?query=${encodeURIComponent(query)}`);

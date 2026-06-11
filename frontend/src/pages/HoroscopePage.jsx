@@ -13,6 +13,7 @@ import ShadbalaCard from '../components/features/horoscope/ShadbalaCard';
 import MaitriCard from '../components/features/horoscope/MaitriCard';
 import PanchangaCard from '../components/features/horoscope/PanchangaCard';
 import AdvancedDoshasCard from '../components/features/horoscope/AdvancedDoshasCard';
+import ExpertReportCard from '../components/ai/ExpertReportCard';
 import { authService } from '../services/authService';
 import { astroService } from '../services/astroService';
 import { familyService } from '../services/familyService';
@@ -494,6 +495,9 @@ const HoroscopePage = () => {
                                         </table>
                                     </div>
                                 </VedicCard>
+                                
+                                {/* Expert AI Life Reading */}
+                                <ExpertReportCard chartData={chartData} />
 
                                 {/* Mangal Dosha (Kuja Dosha) Card */}
                                 <MangalDoshaCard mangalDosha={chartData.mangal_dosha} />
