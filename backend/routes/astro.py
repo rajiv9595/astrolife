@@ -8,6 +8,9 @@ from backend.dependencies import get_current_user_optional
 from backend.calculations import compute_chart, compute_match_for_birth_data
 from backend.tables import compute_lucky_factors, SIGN_LORDS as TABLES_SIGN_LORDS
 from backend.strength_evaluator import calculate_chart_strengths
+from backend.jaimini import compute_jaimini_system
+from backend.ashtakavarga import compute_ashtakavarga
+from backend.shadbala import compute_shadbala
 
 router = APIRouter()
 
@@ -74,6 +77,14 @@ def compute(
         lagna_lord=lagna_lord
     )
 
+    # Advanced Calculations
+    jaimini_data = compute_jaimini_system(chart_data["planets"], chart_data["asc_sign"])
+    ashtakavarga_data = compute_ashtakavarga(chart_data["planets"], chart_data["asc_sign"])
+    
+    # Simple day/night check (6 AM to 6 PM)
+    is_day = 6 <= req.hour < 18
+    shadbala_data = compute_shadbala(chart_data["planets"], chart_data["asc_sign"], is_day)
+
     # Return response with all computed data
     return {
         "request": req.dict(),
@@ -97,7 +108,10 @@ def compute(
         "moon_sign": chart_data["moon_sign"],
         "yogas": yogas,
         "lucky_factors": lucky_factors_data,
-        "strengths": planet_strengths
+        "strengths": planet_strengths,
+        "jaimini": jaimini_data,
+        "ashtakavarga": ashtakavarga_data,
+        "shadbala": shadbala_data
     }
 
 

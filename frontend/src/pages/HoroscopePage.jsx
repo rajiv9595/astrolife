@@ -7,6 +7,9 @@ import NorthIndianChart from '../components/charts/NorthIndianChart';
 import DashaTimeline from '../components/charts/DashaTimeline';
 import AIAstrologer from '../components/ai/AIAstrologer';
 import MangalDoshaCard from '../components/features/horoscope/MangalDoshaCard';
+import JaiminiCard from '../components/features/horoscope/JaiminiCard';
+import AshtakavargaCard from '../components/features/horoscope/AshtakavargaCard';
+import ShadbalaCard from '../components/features/horoscope/ShadbalaCard';
 import { authService } from '../services/authService';
 import { astroService } from '../services/astroService';
 import { familyService } from '../services/familyService';
@@ -491,6 +494,11 @@ const HoroscopePage = () => {
 
                                 {/* Mangal Dosha (Kuja Dosha) Card */}
                                 <MangalDoshaCard mangalDosha={chartData.mangal_dosha} />
+                                
+                                {/* Jaimini & Ashtakavarga Advanced Math */}
+                                <JaiminiCard jaimini={chartData.jaimini} />
+                                <AshtakavargaCard ashtakavarga={chartData.ashtakavarga} />
+                                <ShadbalaCard shadbala={chartData.shadbala} />
                             </div>
                         </div>
 
