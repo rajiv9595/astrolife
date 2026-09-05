@@ -38,9 +38,17 @@ const DashboardPage = () => {
                 const data = await astroService.computeChart(params);
                 setChartData(data);
             } catch (err) {
-                console.error(err);
-                toast.error("Session expired.");
-                navigate('/auth');
+                console.error("Failed to compute chart", err);
+                if (err.response && (err.response.status === 401 || err.response.status === 403)) {
+                    toast.error("Session expired. Please login again.");
+                    navigate('/auth');
+                } else if (err.response && err.response.status >= 500) {
+                    toast.error("Server calculation error. Please try again later.");
+                } else if (!err.response) {
+                    toast.error("Network connection error. Please check your internet.");
+                } else {
+                    toast.error("Failed to load chart: " + (err.message || "Unknown error"));
+                }
             } finally {
                 setLoading(false);
             }

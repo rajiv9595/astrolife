@@ -33,10 +33,14 @@ const ProfileInfoPage = () => {
                 }
             } catch (error) {
                 console.error("Failed to fetch user", error);
-                if (error.response && error.response.status === 401) {
+                if (error.response && (error.response.status === 401 || error.response.status === 403)) {
                     toast.error("Session expired. Please login again.");
                     authService.logout();
                     navigate('/auth');
+                } else if (error.response && error.response.status >= 500) {
+                    setError("Server error. Please try again later.");
+                } else if (!error.response) {
+                    setError("Network connection error. Please check your internet.");
                 } else {
                     setError("Failed to load profile. " + (error.message || "Unknown error"));
                 }

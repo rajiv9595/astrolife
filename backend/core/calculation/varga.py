@@ -61,7 +61,7 @@ class VargaPosition(BaseModel):
     source_degree: float = Field(description="Degree within D1 sign 0-30")
     segment_index: int = Field(description="0-indexed segment within D1 sign")
     segment_count: int = Field(description="Number of segments (division)")
-    segment_size: float = Field(description="Size of one segment in degrees (30/division), NaN for D30 irregular")
+    segment_size: float = Field(description="Size of one segment in degrees (30/division), actual slice width for D30 irregular")
     sign: str = Field(description="Varga sign name")
     sign_num: int = Field(description="Varga sign 1-12")
     degree: float = Field(description="Degree within Varga sign 0-30 (NOT D1 degree)")
@@ -426,9 +426,8 @@ def calculate_varga_position(
     # For D30, segment_count is 5 not 30 — override
     if varga_num == 30:
         seg_count_out = 5  # but keep varga_num as 30 for identity
-        # segment_size is not uniform, store as NaN or actual slice width?
-        # We store NaN to signal irregular; tests check via _trimsamsa_lookup
-        seg_size_out = float("nan")
+        # Fixed: Storing actual slice width to avoid JSON NaN error
+        seg_size_out = seg_size_val
     else:
         seg_count_out = varga_num
         seg_size_out = seg_size_val
