@@ -27,7 +27,7 @@ from typing import Dict, List, Optional, Any
 from enum import Enum
 from datetime import datetime, timezone
 
-from core.jaimini.candidates import (
+from .candidates import (
     JaiminiEventCategory,
     JaiminiEventCandidate,
     MappingEntry,

@@ -6,9 +6,9 @@ Continuous calculation using actual house cusps, not just whole-sign house numbe
 """
 import math
 from typing import Dict
-from core.strength.models import DigBala
-from core.strength.profile import StrengthCalculationProfile, DIG_BALA_HOUSES, SIGNS, get_sign_index, normalize_deg
-from core.calculation.pipeline import ChartFacts
+from .models import DigBala
+from .profile import StrengthCalculationProfile, DIG_BALA_HOUSES, SIGNS, get_sign_index, normalize_deg
+from ..calculation.pipeline import ChartFacts
 
 
 # Classical ideal positions for Dig Bala (house cusps where planet gets full 60 virupas)

@@ -10,8 +10,8 @@ from typing import Any, Dict, List, Tuple
 
 from pydantic import BaseModel, Field
 
-from core.jaimini.candidates import JaiminiEventCandidate
-from core.jaimini.conflicts import (
+from ..candidates import JaiminiEventCandidate
+from ..conflicts import (
     RuleConflict,
     analyze_conflicts,
     SAME_PROPOSITION_PAIRS,

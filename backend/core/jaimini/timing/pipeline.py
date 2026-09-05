@@ -14,17 +14,17 @@ from __future__ import annotations
 from datetime import datetime, timezone
 from typing import Any, Dict, List, Optional
 
-from core.calculation.config import CalculationProfile, DEFAULT_PROFILE
-from core.calculation.models import ChartFacts
-from core.jaimini.candidates import JaiminiEventCandidate
-from core.jaimini.dasha.models import JaiminiDashaResult
-from core.jaimini.integration import JaiminiEvaluation
-from core.jaimini.mappings import (
+from ...calculation.config import CalculationProfile, DEFAULT_PROFILE
+from ...calculation.models import ChartFacts
+from ..candidates import JaiminiEventCandidate
+from ..dasha.models import JaiminiDashaResult
+from ..integration import JaiminiEvaluation
+from ..mappings import (
     get_all_mappings,
     MappingEntry,
 )
-from core.jaimini.models import JaiminiFacts
-from core.rules.enums import FormationStatus
+from ..models import JaiminiFacts
+from ...rules.enums import FormationStatus
 
 from .candidates import build_candidates
 from .conflicts import report_candidate_conflicts

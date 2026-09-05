@@ -23,11 +23,11 @@ from typing import Dict, List, Optional, Tuple
 import pytz
 import swisseph as swe
 
-from core.strength.models import KalaBala, KalaBalaComponent
-from core.strength.profile import StrengthCalculationProfile, NATURAL_FRIENDSHIP, SIGNS, get_sign_index, normalize_deg
-from core.calculation.pipeline import ChartFacts
-from core.calculation.config import DEFAULT_PROFILE
-from core.calculation.pipeline import generate_chart_facts
+from .models import KalaBala, KalaBalaComponent
+from .profile import StrengthCalculationProfile, NATURAL_FRIENDSHIP, SIGNS, get_sign_index, normalize_deg
+from ..calculation.pipeline import ChartFacts
+from ..calculation.config import DEFAULT_PROFILE
+from ..calculation.pipeline import generate_chart_facts
 
 
 # Planet order for Hora calculations (Chaldean order)

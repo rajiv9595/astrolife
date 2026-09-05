@@ -10,7 +10,7 @@ from __future__ import annotations
 
 from typing import List
 
-from core.jaimini.candidates import ConvergenceLevel
+from ..candidates import ConvergenceLevel
 
 from .models import DashaActivationRecord, TransitConditionRecord
 

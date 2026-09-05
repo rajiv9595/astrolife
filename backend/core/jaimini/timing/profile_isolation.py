@@ -11,7 +11,7 @@ from __future__ import annotations
 
 from typing import Dict, List, Set
 
-from core.jaimini.candidates import JaiminiEventCandidate
+from ..candidates import JaiminiEventCandidate
 
 
 class ProfileIsolationGuard:

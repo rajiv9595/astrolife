@@ -14,17 +14,17 @@ from __future__ import annotations
 from datetime import datetime, timezone
 from typing import Any, Dict, List, Optional
 
-from core.transit.calculator import TransitSnapshot, _evaluation_jd
-from core.transit.events import TransitEvent, detect_transit_events
-from core.transit.aspects import (
+from ...transit.calculator import TransitSnapshot, _evaluation_jd
+from ...transit.events import TransitEvent, detect_transit_events
+from ...transit.aspects import (
     compute_parashari_aspects,
     compute_transit_natal_relations,
     ParashariAspect,
     TransitNatalRelation,
 )
-from core.calculation.config import CalculationProfile, DEFAULT_PROFILE
-from core.calculation.models import ChartFacts
-from core.jaimini.mappings import ActivationCondition, MappingEntry
+from ...calculation.config import CalculationProfile, DEFAULT_PROFILE
+from ...calculation.models import ChartFacts
+from ..mappings import ActivationCondition, MappingEntry
 
 from .models import TransitConditionRecord, TemporalWindow
 

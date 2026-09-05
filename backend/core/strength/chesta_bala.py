@@ -10,9 +10,9 @@ Classical Parashara rules (BPHS Chapter 27):
 - Sun and Moon are never retrograde, so they use the direct formula
 - Mean motions from classical sources (Surya Siddhanta / BPHS)
 """
-from core.strength.models import ChestaBala
-from core.strength.profile import StrengthCalculationProfile
-from core.calculation.pipeline import ChartFacts
+from .models import ChestaBala
+from .profile import StrengthCalculationProfile
+from ..calculation.pipeline import ChartFacts
 
 
 # Mean daily motions (degrees per day) for Chesta Bala

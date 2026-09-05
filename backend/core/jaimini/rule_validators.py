@@ -7,7 +7,7 @@ touch). Covers evidence completeness and provenance honesty for rule results.
 from __future__ import annotations
 from typing import Any, List
 
-from core.rules.enums import (
+from ..rules.enums import (
     FormationStatus,
     ConfidenceLevel,
 )

@@ -4,9 +4,9 @@ Naisargika Bala Calculation - Classical Parashari Implementation
 Naisargika Bala (Natural Strength) - Fixed inherent strength of each planet.
 Traditional values in Virupas (out of 60).
 """
-from core.strength.models import NaisargikaBala
-from core.strength.profile import StrengthCalculationProfile, NAISARGIKA_BALA
-from core.calculation.pipeline import ChartFacts
+from .models import NaisargikaBala
+from .profile import StrengthCalculationProfile, NAISARGIKA_BALA
+from ..calculation.pipeline import ChartFacts
 
 
 def calculate_naisargika_bala(

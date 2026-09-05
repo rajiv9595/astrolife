@@ -14,16 +14,16 @@ Total in Virupas, converted to Rupas (1 Rupa = 60 Virupas)
 from typing import Dict, Optional
 from datetime import datetime
 
-from core.strength.models import ShadbalaResult, StrengthSystem, StrengthClassification
-from core.strength.profile import StrengthCalculationProfile, DEFAULT_STRENGTH_PROFILE
-from core.calculation.pipeline import ChartFacts
-from core.calculation.varga import calculate_all_vargas
-from core.strength.sthana_bala import calculate_sthana_bala
-from core.strength.dig_bala import calculate_dig_bala
-from core.strength.kala_bala import calculate_kala_bala
-from core.strength.chesta_bala import calculate_chesta_bala
-from core.strength.naisargika_bala import calculate_naisargika_bala
-from core.strength.drig_bala import calculate_drig_bala
+from .models import ShadbalaResult, StrengthSystem, StrengthClassification
+from .profile import StrengthCalculationProfile, DEFAULT_STRENGTH_PROFILE
+from ..calculation.pipeline import ChartFacts
+from ..calculation.varga import calculate_all_vargas
+from .sthana_bala import calculate_sthana_bala
+from .dig_bala import calculate_dig_bala
+from .kala_bala import calculate_kala_bala
+from .chesta_bala import calculate_chesta_bala
+from .naisargika_bala import calculate_naisargika_bala
+from .drig_bala import calculate_drig_bala
 
 
 # Traditional minimum Shadbala requirements (in Rupas)

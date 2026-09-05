@@ -7,9 +7,9 @@ Uses Parashari aspect framework (not Western degree aspects).
 """
 import math
 from typing import Dict, List
-from core.strength.models import DrigBala
-from core.strength.profile import StrengthCalculationProfile, SIGNS, get_sign_index, normalize_deg
-from core.calculation.pipeline import ChartFacts
+from .models import DrigBala
+from .profile import StrengthCalculationProfile, SIGNS, get_sign_index, normalize_deg
+from ..calculation.pipeline import ChartFacts
 
 
 # Parashari aspect strengths (full aspects = 60 virupas, partial = proportion)

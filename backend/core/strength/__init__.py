@@ -7,7 +7,7 @@ Exports:
 - Pipeline: Main entry point generate_strength_report()
 - Components: Individual Bala calculators
 """
-from core.strength.models import (
+from .models import (
     StrengthClassification,
     StrengthSystem,
     SthanaBala,
@@ -26,7 +26,7 @@ from core.strength.models import (
     StrengthReport,
 )
 
-from core.strength.profile import (
+from .profile import (
     StrengthCalculationProfile,
     DEFAULT_STRENGTH_PROFILE,
     EXALTATION_DATA,
@@ -39,13 +39,13 @@ from core.strength.profile import (
     normalize_deg,
 )
 
-from core.strength.shadbala import calculate_shadbala, calculate_all_shadbala
-from core.strength.bhava_bala import calculate_bhava_bala
-from core.strength.vimsopaka import calculate_vimsopaka_bala, calculate_all_vimsopaka
-from core.strength.avastha import calculate_bala_avastha, calculate_jagratadi_avastha, calculate_all_avastha
-from core.strength.dignity import calculate_dignity, calculate_all_dignities
-from core.strength.functional import calculate_functional_strength, calculate_all_functional_strength
-from core.strength.composite import calculate_composite_strength, calculate_all_composite_strength
+from .shadbala import calculate_shadbala, calculate_all_shadbala
+from .bhava_bala import calculate_bhava_bala
+from .vimsopaka import calculate_vimsopaka_bala, calculate_all_vimsopaka
+from .avastha import calculate_bala_avastha, calculate_jagratadi_avastha, calculate_all_avastha
+from .dignity import calculate_dignity, calculate_all_dignities
+from .functional import calculate_functional_strength, calculate_all_functional_strength
+from .composite import calculate_composite_strength, calculate_all_composite_strength
 
 __all__ = [
     # Enums

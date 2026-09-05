@@ -1,7 +1,7 @@
 from pydantic import BaseModel, Field
 from enum import Enum
 from typing import Dict, List, Optional
-from core.calculation.config import CalculationProfile as BaseCalculationProfile
+from ..calculation.config import CalculationProfile as BaseCalculationProfile
 
 
 class ShadbalaMethod(str, Enum):

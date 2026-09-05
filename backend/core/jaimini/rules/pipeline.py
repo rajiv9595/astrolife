@@ -11,7 +11,7 @@ profile=None) -> JaiminiYogaEvaluation (results ordered by rule_id).
 from __future__ import annotations
 from typing import Any, Dict, Optional
 
-from core.rules.enums import (
+from ...rules.enums import (
     FormationStatus,
     StrengthStatus,
     ConfidenceLevel,

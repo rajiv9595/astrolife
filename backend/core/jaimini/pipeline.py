@@ -7,7 +7,7 @@ from validated canonical ChartFacts and VargaFacts.
 from __future__ import annotations
 from typing import Dict, Any, Optional
 
-from core.calculation.models import ChartFacts
+from ..calculation.models import ChartFacts
 from .profile import JaiminiCalculationProfile
 from .models import JaiminiFacts, JaiminiProvenance
 from .karakas import calculate_chara_karakas

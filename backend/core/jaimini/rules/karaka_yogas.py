@@ -18,7 +18,7 @@ from .predicates import (
     sign_lord,
     signs_in_mutual_drishti,
 )
-from core.rules.enums import CancellationStatus, MitigationStatus
+from ...rules.enums import CancellationStatus, MitigationStatus
 from .predicates import benefic_support_for_sign
 
 

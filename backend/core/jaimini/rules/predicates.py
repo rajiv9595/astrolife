@@ -8,12 +8,12 @@ No independent astronomical computation, no Parashari aspects, no timestamps.
 Sign lords: Jaimini-owned CLASSICAL_SIGN_LORDS (identical values to the
 Parashari table, kept inside the Jaimini package to avoid cross-tradition
 coupling). House-frame tuples and natural benefic/malefic sets are imported
-from core.rules.parashari.structural (single source, attributed here).
+from ...rules.parashari.structural (single source, attributed here).
 """
 from __future__ import annotations
 from typing import Any, Dict, List, Optional, Tuple
 
-from core.rules.parashari.structural import (  # noqa: F401  (re-exported single source)
+from ...rules.parashari.structural import (  # noqa: F401  (re-exported single source)
     KENDRA_HOUSES,
     TRIKONA_HOUSES,
     NATURAL_BENEFICS,

@@ -11,10 +11,10 @@ from typing import Dict, List, Optional, Any, Set, Tuple
 from dataclasses import dataclass
 from functools import lru_cache
 
-from core.calculation.models import ChartFacts, PlanetData, HouseData, SignPosition
-from core.strength.models import StrengthReport, DignityResult, FunctionalStrengthResult, ShadbalaResult
-from core.calculation.varga import VargaPosition, calculate_all_vargas
-from core.calculation.dynamic import DynamicAstrologyState
+from ..calculation.models import ChartFacts, PlanetData, HouseData, SignPosition
+from ..strength.models import StrengthReport, DignityResult, FunctionalStrengthResult, ShadbalaResult
+from ..calculation.varga import VargaPosition, calculate_all_vargas
+from ..calculation.dynamic import DynamicAstrologyState
 
 from .enums import EvidenceType
 

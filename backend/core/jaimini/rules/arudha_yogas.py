@@ -19,7 +19,7 @@ from .predicates import (
     signs_in_mutual_drishti,
     NATURAL_BENEFICS,
 )
-from core.rules.enums import CancellationStatus, MitigationStatus
+from ...rules.enums import CancellationStatus, MitigationStatus
 
 
 def _no_structural_cancellation(reason: str) -> tuple:

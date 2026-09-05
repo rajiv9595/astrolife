@@ -9,7 +9,7 @@ from __future__ import annotations
 import math
 from typing import Dict, List, Tuple, Optional, Any
 
-from core.calculation.models import ChartFacts, PlanetData
+from ..calculation.models import ChartFacts, PlanetData
 from .profile import JaiminiCalculationProfile, KarakaMethod, RahuKarakaMethod
 from .models import KarakaItem, CharaKarakasReport
 

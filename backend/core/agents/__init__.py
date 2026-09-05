@@ -1,12 +1,12 @@
 """Phase 7 — agents package public surface."""
-from core.agents.agent_conflicts import conflict_findings, conflict_ids, relevant_conflicts
-from core.agents.agent_context import (
+from .agent_conflicts import conflict_findings, conflict_ids, relevant_conflicts
+from .agent_context import (
     AgentContext,
     AgentRequest,
     CanonicalBundle,
     KnowledgeAccessor,
 )
-from core.agents.agent_contract import (
+from .agent_contract import (
     ALL_AGENTS,
     CHART_SYNTHESIS_AGENT,
     JAIMINI_AGENT,
@@ -19,7 +19,7 @@ from core.agents.agent_contract import (
     capability_matrix,
     get_contract,
 )
-from core.agents.agent_models import (
+from .agent_models import (
     AGENT_STATUSES,
     CANONICAL,
     CONFLICT,
@@ -41,27 +41,27 @@ from core.agents.agent_models import (
     RuleResultSummary,
     TimingCandidateSummary,
 )
-from core.agents.agent_prompts import build_prompt
-from core.agents.agent_provenance import build_provenance
-from core.agents.agent_registry import (
+from .agent_prompts import build_prompt
+from .agent_provenance import build_provenance
+from .agent_registry import (
     AgentRegistry,
     build_default_registry,
     registry_snapshot_round_trip,
 )
-from core.agents.agent_result import (
+from .agent_result import (
     AgentResult,
     finalize_result,
     invalid_result,
     validate_model_output,
 )
-from core.agents.agent_router import DOMAIN_ROUTES, route, route_single
-from core.agents.agent_security import (
+from .agent_router import DOMAIN_ROUTES, route, route_single
+from .agent_security import (
     PROMPT_FIREWALL_INSTRUCTIONS,
     find_injections,
     find_predictions,
     stable_digest,
 )
-from core.agents.agent_validation import (
+from .agent_validation import (
     applicability_gate,
     validate_capability,
     validate_conflicts,
@@ -70,7 +70,7 @@ from core.agents.agent_validation import (
     validate_traditions,
     validate_unknowns,
 )
-from core.agents.orchestrator import (
+from .orchestrator import (
     OrchestrationReport,
     bundle_digest,
     run_full_with_synthesis,

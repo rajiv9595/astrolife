@@ -20,7 +20,7 @@ from typing import Any, Dict, List, Tuple
 
 from pydantic import BaseModel, Field
 
-from core.rules.enums import FormationStatus
+from ..rules.enums import FormationStatus
 
 DIRECT_CONTRADICTION = "DIRECT_CONTRADICTION"
 APPARENT_CONTRADICTION = "APPARENT_CONTRADICTION"

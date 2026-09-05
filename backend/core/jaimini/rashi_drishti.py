@@ -12,7 +12,7 @@ Classical Rules:
 from __future__ import annotations
 from typing import Dict, List, Set, Tuple, Optional, Any
 
-from core.calculation.models import ChartFacts
+from ..calculation.models import ChartFacts
 from .profile import JaiminiCalculationProfile, RashiDrishtiMethod
 from .models import RashiDrishtiSignItem, RashiDrishtiReport
 

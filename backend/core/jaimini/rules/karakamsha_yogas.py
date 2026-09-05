@@ -16,7 +16,7 @@ from .predicates import (
     planets_in_d9_sign,
     NATURAL_BENEFICS,
 )
-from core.rules.enums import CancellationStatus, MitigationStatus
+from ...rules.enums import CancellationStatus, MitigationStatus
 
 
 def _d9_none_mitigation(focal: str) -> tuple:

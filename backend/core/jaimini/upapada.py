@@ -7,7 +7,7 @@ Produces structured mathematical facts and derivation steps. Zero predictions.
 from __future__ import annotations
 from typing import Optional, Dict, Any
 
-from core.calculation.models import ChartFacts
+from ..calculation.models import ChartFacts
 from .profile import JaiminiCalculationProfile
 from .models import UpapadaDetails, ArudhaPadaItem
 from .arudha import calculate_single_arudha, SIGNS

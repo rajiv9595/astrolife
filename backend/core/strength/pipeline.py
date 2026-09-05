@@ -6,17 +6,17 @@ Generates complete classical strength report from ChartFacts.
 from typing import Dict, Optional
 from datetime import datetime
 
-from core.strength.models import StrengthReport, StrengthSystem
-from core.strength.profile import StrengthCalculationProfile, DEFAULT_STRENGTH_PROFILE
-from core.calculation.pipeline import ChartFacts, generate_chart_facts
-from core.calculation.varga import calculate_all_vargas
-from core.strength.shadbala import calculate_all_shadbala
-from core.strength.bhava_bala import calculate_bhava_bala
-from core.strength.vimsopaka import calculate_all_vimsopaka
-from core.strength.avastha import calculate_all_avastha
-from core.strength.dignity import calculate_all_dignities
-from core.strength.functional import calculate_all_functional_strength
-from core.strength.composite import calculate_all_composite_strength
+from .models import StrengthReport, StrengthSystem
+from .profile import StrengthCalculationProfile, DEFAULT_STRENGTH_PROFILE
+from ..calculation.pipeline import ChartFacts, generate_chart_facts
+from ..calculation.varga import calculate_all_vargas
+from .shadbala import calculate_all_shadbala
+from .bhava_bala import calculate_bhava_bala
+from .vimsopaka import calculate_all_vimsopaka
+from .avastha import calculate_all_avastha
+from .dignity import calculate_all_dignities
+from .functional import calculate_all_functional_strength
+from .composite import calculate_all_composite_strength
 
 
 def generate_strength_report(

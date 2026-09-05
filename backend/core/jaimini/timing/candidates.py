@@ -12,12 +12,12 @@ from __future__ import annotations
 from datetime import datetime, timezone
 from typing import Any, Dict, List, Optional
 
-from core.jaimini.candidates import (
+from ..candidates import (
     JaiminiEventCandidate,
     JaiminiEventCategory,
     TemporalPrecision,
 )
-from core.jaimini.mappings import MappingEntry
+from ..mappings import MappingEntry
 
 from .models import (
     CandidateContext,

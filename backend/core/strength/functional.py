@@ -13,9 +13,9 @@ backend_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__
 sys.path.insert(0, backend_dir)
 
 from typing import Dict, List
-from core.strength.models import FunctionalStrengthResult, StrengthSystem, StrengthClassification
-from core.strength.profile import StrengthCalculationProfile, DEFAULT_STRENGTH_PROFILE, SIGNS
-from core.calculation.pipeline import ChartFacts
+from .models import FunctionalStrengthResult, StrengthSystem, StrengthClassification
+from .profile import StrengthCalculationProfile, DEFAULT_STRENGTH_PROFILE, SIGNS
+from ..calculation.pipeline import ChartFacts
 from tables import SIGN_LORDS
 
 

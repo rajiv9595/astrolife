@@ -10,9 +10,9 @@ backend_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__
 sys.path.insert(0, backend_dir)
 
 from typing import Dict
-from core.strength.models import DignityResult, StrengthSystem, StrengthClassification
-from core.strength.profile import StrengthCalculationProfile, DEFAULT_STRENGTH_PROFILE, EXALTATION_DATA, MOOLATRIKONA_DATA, NATURAL_FRIENDSHIP, SIGNS, get_sign_index, normalize_deg
-from core.calculation.pipeline import ChartFacts
+from .models import DignityResult, StrengthSystem, StrengthClassification
+from .profile import StrengthCalculationProfile, DEFAULT_STRENGTH_PROFILE, EXALTATION_DATA, MOOLATRIKONA_DATA, NATURAL_FRIENDSHIP, SIGNS, get_sign_index, normalize_deg
+from ..calculation.pipeline import ChartFacts
 from tables import SIGN_LORDS
 
 

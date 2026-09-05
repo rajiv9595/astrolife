@@ -11,11 +11,11 @@ backend_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__
 sys.path.insert(0, backend_dir)
 
 from typing import Dict, List, Optional
-from core.strength.models import CompositeStrengthResult, StrengthSystem, StrengthClassification
-from core.strength.profile import StrengthCalculationProfile, DEFAULT_STRENGTH_PROFILE
-from core.calculation.pipeline import ChartFacts
-from core.strength.shadbala import calculate_all_shadbala
-from core.strength.dignity import calculate_dignity
+from .models import CompositeStrengthResult, StrengthSystem, StrengthClassification
+from .profile import StrengthCalculationProfile, DEFAULT_STRENGTH_PROFILE
+from ..calculation.pipeline import ChartFacts
+from .shadbala import calculate_all_shadbala
+from .dignity import calculate_dignity
 from tables import SIGN_LORDS, FRIENDLY_SIGNS
 
 

@@ -7,7 +7,7 @@ and Upapada Lagna (UL / A12) with full structured evidence.
 from __future__ import annotations
 from typing import Dict, List, Optional, Any
 
-from core.calculation.models import ChartFacts
+from ..calculation.models import ChartFacts
 from .profile import JaiminiCalculationProfile
 from .models import ArudhaPadaItem
 from .arudha import calculate_single_arudha, SIGNS

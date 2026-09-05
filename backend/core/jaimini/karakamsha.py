@@ -8,8 +8,8 @@ Does NOT recompute astronomy or divisional charts.
 from __future__ import annotations
 from typing import Dict, List, Optional, Any
 
-from core.calculation.models import ChartFacts
-from core.calculation.varga import VargaPosition
+from ..calculation.models import ChartFacts
+from ..calculation.varga import VargaPosition
 from .models import KarakamshaDetails, CharaKarakasReport
 from .karakas import calculate_chara_karakas
 from .profile import JaiminiCalculationProfile

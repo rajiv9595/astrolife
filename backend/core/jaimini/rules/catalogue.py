@@ -10,7 +10,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Any, Callable, Dict, List
 
-from core.rules.enums import ConfidenceLevel, SourceType
+from ...rules.enums import ConfidenceLevel, SourceType
 
 from . import arudha_yogas, drishti_yogas, karaka_yogas, karakamsha_yogas
 

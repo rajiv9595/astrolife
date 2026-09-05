@@ -10,13 +10,13 @@ Components:
 """
 import math
 from typing import Dict, List, Optional
-from core.strength.models import SthanaBala, SthanaBalaComponent
-from core.strength.profile import (
+from .models import SthanaBala, SthanaBalaComponent
+from .profile import (
     StrengthCalculationProfile, EXALTATION_DATA, MOOLATRIKONA_DATA,
     SIGNS, get_sign_index, normalize_deg, SaptavargajaMethod
 )
-from core.calculation.pipeline import ChartFacts
-from core.calculation.varga import calculate_all_vargas
+from ..calculation.pipeline import ChartFacts
+from ..calculation.varga import calculate_all_vargas
 
 
 # Classical Saptavargaja Vargas (Parashari): D1, D2, D3, D7, D9, D12, D30

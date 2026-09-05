@@ -1,24 +1,24 @@
 """Phase 8 — prediction package public surface (§59 API)."""
-from core.prediction.activation import evaluate_event_activation
-from core.prediction.candidates import (
+from .activation import evaluate_event_activation
+from .candidates import (
     deduplicate_candidates,
     generate_event_candidates,
 )
-from core.prediction.catalogue import (
+from .catalogue import (
     catalogue_rule_versions,
     catalogue_snapshot_fingerprint,
 )
-from core.prediction.convergence import calculate_convergence
-from core.prediction.event_definitions import (
+from .convergence import calculate_convergence
+from .event_definitions import (
     EventDefinition,
     get_event_definition,
     list_event_definitions,
     list_event_versions,
 )
-from core.prediction.event_rules import EventRule, evaluate_event_rule, event_rule_for
-from core.prediction.event_types import EVENT_CATEGORIES
-from core.prediction.formation import evaluate_event_formation
-from core.prediction.models import (
+from .event_rules import EventRule, evaluate_event_rule, event_rule_for
+from .event_types import EVENT_CATEGORIES
+from .formation import evaluate_event_formation
+from .models import (
     CANDIDATE_RANKS,
     CONVERGENCE_LEVELS,
     EVIDENCE_STATES,
@@ -42,26 +42,26 @@ from core.prediction.models import (
     SUPPORTED_RANGE_END,
     SUPPORTED_RANGE_START,
 )
-from core.prediction.pipeline import (
+from .pipeline import (
     evaluate_prediction,
     measure_prediction_performance,
     prediction_to_agent_summaries,
 )
-from core.prediction.profiles import (
+from .profiles import (
     developer_rule_flags,
     eligible_rule_outcomes,
     get_prediction_profile,
     list_prediction_profiles,
     rejected_rule_outcomes,
 )
-from core.prediction.provenance import (
+from .provenance import (
     build_hypothesis_provenance,
     get_prediction_provenance,
     get_prediction_snapshot,
 )
-from core.prediction.signals import generate_event_signals
-from core.prediction.validation import validate_prediction_result
-from core.prediction.windows import (
+from .signals import generate_event_signals
+from .validation import validate_prediction_result
+from .windows import (
     clip,
     contains,
     distance,

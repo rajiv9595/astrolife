@@ -11,10 +11,10 @@ backend_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__
 sys.path.insert(0, backend_dir)
 
 from typing import Dict, List
-from core.strength.models import VimsopakaBalaResult, StrengthSystem, StrengthClassification
-from core.strength.profile import StrengthCalculationProfile, DEFAULT_STRENGTH_PROFILE, NATURAL_FRIENDSHIP
-from core.calculation.pipeline import ChartFacts
-from core.calculation.varga import calculate_all_vargas
+from .models import VimsopakaBalaResult, StrengthSystem, StrengthClassification
+from .profile import StrengthCalculationProfile, DEFAULT_STRENGTH_PROFILE, NATURAL_FRIENDSHIP
+from ..calculation.pipeline import ChartFacts
+from ..calculation.varga import calculate_all_vargas
 from tables import SIGN_LORDS
 
 

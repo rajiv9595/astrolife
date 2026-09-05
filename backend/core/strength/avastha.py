@@ -9,9 +9,9 @@ Main systems:
 4. Deeptaadi Avastha (Bright, etc.) - based on dignity
 """
 from typing import Dict
-from core.strength.models import AvasthaResult, StrengthSystem, StrengthClassification
-from core.strength.profile import StrengthCalculationProfile, DEFAULT_STRENGTH_PROFILE, SIGNS, get_sign_index
-from core.calculation.pipeline import ChartFacts
+from .models import AvasthaResult, StrengthSystem, StrengthClassification
+from .profile import StrengthCalculationProfile, DEFAULT_STRENGTH_PROFILE, SIGNS, get_sign_index
+from ..calculation.pipeline import ChartFacts
 
 
 # Bala Avastha: 5 states based on degree in sign (each 6°)
