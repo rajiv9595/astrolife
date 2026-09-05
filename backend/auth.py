@@ -8,8 +8,16 @@ from backend.models import User
 import hashlib
 import bcrypt
 
-# Secret key for JWT - In production, use environment variable
-SECRET_KEY = "your-secret-key-change-in-production-minimum-32-characters-long"
+# Secret key for JWT — Phase 12: environment-first. Production MUST set
+# JWT_SECRET_KEY (>=32 chars); the fallback below is dev-only and is
+# rejected by core.ops.config.validate_production_config(). Reason: the
+# previous hardcoded default was a production blocker. Risk: tokens signed
+# with different secrets do not verify across environments (documented).
+import os as _os
+SECRET_KEY = _os.getenv(
+    "JWT_SECRET_KEY",
+    "dev-only-insecure-fallback-not-for-production",
+)
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 24 * 60  # 24 hours
 

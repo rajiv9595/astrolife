@@ -1,0 +1,589 @@
+{
+  "chart": "MEDAPATI BHASKARA VENKATA RAJEEV REDDY 17/08/2005 00:02 IST Anaparthy",
+  "engine": "jaimini-timing/1.0.0",
+  "evaluation_window": {
+    "start": "2005-08-16T18:32:00+00:00",
+    "end": "2006-08-16T18:32:00+00:00"
+  },
+  "profiles": {
+    "CHARA_DASHA_LAGNA_START_MOVABLE_FIXED_DUAL": {
+      "profile": "CHARA_DASHA_LAGNA_START_MOVABLE_FIXED_DUAL",
+      "direction_rule": "MOVABLE_FORWARD_FIXED_REVERSE_DUAL_PARITY",
+      "direction": "REVERSE",
+      "starting_sign": "Taurus",
+      "total_years": 92.0,
+      "dasha_periods": [
+        {
+          "sign": "Taurus",
+          "duration_years": 9.0,
+          "start_utc": "2005-08-16T18:32:00Z",
+          "end_utc": "2014-08-17T00:32:00Z"
+        },
+        {
+          "sign": "Aries",
+          "duration_years": 12.0,
+          "start_utc": "2014-08-17T00:32:00Z",
+          "end_utc": "2026-08-17T00:32:00Z"
+        },
+        {
+          "sign": "Pisces",
+          "duration_years": 7.0,
+          "start_utc": "2026-08-17T00:32:00Z",
+          "end_utc": "2033-08-16T18:32:00Z"
+        },
+        {
+          "sign": "Aquarius",
+          "duration_years": 8.0,
+          "start_utc": "2033-08-16T18:32:00Z",
+          "end_utc": "2041-08-16T18:32:00Z"
+        },
+        {
+          "sign": "Capricorn",
+          "duration_years": 7.0,
+          "start_utc": "2041-08-16T18:32:00Z",
+          "end_utc": "2048-08-16T12:32:00Z"
+        },
+        {
+          "sign": "Sagittarius",
+          "duration_years": 4.0,
+          "start_utc": "2048-08-16T12:32:00Z",
+          "end_utc": "2052-08-16T12:32:00Z"
+        },
+        {
+          "sign": "Scorpio",
+          "duration_years": 8.0,
+          "start_utc": "2052-08-16T12:32:00Z",
+          "end_utc": "2060-08-16T12:32:00Z"
+        },
+        {
+          "sign": "Libra",
+          "duration_years": 2.0,
+          "start_utc": "2060-08-16T12:32:00Z",
+          "end_utc": "2062-08-17T00:32:00Z"
+        },
+        {
+          "sign": "Virgo",
+          "duration_years": 3.0,
+          "start_utc": "2062-08-17T00:32:00Z",
+          "end_utc": "2065-08-16T18:32:00Z"
+        },
+        {
+          "sign": "Leo",
+          "duration_years": 12.0,
+          "start_utc": "2065-08-16T18:32:00Z",
+          "end_utc": "2077-08-16T18:32:00Z"
+        },
+        {
+          "sign": "Cancer",
+          "duration_years": 8.0,
+          "start_utc": "2077-08-16T18:32:00Z",
+          "end_utc": "2085-08-16T18:32:00Z"
+        },
+        {
+          "sign": "Gemini",
+          "duration_years": 12.0,
+          "start_utc": "2085-08-16T18:32:00Z",
+          "end_utc": "2097-08-16T18:32:00Z"
+        }
+      ],
+      "timing": {
+        "total_candidates": 3,
+        "candidates": [
+          {
+            "candidate_id": "CHARA_DASHA_LAGNA_START_MOVABLE_FIXED_DUAL:CAREER:2005-08-16T18:32:00+00:00:2006-08-16T18:32:00+00:00",
+            "event_category": "CAREER",
+            "convergence": "MULTI_CONDITION",
+            "start": "2005-08-16T18:32:00+00:00",
+            "end": "2006-08-16T18:32:00+00:00",
+            "duration_years": 0.999315537303217,
+            "dasha_period_ids": [
+              "CHARA_DASHA_LAGNA_START_MOVABLE_FIXED_DUAL:M1:Taurus"
+            ],
+            "transit_condition_ids": [
+              "same_sign:Sun:Sun",
+              "same_sign:Sun:Jupiter",
+              "same_sign:Sun:Venus",
+              "same_sign:Sun:Ketu",
+              "same_sign:Sun:Moon",
+              "same_sign:Sun:Rahu",
+              "same_sign:Sun:Mars",
+              "same_sign:Sun:Mercury",
+              "same_sign:Sun:Saturn"
+            ],
+            "rule_ids": [
+              "JAI.ARUDHA.AL_LORD_KENDRA_TRINE"
+            ]
+          },
+          {
+            "candidate_id": "CHARA_DASHA_LAGNA_START_MOVABLE_FIXED_DUAL:RELATIONSHIP:2005-08-16T18:32:00+00:00:2006-08-16T18:32:00+00:00",
+            "event_category": "RELATIONSHIP",
+            "convergence": "MULTI_CONDITION",
+            "start": "2005-08-16T18:32:00+00:00",
+            "end": "2006-08-16T18:32:00+00:00",
+            "duration_years": 0.999315537303217,
+            "dasha_period_ids": [
+              "CHARA_DASHA_LAGNA_START_MOVABLE_FIXED_DUAL:M1:Taurus"
+            ],
+            "transit_condition_ids": [
+              "rashi_drishti:Mars:Leo",
+              "rashi_drishti:Jupiter:Sagittarius",
+              "rashi_drishti:Venus:Sagittarius",
+              "rashi_drishti:Rahu:Sagittarius",
+              "rashi_drishti:Ketu:Sagittarius",
+              "rashi_drishti:Sun:Aries",
+              "rashi_drishti:Moon:Virgo",
+              "rashi_drishti:Rahu:Virgo",
+              "rashi_drishti:Moon:Pisces",
+              "rashi_drishti:Jupiter:Pisces",
+              "rashi_drishti:Venus:Pisces",
+              "rashi_drishti:Ketu:Pisces",
+              "rashi_drishti:Moon:Leo",
+              "rashi_drishti:Moon:Aries",
+              "rashi_drishti:Moon:Cancer",
+              "rashi_drishti:Moon:Sagittarius",
+              "rashi_drishti:Mercury:Aries",
+              "rashi_drishti:Venus:Leo",
+              "rashi_drishti:Sun:Sagittarius",
+              "rashi_drishti:Sun:Pisces",
+              "rashi_drishti:Mercury:Sagittarius",
+              "rashi_drishti:Mercury:Pisces",
+              "rashi_drishti:Jupiter:Leo",
+              "rashi_drishti:Venus:Aries",
+              "rashi_drishti:Venus:Cancer",
+              "rashi_drishti:Mercury:Leo",
+              "rashi_drishti:Sun:Leo",
+              "rashi_drishti:Mercury:Cancer",
+              "rashi_drishti:Venus:Virgo",
+              "rashi_drishti:Sun:Cancer",
+              "rashi_drishti:Sun:Virgo",
+              "rashi_drishti:Mercury:Virgo",
+              "rashi_drishti:Mars:Cancer",
+              "rashi_drishti:Mars:Sagittarius",
+              "rashi_drishti:Mars:Virgo",
+              "rashi_drishti:Mars:Pisces",
+              "rashi_drishti:Mars:Aries"
+            ],
+            "rule_ids": [
+              "JAI.DRISHTI.AK_AMK_MUTUAL"
+            ]
+          },
+          {
+            "candidate_id": "CHARA_DASHA_LAGNA_START_MOVABLE_FIXED_DUAL:SPIRITUAL:2005-08-16T18:32:00+00:00:2006-08-16T18:32:00+00:00",
+            "event_category": "SPIRITUAL",
+            "convergence": "MULTI_CONDITION",
+            "start": "2005-08-16T18:32:00+00:00",
+            "end": "2006-08-16T18:32:00+00:00",
+            "duration_years": 0.999315537303217,
+            "dasha_period_ids": [
+              "CHARA_DASHA_LAGNA_START_MOVABLE_FIXED_DUAL:M1:Taurus"
+            ],
+            "transit_condition_ids": [
+              "karakamsha_transit:Mercury",
+              "karakamsha_transit:Saturn",
+              "karakamsha_transit:Moon",
+              "karakamsha_transit:Mars",
+              "karakamsha_transit:Sun",
+              "karakamsha_transit:Venus"
+            ],
+            "rule_ids": [
+              "JAI.KARAKAMSHA.BENEFIC_OCCUPANCY"
+            ]
+          }
+        ],
+        "conflicts": []
+      },
+      "determinism": {
+        "deterministic": true,
+        "n_runs": 50,
+        "unique_hashes": 1,
+        "detail": "DETERMINISTIC: 50 runs, 1 unique hash(es)"
+      }
+    },
+    "CHARA_DASHA_LAGNA_START_ODD_EVEN_FOOTED": {
+      "profile": "CHARA_DASHA_LAGNA_START_ODD_EVEN_FOOTED",
+      "direction_rule": "ODD_FOOTED_FORWARD_EVEN_FOOTED_REVERSE",
+      "direction": "FORWARD",
+      "starting_sign": "Taurus",
+      "total_years": 96.0,
+      "dasha_periods": [
+        {
+          "sign": "Taurus",
+          "duration_years": 5.0,
+          "start_utc": "2005-08-16T18:32:00Z",
+          "end_utc": "2010-08-17T00:32:00Z"
+        },
+        {
+          "sign": "Gemini",
+          "duration_years": 2.0,
+          "start_utc": "2010-08-17T00:32:00Z",
+          "end_utc": "2012-08-16T12:32:00Z"
+        },
+        {
+          "sign": "Cancer",
+          "duration_years": 6.0,
+          "start_utc": "2012-08-16T12:32:00Z",
+          "end_utc": "2018-08-17T00:32:00Z"
+        },
+        {
+          "sign": "Leo",
+          "duration_years": 12.0,
+          "start_utc": "2018-08-17T00:32:00Z",
+          "end_utc": "2030-08-17T00:32:00Z"
+        },
+        {
+          "sign": "Virgo",
+          "duration_years": 11.0,
+          "start_utc": "2030-08-17T00:32:00Z",
+          "end_utc": "2041-08-16T18:32:00Z"
+        },
+        {
+          "sign": "Libra",
+          "duration_years": 12.0,
+          "start_utc": "2041-08-16T18:32:00Z",
+          "end_utc": "2053-08-16T18:32:00Z"
+        },
+        {
+          "sign": "Scorpio",
+          "duration_years": 6.0,
+          "start_utc": "2053-08-16T18:32:00Z",
+          "end_utc": "2059-08-17T06:32:00Z"
+        },
+        {
+          "sign": "Sagittarius",
+          "duration_years": 10.0,
+          "start_utc": "2059-08-17T06:32:00Z",
+          "end_utc": "2069-08-16T18:32:00Z"
+        },
+        {
+          "sign": "Capricorn",
+          "duration_years": 7.0,
+          "start_utc": "2069-08-16T18:32:00Z",
+          "end_utc": "2076-08-16T12:32:00Z"
+        },
+        {
+          "sign": "Aquarius",
+          "duration_years": 6.0,
+          "start_utc": "2076-08-16T12:32:00Z",
+          "end_utc": "2082-08-17T00:32:00Z"
+        },
+        {
+          "sign": "Pisces",
+          "duration_years": 7.0,
+          "start_utc": "2082-08-17T00:32:00Z",
+          "end_utc": "2089-08-16T18:32:00Z"
+        },
+        {
+          "sign": "Aries",
+          "duration_years": 12.0,
+          "start_utc": "2089-08-16T18:32:00Z",
+          "end_utc": "2101-08-17T18:32:00Z"
+        }
+      ],
+      "timing": {
+        "total_candidates": 3,
+        "candidates": [
+          {
+            "candidate_id": "CHARA_DASHA_LAGNA_START_ODD_EVEN_FOOTED:CAREER:2005-08-16T18:32:00+00:00:2006-08-16T18:32:00+00:00",
+            "event_category": "CAREER",
+            "convergence": "MULTI_CONDITION",
+            "start": "2005-08-16T18:32:00+00:00",
+            "end": "2006-08-16T18:32:00+00:00",
+            "duration_years": 0.999315537303217,
+            "dasha_period_ids": [
+              "CHARA_DASHA_LAGNA_START_ODD_EVEN_FOOTED:M1:Taurus"
+            ],
+            "transit_condition_ids": [
+              "same_sign:Sun:Sun",
+              "same_sign:Sun:Jupiter",
+              "same_sign:Sun:Venus",
+              "same_sign:Sun:Ketu",
+              "same_sign:Sun:Moon",
+              "same_sign:Sun:Rahu",
+              "same_sign:Sun:Mars",
+              "same_sign:Sun:Mercury",
+              "same_sign:Sun:Saturn"
+            ],
+            "rule_ids": [
+              "JAI.ARUDHA.AL_LORD_KENDRA_TRINE"
+            ]
+          },
+          {
+            "candidate_id": "CHARA_DASHA_LAGNA_START_ODD_EVEN_FOOTED:RELATIONSHIP:2005-08-16T18:32:00+00:00:2006-08-16T18:32:00+00:00",
+            "event_category": "RELATIONSHIP",
+            "convergence": "MULTI_CONDITION",
+            "start": "2005-08-16T18:32:00+00:00",
+            "end": "2006-08-16T18:32:00+00:00",
+            "duration_years": 0.999315537303217,
+            "dasha_period_ids": [
+              "CHARA_DASHA_LAGNA_START_ODD_EVEN_FOOTED:M1:Taurus"
+            ],
+            "transit_condition_ids": [
+              "rashi_drishti:Mars:Leo",
+              "rashi_drishti:Jupiter:Sagittarius",
+              "rashi_drishti:Venus:Sagittarius",
+              "rashi_drishti:Rahu:Sagittarius",
+              "rashi_drishti:Ketu:Sagittarius",
+              "rashi_drishti:Sun:Aries",
+              "rashi_drishti:Moon:Virgo",
+              "rashi_drishti:Rahu:Virgo",
+              "rashi_drishti:Moon:Pisces",
+              "rashi_drishti:Jupiter:Pisces",
+              "rashi_drishti:Venus:Pisces",
+              "rashi_drishti:Ketu:Pisces",
+              "rashi_drishti:Moon:Leo",
+              "rashi_drishti:Moon:Aries",
+              "rashi_drishti:Moon:Cancer",
+              "rashi_drishti:Moon:Sagittarius",
+              "rashi_drishti:Mercury:Aries",
+              "rashi_drishti:Venus:Leo",
+              "rashi_drishti:Sun:Sagittarius",
+              "rashi_drishti:Sun:Pisces",
+              "rashi_drishti:Mercury:Sagittarius",
+              "rashi_drishti:Mercury:Pisces",
+              "rashi_drishti:Jupiter:Leo",
+              "rashi_drishti:Venus:Aries",
+              "rashi_drishti:Venus:Cancer",
+              "rashi_drishti:Mercury:Leo",
+              "rashi_drishti:Sun:Leo",
+              "rashi_drishti:Mercury:Cancer",
+              "rashi_drishti:Venus:Virgo",
+              "rashi_drishti:Sun:Cancer",
+              "rashi_drishti:Sun:Virgo",
+              "rashi_drishti:Mercury:Virgo",
+              "rashi_drishti:Mars:Cancer",
+              "rashi_drishti:Mars:Sagittarius",
+              "rashi_drishti:Mars:Virgo",
+              "rashi_drishti:Mars:Pisces",
+              "rashi_drishti:Mars:Aries"
+            ],
+            "rule_ids": [
+              "JAI.DRISHTI.AK_AMK_MUTUAL"
+            ]
+          },
+          {
+            "candidate_id": "CHARA_DASHA_LAGNA_START_ODD_EVEN_FOOTED:SPIRITUAL:2005-08-16T18:32:00+00:00:2006-08-16T18:32:00+00:00",
+            "event_category": "SPIRITUAL",
+            "convergence": "MULTI_CONDITION",
+            "start": "2005-08-16T18:32:00+00:00",
+            "end": "2006-08-16T18:32:00+00:00",
+            "duration_years": 0.999315537303217,
+            "dasha_period_ids": [
+              "CHARA_DASHA_LAGNA_START_ODD_EVEN_FOOTED:M1:Taurus"
+            ],
+            "transit_condition_ids": [
+              "karakamsha_transit:Mercury",
+              "karakamsha_transit:Saturn",
+              "karakamsha_transit:Moon",
+              "karakamsha_transit:Mars",
+              "karakamsha_transit:Sun",
+              "karakamsha_transit:Venus"
+            ],
+            "rule_ids": [
+              "JAI.KARAKAMSHA.BENEFIC_OCCUPANCY"
+            ]
+          }
+        ],
+        "conflicts": []
+      },
+      "determinism": {
+        "deterministic": true,
+        "n_runs": 50,
+        "unique_hashes": 1,
+        "detail": "DETERMINISTIC: 50 runs, 1 unique hash(es)"
+      }
+    },
+    "CHARA_DASHA_LAGNA_START_MOVABLE_FIXED_DUAL_ALWAYS": {
+      "profile": "CHARA_DASHA_LAGNA_START_MOVABLE_FIXED_DUAL_ALWAYS",
+      "direction_rule": "MOVABLE_FORWARD_FIXED_REVERSE_DUAL_FORWARD",
+      "direction": "REVERSE",
+      "starting_sign": "Taurus",
+      "total_years": 92.0,
+      "dasha_periods": [
+        {
+          "sign": "Taurus",
+          "duration_years": 9.0,
+          "start_utc": "2005-08-16T18:32:00Z",
+          "end_utc": "2014-08-17T00:32:00Z"
+        },
+        {
+          "sign": "Aries",
+          "duration_years": 12.0,
+          "start_utc": "2014-08-17T00:32:00Z",
+          "end_utc": "2026-08-17T00:32:00Z"
+        },
+        {
+          "sign": "Pisces",
+          "duration_years": 7.0,
+          "start_utc": "2026-08-17T00:32:00Z",
+          "end_utc": "2033-08-16T18:32:00Z"
+        },
+        {
+          "sign": "Aquarius",
+          "duration_years": 8.0,
+          "start_utc": "2033-08-16T18:32:00Z",
+          "end_utc": "2041-08-16T18:32:00Z"
+        },
+        {
+          "sign": "Capricorn",
+          "duration_years": 7.0,
+          "start_utc": "2041-08-16T18:32:00Z",
+          "end_utc": "2048-08-16T12:32:00Z"
+        },
+        {
+          "sign": "Sagittarius",
+          "duration_years": 4.0,
+          "start_utc": "2048-08-16T12:32:00Z",
+          "end_utc": "2052-08-16T12:32:00Z"
+        },
+        {
+          "sign": "Scorpio",
+          "duration_years": 8.0,
+          "start_utc": "2052-08-16T12:32:00Z",
+          "end_utc": "2060-08-16T12:32:00Z"
+        },
+        {
+          "sign": "Libra",
+          "duration_years": 2.0,
+          "start_utc": "2060-08-16T12:32:00Z",
+          "end_utc": "2062-08-17T00:32:00Z"
+        },
+        {
+          "sign": "Virgo",
+          "duration_years": 3.0,
+          "start_utc": "2062-08-17T00:32:00Z",
+          "end_utc": "2065-08-16T18:32:00Z"
+        },
+        {
+          "sign": "Leo",
+          "duration_years": 12.0,
+          "start_utc": "2065-08-16T18:32:00Z",
+          "end_utc": "2077-08-16T18:32:00Z"
+        },
+        {
+          "sign": "Cancer",
+          "duration_years": 8.0,
+          "start_utc": "2077-08-16T18:32:00Z",
+          "end_utc": "2085-08-16T18:32:00Z"
+        },
+        {
+          "sign": "Gemini",
+          "duration_years": 12.0,
+          "start_utc": "2085-08-16T18:32:00Z",
+          "end_utc": "2097-08-16T18:32:00Z"
+        }
+      ],
+      "timing": {
+        "total_candidates": 3,
+        "candidates": [
+          {
+            "candidate_id": "CHARA_DASHA_LAGNA_START_MOVABLE_FIXED_DUAL_ALWAYS:CAREER:2005-08-16T18:32:00+00:00:2006-08-16T18:32:00+00:00",
+            "event_category": "CAREER",
+            "convergence": "MULTI_CONDITION",
+            "start": "2005-08-16T18:32:00+00:00",
+            "end": "2006-08-16T18:32:00+00:00",
+            "duration_years": 0.999315537303217,
+            "dasha_period_ids": [
+              "CHARA_DASHA_LAGNA_START_MOVABLE_FIXED_DUAL_ALWAYS:M1:Taurus"
+            ],
+            "transit_condition_ids": [
+              "same_sign:Sun:Sun",
+              "same_sign:Sun:Jupiter",
+              "same_sign:Sun:Venus",
+              "same_sign:Sun:Ketu",
+              "same_sign:Sun:Moon",
+              "same_sign:Sun:Rahu",
+              "same_sign:Sun:Mars",
+              "same_sign:Sun:Mercury",
+              "same_sign:Sun:Saturn"
+            ],
+            "rule_ids": [
+              "JAI.ARUDHA.AL_LORD_KENDRA_TRINE"
+            ]
+          },
+          {
+            "candidate_id": "CHARA_DASHA_LAGNA_START_MOVABLE_FIXED_DUAL_ALWAYS:RELATIONSHIP:2005-08-16T18:32:00+00:00:2006-08-16T18:32:00+00:00",
+            "event_category": "RELATIONSHIP",
+            "convergence": "MULTI_CONDITION",
+            "start": "2005-08-16T18:32:00+00:00",
+            "end": "2006-08-16T18:32:00+00:00",
+            "duration_years": 0.999315537303217,
+            "dasha_period_ids": [
+              "CHARA_DASHA_LAGNA_START_MOVABLE_FIXED_DUAL_ALWAYS:M1:Taurus"
+            ],
+            "transit_condition_ids": [
+              "rashi_drishti:Mars:Leo",
+              "rashi_drishti:Jupiter:Sagittarius",
+              "rashi_drishti:Venus:Sagittarius",
+              "rashi_drishti:Rahu:Sagittarius",
+              "rashi_drishti:Ketu:Sagittarius",
+              "rashi_drishti:Sun:Aries",
+              "rashi_drishti:Moon:Virgo",
+              "rashi_drishti:Rahu:Virgo",
+              "rashi_drishti:Moon:Pisces",
+              "rashi_drishti:Jupiter:Pisces",
+              "rashi_drishti:Venus:Pisces",
+              "rashi_drishti:Ketu:Pisces",
+              "rashi_drishti:Moon:Leo",
+              "rashi_drishti:Moon:Aries",
+              "rashi_drishti:Moon:Cancer",
+              "rashi_drishti:Moon:Sagittarius",
+              "rashi_drishti:Mercury:Aries",
+              "rashi_drishti:Venus:Leo",
+              "rashi_drishti:Sun:Sagittarius",
+              "rashi_drishti:Sun:Pisces",
+              "rashi_drishti:Mercury:Sagittarius",
+              "rashi_drishti:Mercury:Pisces",
+              "rashi_drishti:Jupiter:Leo",
+              "rashi_drishti:Venus:Aries",
+              "rashi_drishti:Venus:Cancer",
+              "rashi_drishti:Mercury:Leo",
+              "rashi_drishti:Sun:Leo",
+              "rashi_drishti:Mercury:Cancer",
+              "rashi_drishti:Venus:Virgo",
+              "rashi_drishti:Sun:Cancer",
+              "rashi_drishti:Sun:Virgo",
+              "rashi_drishti:Mercury:Virgo",
+              "rashi_drishti:Mars:Cancer",
+              "rashi_drishti:Mars:Sagittarius",
+              "rashi_drishti:Mars:Virgo",
+              "rashi_drishti:Mars:Pisces",
+              "rashi_drishti:Mars:Aries"
+            ],
+            "rule_ids": [
+              "JAI.DRISHTI.AK_AMK_MUTUAL"
+            ]
+          },
+          {
+            "candidate_id": "CHARA_DASHA_LAGNA_START_MOVABLE_FIXED_DUAL_ALWAYS:SPIRITUAL:2005-08-16T18:32:00+00:00:2006-08-16T18:32:00+00:00",
+            "event_category": "SPIRITUAL",
+            "convergence": "MULTI_CONDITION",
+            "start": "2005-08-16T18:32:00+00:00",
+            "end": "2006-08-16T18:32:00+00:00",
+            "duration_years": 0.999315537303217,
+            "dasha_period_ids": [
+              "CHARA_DASHA_LAGNA_START_MOVABLE_FIXED_DUAL_ALWAYS:M1:Taurus"
+            ],
+            "transit_condition_ids": [
+              "karakamsha_transit:Mercury",
+              "karakamsha_transit:Saturn",
+              "karakamsha_transit:Moon",
+              "karakamsha_transit:Mars",
+              "karakamsha_transit:Sun",
+              "karakamsha_transit:Venus"
+            ],
+            "rule_ids": [
+              "JAI.KARAKAMSHA.BENEFIC_OCCUPANCY"
+            ]
+          }
+        ],
+        "conflicts": []
+      },
+      "determinism": {
+        "deterministic": true,
+        "n_runs": 50,
+        "unique_hashes": 1,
+        "detail": "DETERMINISTIC: 50 runs, 1 unique hash(es)"
+      }
+    }
+  }
+}

@@ -8,11 +8,42 @@ Handles all chart and dasha calculations including:
 - D10 (Dashamsha) chart calculations
 """
 
-from typing import Dict, Any, List, Optional
+from typing import Dict, Any, List, Optional, Tuple
 import swisseph as swe
 import math
 from datetime import datetime
 import pytz
+
+try:
+    from core.calculation.pipeline import generate_chart_facts  # when backend is on sys.path (cwd=backend)
+except ImportError:
+    from backend.core.calculation.pipeline import generate_chart_facts  # when project root is cwd
+# Phase 2 Varga Engine — pure derivation layer (must not be removed)
+_VARGA_ENGINE_AVAILABLE = False
+try:
+    from core.calculation.varga import (
+        calculate_varga_position as _calc_varga_pos,
+        calculate_all_vargas as _calc_all_vargas,
+        VargaMethod as _VargaMethod,
+        VALID_VARGAS as _VALID_VARGAS,
+    )
+    _VARGA_ENGINE_AVAILABLE = True
+except ImportError:
+    try:
+        from backend.core.calculation.varga import (
+            calculate_varga_position as _calc_varga_pos,
+            calculate_all_vargas as _calc_all_vargas,
+            VargaMethod as _VargaMethod,
+            VALID_VARGAS as _VALID_VARGAS,
+        )
+        _VARGA_ENGINE_AVAILABLE = True
+    except Exception as _e2:
+        _calc_varga_pos = None  # type: ignore
+        _calc_all_vargas = None  # type: ignore
+        _VargaMethod = None  # type: ignore
+        _VALID_VARGAS = [1, 2, 3, 4, 7, 9, 10, 12, 16, 20, 24, 27, 30, 40, 45, 60]
+        _VARGA_ENGINE_AVAILABLE = False
+        print(f"[Varga] Engine import failed (both paths), falling back to legacy: {_e2}")
 
 # Import constants from main (will be moved here if needed)
 # For now, we'll import them to avoid duplication
@@ -197,24 +228,39 @@ def compute_nakshatra_pada(lon_sidereal):
 
 
 def compute_karana(moon_lon, sun_lon):
-    """Calculate Karana based on Moon and Sun longitudes."""
-    moon = normalize_deg(moon_lon)
-    sun = normalize_deg(sun_lon)
-    
-    # Calculate difference (handle wrap-around)
-    diff = moon - sun
-    if diff < 0:
-        diff += 360.0
-    
-    # Karana is 6 degrees each, 11 unique karanas repeating
-    karana_index = int(diff / 6.0) % 11
-    karana_name = KARANA_NAMES[karana_index]
-    
-    return {
-        "karana": karana_name,
-        "karana_index": karana_index,
-        "moon_sun_diff": round(diff, 4)
-    }
+    """
+    Calculate Karana using classical 60 half-Tithi sequence (Phase 3 corrected).
+    Fixes prohibited int(diff/6)%11. Delegates to canonical panchanga engine
+    KARANA_SEQUENCE_60: Kimstughna(0), Bava..Vishti x8 (1-56), Shakuni(57), Chatushpada(58), Naga(59).
+    Returns both 60-index and 11-unique index for backward compat.
+    """
+    try:
+        from core.calculation.panchanga import KARANA_SEQUENCE_60, KARANA_NAMES_11, karana_at_index
+        diff = normalize_deg(moon_lon - sun_lon)
+        idx60 = int(diff // 6.0 + 1e-9) % 60
+        name = KARANA_SEQUENCE_60[idx60]
+        unique_idx = KARANA_NAMES_11.index(name) if name in KARANA_NAMES_11 else idx60 % 11
+        return {
+            "karana": name,
+            "karana_index": unique_idx,
+            "karana_index_60": idx60,
+            "karana_sequence_60": KARANA_SEQUENCE_60[idx60],
+            "moon_sun_diff": round(diff, 4)
+        }
+    except Exception:
+        # Fallback legacy (should not happen)
+        moon = normalize_deg(moon_lon)
+        sun = normalize_deg(sun_lon)
+        diff = moon - sun
+        if diff < 0:
+            diff += 360.0
+        karana_index = int(diff / 6.0) % 11
+        karana_name = KARANA_NAMES[karana_index]
+        return {
+            "karana": karana_name,
+            "karana_index": karana_index,
+            "moon_sun_diff": round(diff, 4)
+        }
 
 
 def compute_tithi(moon_lon: float, sun_lon: float) -> Dict[str, Any]:
@@ -573,268 +619,29 @@ def calculate_pratyantar_dasha(antar_lord, antar_years, start_jd, days_in_year, 
 
 def compute_vimshottari_timeline(jd_birth, moon_sidereal_lon, years_ahead=100):
     """
-    Calculate Vimshottari dasha timeline for up to specified years ahead.
-    
-    Vimshottari Dasha is a 120-year cycle divided among 9 planets:
-    - Ketu: 7 years, Venus: 20 years, Sun: 6 years, Moon: 10 years
-    - Mars: 7 years, Rahu: 18 years, Jupiter: 16 years
-    - Saturn: 19 years, Mercury: 17 years
-    
-    Each Mahadasha is divided into 9 Antar Dashas (sub-periods).
-    Each Antar Dasha is divided into 9 Pratyantar Dashas (sub-sub-periods).
-    
-    The dasha period starts from the birth nakshatra's lord and continues
-    in the fixed sequence. The first period (from birth) is partial based
-    on how much of the nakshatra the Moon has traversed.
-    
-    Args:
-        jd_birth: Julian Day of birth
-        moon_sidereal_lon: Moon's sidereal longitude at birth
-        years_ahead: Number of years to calculate ahead (default: 100)
-    
-    Returns:
-        Dictionary with nakshatra info and timeline of dasha periods including
-        Antar Dashas and Pratyantar Dashas
+    PURE Vimshottari timeline — Phase 3: delegates to canonical Dasha engine.
+
+    Legacy shim preserved for backward compatibility (return shape unchanged
+    except is_current flags are always False — caller must use
+    core.calculation.dasha.get_current_dasha(timeline, evaluation_datetime)
+    with explicit evaluation_datetime to mark current. No datetime.now() inside.
+
+    This function is now PURE and respects DashaCalculationProfile default
+    (365.2425 days/year). Use core/calculation/dasha.calculate_vimshottari_timeline
+    for ChartFacts-based entry with profile support.
     """
     if moon_sidereal_lon is None:
         return None
-
-    # Calculate nakshatra and its lord
-    nak = compute_nakshatra_pada(moon_sidereal_lon)
-    fraction_into = nak["fraction"]  # 0 to 1, how much of nakshatra traversed
-    lord = nak["lord"]
-    full_years = VIMSHOTTARI_YEARS[lord]
-    
-    # Calculate remaining years in current dasha period from birth
-    # If Moon has traversed 30% of nakshatra, 70% remains
-    remaining_years = (1.0 - fraction_into) * full_years
-
-    days_in_year = 365.2425
-    timeline = []
-    seq = VIMSHOTTARI_ORDER
-    start_idx = seq.index(lord)
-    
-    # Start from birth date for the first (partial) dasha period
-    cursor = jd_birth
-    
-    # First period: remaining time in current dasha from birth
-    end_jd = cursor + remaining_years * days_in_year
-    start_dt = jd_to_datetime(cursor)
-    end_dt = jd_to_datetime(end_jd)
-    
-    # Calculate Antar Dashas for the first (partial) Mahadasha
-    # The full Mahadasha started: fraction_into * full_years ago
-    # So: mahadasha_start = jd_birth - (full_years - remaining_years) * days_in_year
-    mahadasha_start_jd = cursor - (full_years - remaining_years) * days_in_year
-    antar_dashas_full = calculate_antar_dasha(lord, full_years, mahadasha_start_jd, days_in_year)
-    
-    # Find which Antar Dashas are within the remaining period (from birth to end of Mahadasha)
-    antar_dashas_partial = []
-    for antar in antar_dashas_full:
-        # Only include Antar Dashas that overlap with the remaining period (from birth)
-        if antar["end_jd"] > cursor:  # Ends after birth
-            antar_start = max(antar["start_jd"], cursor)  # Start from birth or Antar Dasha start, whichever is later
-            antar_end = min(antar["end_jd"], end_jd)  # End at end of Mahadasha or Antar Dasha end, whichever is earlier
-            
-            if antar_start < antar_end:  # Only include if there's actual time
-                antar_years = (antar_end - antar_start) / days_in_year
-                start_dt_ad = jd_to_datetime(antar_start)
-                end_dt_ad = jd_to_datetime(antar_end)
-                
-                # Calculate Pratyantar Dashas for this Antar Dasha
-                # Use the full Antar Dasha boundaries for calculation
-                pratyantar_dashas_full = calculate_pratyantar_dasha(
-                    antar["lord"], 
-                    antar["years"],  # Full Antar Dasha years
-                    antar["start_jd"],  # Full Antar Dasha start
-                    days_in_year
-                )
-                
-                # Find Pratyantar Dashas within the partial Antar Dasha period
-                pratyantar_dashas_partial = []
-                for pratyantar in pratyantar_dashas_full:
-                    # Only include Pratyantar Dashas that overlap with the partial Antar Dasha period
-                    if pratyantar["end_jd"] > antar_start and pratyantar["start_jd"] < antar_end:
-                        pratyantar_start = max(pratyantar["start_jd"], antar_start)
-                        pratyantar_end = min(pratyantar["end_jd"], antar_end)
-                        if pratyantar_start < pratyantar_end:
-                            pratyantar_years_partial = (pratyantar_end - pratyantar_start) / days_in_year
-                            pratyantar_start_dt = jd_to_datetime(pratyantar_start)
-                            pratyantar_end_dt = jd_to_datetime(pratyantar_end)
-                            
-                            # Filter and subset Sookshma Dashas for the partial period
-                            sookshmas_partial = []
-                            for sookshma in pratyantar.get("sookshma_dashas", []):
-                                if sookshma["end_jd"] > pratyantar_start and sookshma["start_jd"] < pratyantar_end:
-                                    s_start = max(sookshma["start_jd"], pratyantar_start)
-                                    s_end = min(sookshma["end_jd"], pratyantar_end)
-                                    if s_start < s_end:
-                                        s_years = (s_end - s_start) / days_in_year
-                                        s_start_dt = jd_to_datetime(s_start)
-                                        s_end_dt = jd_to_datetime(s_end)
-                                        sookshmas_partial.append({
-                                            "lord": sookshma["lord"],
-                                            "start_jd": s_start,
-                                            "end_jd": s_end,
-                                            "start_date": s_start_dt.isoformat(),
-                                            "end_date": s_end_dt.isoformat(),
-                                            "years": round(s_years, 8),
-                                            "is_current": False,
-                                            "prana_dashas": []
-                                        })
-                            
-                            pratyantar_dashas_partial.append({
-                                "lord": pratyantar["lord"],
-                                "start_jd": pratyantar_start,
-                                "end_jd": pratyantar_end,
-                                "start_date": pratyantar_start_dt.isoformat(),
-                                "end_date": pratyantar_end_dt.isoformat(),
-                                "years": round(pratyantar_years_partial, 6),
-                                "is_current": False,  # Will be determined based on current date
-                                "sookshma_dashas": sookshmas_partial
-                            })
-                
-                antar_dashas_partial.append({
-                    "lord": antar["lord"],
-                    "start_jd": antar_start,
-                    "end_jd": antar_end,
-                    "start_date": start_dt_ad.isoformat(),
-                    "end_date": end_dt_ad.isoformat(),
-                    "years": round(antar_years, 6),
-                    "is_current": False,  # Will be determined based on current date
-                    "pratyantar_dashas": pratyantar_dashas_partial
-                })
-    
-    # Calculate age at start and end of this Mahadasha
-    start_age = (cursor - jd_birth) / days_in_year
-    end_age = (end_jd - jd_birth) / days_in_year
-
-    timeline.append({
-        "lord": lord,
-        "start_jd": cursor,
-        "end_jd": end_jd,
-        "start_date": start_dt.isoformat(),
-        "end_date": end_dt.isoformat(),
-        "years": round(remaining_years, 4),
-        "is_partial": True,
-        "is_current": False,  # Will be determined based on current date
-        "start_age": round(start_age, 2),
-        "end_age": round(end_age, 2),
-        "antar_dashas": antar_dashas_partial
-    })
-    cursor = end_jd
-
-    # Continue with subsequent full dasha periods
-    i = 1
-    while (cursor - jd_birth) < years_ahead * days_in_year:
-        idx = (start_idx + i) % len(seq)
-        pl = seq[idx]
-        yrs = VIMSHOTTARI_YEARS[pl]
-        end_jd = cursor + yrs * days_in_year
-        
-        start_dt = jd_to_datetime(cursor)
-        end_dt = jd_to_datetime(end_jd)
-        
-        # Calculate Antar Dashas for this Mahadasha
-        antar_dashas = calculate_antar_dasha(pl, yrs, cursor, days_in_year)
-        
-        # Calculate Pratyantar Dashas for each Antar Dasha
-        for antar in antar_dashas:
-            antar_years = antar["years"]
-            pratyantar_dashas = calculate_pratyantar_dasha(
-                antar["lord"],
-                antar_years,
-                antar["start_jd"],
-                days_in_year
-            )
-            antar["pratyantar_dashas"] = pratyantar_dashas
-        
-        # Calculate age at start and end of this Mahadasha
-        start_age = (cursor - jd_birth) / days_in_year
-        end_age = (end_jd - jd_birth) / days_in_year
-        
-        timeline.append({
-            "lord": pl,
-            "start_jd": cursor,
-            "end_jd": end_jd,
-            "start_date": start_dt.isoformat(),
-            "end_date": end_dt.isoformat(),
-            "years": yrs,
-            "is_partial": False,
-            "is_current": False,  # Will be determined based on current date
-            "start_age": round(start_age, 2),
-            "end_age": round(end_age, 2),
-            "antar_dashas": antar_dashas
-        })
-        cursor = end_jd
-        i += 1
-
-    # Determine current dasha based on today's date
-    # Get current date/time in UTC
-    now_utc = datetime.now(pytz.utc)
-    ut_decimal = now_utc.hour + now_utc.minute / 60.0 + now_utc.second / 3600.0
-    jd_now = swe.julday(now_utc.year, now_utc.month, now_utc.day, ut_decimal, swe.GREG_CAL)
-    
-    # Find which Mahadasha contains the current date
-    current_mahadasha_found = False
-    for mahadasha in timeline:
-        if mahadasha["start_jd"] <= jd_now < mahadasha["end_jd"]:
-            mahadasha["is_current"] = True
-            current_mahadasha_found = True
-            
-            # Find current Antar Dasha within this Mahadasha
-            if mahadasha.get("antar_dashas"):
-                for antar in mahadasha["antar_dashas"]:
-                    # For partial Mahadashas, we need to check if antar dates overlap with current date
-                    if "start_jd" in antar and "end_jd" in antar:
-                        if antar["start_jd"] <= jd_now < antar["end_jd"]:
-                            antar["is_current"] = True
-                            
-                            # Find current Pratyantar Dasha within this Antar Dasha
-                            if antar.get("pratyantar_dashas"):
-                                for pratyantar in antar["pratyantar_dashas"]:
-                                    if pratyantar["start_jd"] <= jd_now < pratyantar["end_jd"]:
-                                        pratyantar["is_current"] = True
-                                        
-                                        # Find current active Sookshma Dasha
-                                        if pratyantar.get("sookshma_dashas"):
-                                            for sookshma in pratyantar["sookshma_dashas"]:
-                                                if sookshma["start_jd"] <= jd_now < sookshma["end_jd"]:
-                                                    sookshma["is_current"] = True
-                                                    
-                                                    # Calculate its 9 Prana Dashas!
-                                                    prana_dashas = calculate_prana_dasha(
-                                                        sookshma["lord"],
-                                                        sookshma["years"],
-                                                        sookshma["start_jd"],
-                                                        days_in_year
-                                                    )
-                                                    sookshma["prana_dashas"] = prana_dashas
-                                                    
-                                                    # Find current active Prana Dasha
-                                                    for prana in prana_dashas:
-                                                        if prana["start_jd"] <= jd_now < prana["end_jd"]:
-                                                            prana["is_current"] = True
-                                                            break
-                                                    break
-            break
-    
-    # If no current Mahadasha found, check if we're before the first period or after the last
-    if not current_mahadasha_found and timeline:
-        # Check if current date is before the first period (shouldn't happen for birth-based calculations)
-        if jd_now < timeline[0]["start_jd"]:
-            # Mark first period as current if we're before it (edge case)
-            timeline[0]["is_current"] = True
-        # If we're after all periods, mark the last one (this shouldn't happen with 100 years ahead)
-        elif jd_now >= timeline[-1]["end_jd"]:
-            timeline[-1]["is_current"] = True
-
-    return {
-        "nakshatra_of_moon": nak,
-        "timeline": timeline,
-        "total_years_calculated": round((cursor - jd_birth) / days_in_year, 2),
-        "dasha_cycle_years": 120  # Total Vimshottari cycle is 120 years
-    }
+    try:
+        from core.calculation.dasha import legacy_compute_vimshottari_timeline_shim
+        return legacy_compute_vimshottari_timeline_shim(jd_birth, moon_sidereal_lon, years_ahead=years_ahead, tz_name="UTC")
+    except ImportError:
+        try:
+            from backend.core.calculation.dasha import legacy_compute_vimshottari_timeline_shim
+            return legacy_compute_vimshottari_timeline_shim(jd_birth, moon_sidereal_lon, years_ahead=years_ahead, tz_name="UTC")
+        except Exception as e:
+            # If shim unavailable, fallback minimal empty (should not happen)
+            return {"nakshatra_of_moon": compute_nakshatra_pada(moon_sidereal_lon), "timeline": [], "total_years_calculated": 0, "dasha_cycle_years": 120, "error": str(e)}
 
 
 # ---------------------------
@@ -1144,7 +951,102 @@ def get_varga_sign(varga_num: int, d1_sign: int, deg_in_sign: float) -> int:
 
 
 def build_chart_varga(varga_num: int, asc_sidereal_deg: float, d1_planets: List[Dict[str, Any]]) -> Dict[str, Any]:
-    """Build any divisional chart structure."""
+    """
+    Build any divisional chart structure.
+
+    Phase 2: delegates to pure Varga engine when available so that sign
+    and varga degree are mathematically correct for the declared method
+    (PARASHARI_CLASSICAL) and floating boundaries are handled consistently.
+    Falls back to legacy get_varga_sign path if engine unavailable.
+    """
+    # --- Try Phase 2 pure engine path ---
+    if _VARGA_ENGINE_AVAILABLE and _calc_varga_pos is not None:
+        try:
+            # Ascendant via pure engine
+            asc_pos = _calc_varga_pos(asc_sidereal_deg, varga_num, "PARASHARI_CLASSICAL")
+            lagna_sign = asc_pos.sign_num
+            # Build enriched ascendant: keep legacy 'degree' for compat, add correct varga_degree
+            ascendant = {
+                "degree": round(asc_sidereal_deg, 4),  # legacy compat: D1 degree
+                "varga_degree": round(float(asc_pos.degree), 6),
+                "varga_longitude": round(float(asc_pos.longitude), 6),
+                "sign": SIGNS[lagna_sign - 1],
+                "sign_num": lagna_sign,
+                "method": asc_pos.method,
+                "segment_index": asc_pos.segment_index,
+                "source_longitude": round(float(asc_pos.source_longitude), 6),
+                "source_sign": asc_pos.source_sign,
+                "source_degree": round(float(asc_pos.source_degree), 6),
+            }
+            planets = []
+            varga_data: Dict[str, Any] = {}
+            for p in d1_planets:
+                lon_sid_used = p.get("lon_sidereal_flag") or p.get("lon_sidereal_manual")
+                if lon_sid_used is None:
+                    continue
+                lon = float(lon_sid_used)
+                pos = _calc_varga_pos(lon, varga_num, "PARASHARI_CLASSICAL")
+                sign_name = pos.sign
+                sign_num = pos.sign_num
+                planets.append({
+                    "name": p["name"],
+                    "longitude": lon,  # D1 lon for backward compat
+                    "varga_longitude": round(float(pos.longitude), 6),
+                    "varga_degree": round(float(pos.degree), 6),
+                    "sign": sign_name,
+                    "sign_num": sign_num,
+                    "retro": bool(p.get("retrograde", False)),
+                    "combust": bool(p.get("combust", False)),
+                    "debilitated": is_debilitated(p["name"], sign_name),
+                    "exalted": is_exalted(p["name"], sign_name),
+                    "method": pos.method,
+                    "segment_index": pos.segment_index,
+                    "source_longitude": round(float(pos.source_longitude), 6),
+                    "source_degree": round(float(pos.source_degree), 6),
+                })
+                # Per-planet dict entry: preserve legacy keys, add enriched keys
+                varga_data[p["name"]] = {
+                    f"d{varga_num}_sign": sign_name,  # legacy
+                    f"d{varga_num}_sign_num": sign_num,
+                    f"d{varga_num}_longitude": lon,  # legacy = D1 lon
+                    # New structured keys (additive, not breaking)
+                    f"d{varga_num}_varga_degree": round(float(pos.degree), 6),
+                    f"d{varga_num}_varga_longitude": round(float(pos.longitude), 6),
+                    f"d{varga_num}_segment_index": pos.segment_index,
+                    f"d{varga_num}_method": pos.method,
+                    f"d{varga_num}_source_longitude": round(float(pos.source_longitude), 6),
+                    f"d{varga_num}_source_degree": round(float(pos.source_degree), 6),
+                    f"d{varga_num}_source_sign": pos.source_sign,
+                    "retrograde": bool(p.get("retrograde", False)),
+                    "combust": bool(p.get("combust", False)),
+                    "debilitated": is_debilitated(p["name"], sign_name),
+                    "exalted": is_exalted(p["name"], sign_name),
+                }
+            houses = whole_sign_houses_from(lagna_sign)
+            houses_signs = [
+                {"house": h["house"], "sign": h["sign"], "sign_num": h["sign_num"]}
+                for h in houses
+            ]
+            # Also expose structured positions for new consumers
+            varga_data["_ascendant"] = ascendant
+            varga_data["_houses"] = houses
+            varga_data["_houses_signs"] = houses_signs
+            varga_data["planets"] = planets
+            # Extra structured dump for Phase 2 consumers (does not break legacy)
+            varga_data["_varga_positions"] = {
+                p["name"]: _calc_varga_pos(
+                    float(next(x for x in d1_planets if x["name"] == p["name"])["lon_sidereal_flag"] or next(x for x in d1_planets if x["name"] == p["name"])["lon_sidereal_manual"]),
+                    varga_num, "PARASHARI_CLASSICAL"
+                ).model_dump() for p in planets
+            }
+            # Asc detailed also
+            varga_data["_ascendant_position"] = asc_pos.model_dump()
+            return varga_data
+        except Exception as e:
+            print(f"[Varga] build_chart_varga pure-engine path failed for D{varga_num}: {e}, falling back to legacy")
+            # fall through to legacy
+
+    # --- Legacy fallback path (kept for compatibility / engine unavailable) ---
     asc_sign_d1 = int(asc_sidereal_deg // 30) + 1
     if asc_sign_d1 > 12: asc_sign_d1 = 12
     elif asc_sign_d1 < 1: asc_sign_d1 = 1
@@ -1612,12 +1514,18 @@ def compute_chart(year: int, month: int, day: int, hour: int, minute: int, secon
     _active_tz = tz
     swe.set_sid_mode(swe.SIDM_LAHIRI, 0, 0)
     
-    # Convert to UTC and get Julian Day
-    jd_ut, dt_utc = to_utc_julian_day(year, month, day, hour, minute, second, tz)
+    # --- PHASE 1: CANONICAL TRUTH LAYER ---
+    facts = generate_chart_facts(
+        year=year, month=month, day=day,
+        hour=hour, minute=minute, second=second,
+        lat=lat, lon=lon, tz_name=tz
+    )
     
-    # Get Ayanamsha
+    # 1. Map Time & Ayanamsha
+    jd_ut = facts.time.julian_day
+    dt_utc = datetime.fromisoformat(facts.time.utc_datetime)
+    ay = facts.ayanamsha.value
     swe.set_topo(lon, lat, float(topo_alt))
-    ay = swe.get_ayanamsa_ut(jd_ut)
     
     # Default planets list
     planets = planets or [
@@ -1625,9 +1533,22 @@ def compute_chart(year: int, month: int, day: int, hour: int, minute: int, secon
         "Jupiter", "Saturn", "Rahu", "Ketu"
     ]
     
-    # Calculate standard planets
+    # 2. Call legacy planet calculator to retain derived attributes (combust, debilitated, etc.)
     res_planets = calculate_planets(jd_ut, ay, planets, lon, lat, topo_alt)
     
+    # 3. Overwrite fundamental values with canonical facts
+    for p_name, p_data in facts.planets.items():
+        if p_name in res_planets:
+            res_planets[p_name]["lon_tropical"] = p_data.longitude.tropical
+            res_planets[p_name]["lon_sidereal_manual"] = p_data.longitude.sidereal
+            res_planets[p_name]["lon_sidereal_flag"] = p_data.longitude.sidereal
+            res_planets[p_name]["sign_manual"] = p_data.sign.name
+            res_planets[p_name]["sign_flag"] = p_data.sign.name
+            res_planets[p_name]["degree_in_sign_manual"] = p_data.sign.degree
+            res_planets[p_name]["degree_in_sign_flag"] = p_data.sign.degree
+            res_planets[p_name]["speed_lon"] = p_data.speed
+            res_planets[p_name]["retrograde"] = p_data.retrograde
+            
     # Calculate Maandi and Gulika positions
     try:
         mg_positions = calculate_maandi_and_gulika_positions(jd_ut, lat, lon, tz, ay)
@@ -1636,8 +1557,21 @@ def compute_chart(year: int, month: int, day: int, hour: int, minute: int, secon
     except Exception as e:
         print(f"Error calculating Maandi and Gulika: {e}")
         
-    # Calculate houses and ascendant
+    # 4. Map Canonical Ascendant & Houses
+    # Calculate legacy houses_data for derived aspects, but overwrite root facts
     houses_data = calculate_houses(jd_ut, lat, lon, ay)
+    houses_data["asc_sidereal"] = facts.ascendant.longitude.sidereal
+    houses_data["ascendant"]["tropical"] = facts.ascendant.longitude.tropical
+    houses_data["ascendant"]["sidereal"] = facts.ascendant.longitude.sidereal
+    houses_data["ascendant"]["sign"] = facts.ascendant.sign.name
+    houses_data["ascendant"]["degree"] = facts.ascendant.sign.degree
+    
+    for house_num, house_obj in facts.houses.items():
+        # Legacy format uses "house_1", "house_2", etc. as dict keys
+        legacy_key = f"house_{house_num}"
+        if legacy_key in houses_data["whole_sign_houses"]:
+            houses_data["whole_sign_houses"][legacy_key]["sign"] = house_obj.sign.name
+                
     asc_sidereal = houses_data["asc_sidereal"]
     asc_sign = houses_data["ascendant"]["sign"]
     
@@ -1665,7 +1599,7 @@ def compute_chart(year: int, month: int, day: int, hour: int, minute: int, secon
     if moon_sid is not None:
         moon_sign, moon_deg = deg_to_sign_and_degree(moon_sid)
 
-    # Prepare list form of planets for varga calculations
+    # Prepare list form of planets for varga calculations (legacy path)
     d1_planets_list = []
     for name, pdata in res_planets.items():
         lon_sid_used = pdata.get("lon_sidereal_flag") or pdata.get("lon_sidereal_manual")
@@ -1677,12 +1611,101 @@ def compute_chart(year: int, month: int, day: int, hour: int, minute: int, secon
                 "retrograde": pdata.get("retrograde", False),
                 "combust": pdata.get("combust", False)
             })
-            
-    # Calculate all 16 divisional charts
+
+    # Calculate all 16 divisional charts — Phase 2 pure derivation from ChartFacts
     vargas_list = [1, 2, 3, 4, 7, 9, 10, 12, 16, 20, 24, 27, 30, 40, 45, 60]
     vargas = {}
-    for v_num in vargas_list:
-        vargas[f"d{v_num}"] = build_chart_varga(v_num, asc_sidereal, d1_planets_list)
+    _varga_structured = None  # enriched structured dump from pure engine
+
+    if _VARGA_ENGINE_AVAILABLE and _calc_all_vargas is not None:
+        try:
+            # Primary source: ChartFacts (canonical sidereal longitudes only)
+            _varga_structured = _calc_all_vargas(facts)
+            # Transform structured result into legacy vargas dict shape
+            # _varga_structured = {"planets": {planet: {D1:Pos, D9:Pos,...}}, "ascendant": {D1:Pos,...}}
+            for v_num in vargas_list:
+                dkey_lower = f"d{v_num}"
+                dkey_upper = f"D{v_num}"
+                # Ascendant position for this varga (from facts)
+                asc_pos = _varga_structured["ascendant"][dkey_upper]
+                lagna_sign = asc_pos.sign_num
+                # Legacy ascendant: preserve 'degree' for compat, add varga_degree
+                ascendant_entry = {
+                    "degree": round(asc_sidereal, 4),
+                    "varga_degree": round(float(asc_pos.degree), 6),
+                    "varga_longitude": round(float(asc_pos.longitude), 6),
+                    "sign": asc_pos.sign,
+                    "sign_num": lagna_sign,
+                    "method": asc_pos.method,
+                    "segment_index": asc_pos.segment_index,
+                    "source_longitude": round(float(asc_pos.source_longitude), 6),
+                    "source_sign": asc_pos.source_sign,
+                    "source_degree": round(float(asc_pos.source_degree), 6),
+                }
+                # Houses from varga lagna
+                houses = whole_sign_houses_from(lagna_sign)
+                houses_signs = [
+                    {"house": h["house"], "sign": h["sign"], "sign_num": h["sign_num"]}
+                    for h in houses
+                ]
+                planets_list = []
+                varga_data: Dict[str, Any] = {}
+                for p_name, per_planet in _varga_structured["planets"].items():
+                    pos = per_planet[dkey_upper]
+                    # Find legacy retro/combust from res_planets where possible
+                    legacy_p = res_planets.get(p_name, {})
+                    planets_list.append({
+                        "name": p_name,
+                        "longitude": round(float(pos.source_longitude), 6),  # compat D1 lon
+                        "varga_longitude": round(float(pos.longitude), 6),
+                        "varga_degree": round(float(pos.degree), 6),
+                        "sign": pos.sign,
+                        "sign_num": pos.sign_num,
+                        "retro": bool(legacy_p.get("retrograde", False)),
+                        "combust": bool(legacy_p.get("combust", False)),
+                        "debilitated": is_debilitated(p_name, pos.sign),
+                        "exalted": is_exalted(p_name, pos.sign),
+                        "method": pos.method,
+                        "segment_index": pos.segment_index,
+                        "source_longitude": round(float(pos.source_longitude), 6),
+                        "source_degree": round(float(pos.source_degree), 6),
+                    })
+                    varga_data[p_name] = {
+                        f"d{v_num}_sign": pos.sign,
+                        f"d{v_num}_sign_num": pos.sign_num,
+                        f"d{v_num}_longitude": round(float(pos.source_longitude), 6),  # legacy = D1 lon
+                        f"d{v_num}_varga_degree": round(float(pos.degree), 6),
+                        f"d{v_num}_varga_longitude": round(float(pos.longitude), 6),
+                        f"d{v_num}_segment_index": pos.segment_index,
+                        f"d{v_num}_method": pos.method,
+                        f"d{v_num}_source_longitude": round(float(pos.source_longitude), 6),
+                        f"d{v_num}_source_degree": round(float(pos.source_degree), 6),
+                        f"d{v_num}_source_sign": pos.source_sign,
+                        "retrograde": bool(legacy_p.get("retrograde", False)),
+                        "combust": bool(legacy_p.get("combust", False)),
+                        "debilitated": is_debilitated(p_name, pos.sign),
+                        "exalted": is_exalted(p_name, pos.sign),
+                    }
+                varga_data["_ascendant"] = ascendant_entry
+                varga_data["_houses"] = houses
+                varga_data["_houses_signs"] = houses_signs
+                varga_data["planets"] = planets_list
+                # Enriched structured for new consumers
+                varga_data["_ascendant_position"] = asc_pos.model_dump()
+                varga_data["_varga_positions"] = {
+                    p_name: per_planet[dkey_upper].model_dump()
+                    for p_name, per_planet in _varga_structured["planets"].items()
+                }
+                vargas[dkey_lower] = varga_data
+        except Exception as e:
+            print(f"[Varga] _calc_all_vargas from ChartFacts failed: {e}, falling back to legacy loop")
+            _varga_structured = None
+            vargas = {}
+
+    if not vargas:
+        # Fallback: legacy build_chart_varga loop (still uses pure engine internally if available)
+        for v_num in vargas_list:
+            vargas[f"d{v_num}"] = build_chart_varga(v_num, asc_sidereal, d1_planets_list)
         
     # Maintain root-level d9 and d10 for backwards compatibility
     d9 = vargas["d9"]

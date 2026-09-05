@@ -1,0 +1,146 @@
+[
+  {
+    "rule_id": "PARASHARI.YOGA.GAJA_KESARI",
+    "legacy_file": "gaja_kesari.json",
+    "new_formed": true,
+    "legacy_active": true,
+    "verdict": "MATCH",
+    "reason": "both agree on FORMED/active"
+  },
+  {
+    "rule_id": "PARASHARI.YOGA.DHARMA_KARMADHIPATI",
+    "legacy_file": "dharma_karmadhipati_yoga.json",
+    "new_formed": false,
+    "legacy_active": true,
+    "verdict": "CONVENTION_DIFFERENCE",
+    "reason": "Legacy raja_yoga_9_10 pattern returns True when 9th and 10th lords share a house; on the golden chart both are Saturn, so the legacy check trivially self-matches. New engine requires a genuine sambandha between two different lords (or KT placement for a shared lord); Saturn sits in house 3. Kept classical spec; no auto-change."
+  },
+  {
+    "rule_id": "PARASHARI.YOGA.RUCHAKA",
+    "legacy_file": "ruchaka_yoga.json",
+    "new_formed": false,
+    "legacy_active": false,
+    "verdict": "MATCH",
+    "reason": "both agree on NOT_FORMED/inactive"
+  },
+  {
+    "rule_id": "PARASHARI.YOGA.BHADRA",
+    "legacy_file": "bhadra_yoga.json",
+    "new_formed": false,
+    "legacy_active": false,
+    "verdict": "MATCH",
+    "reason": "both agree on NOT_FORMED/inactive"
+  },
+  {
+    "rule_id": "PARASHARI.YOGA.HAMSA",
+    "legacy_file": "hamsa_yoga.json",
+    "new_formed": false,
+    "legacy_active": false,
+    "verdict": "MATCH",
+    "reason": "both agree on NOT_FORMED/inactive"
+  },
+  {
+    "rule_id": "PARASHARI.YOGA.MALAVYA",
+    "legacy_file": "malavya_yoga.json",
+    "new_formed": false,
+    "legacy_active": false,
+    "verdict": "MATCH",
+    "reason": "both agree on NOT_FORMED/inactive"
+  },
+  {
+    "rule_id": "PARASHARI.YOGA.SASA",
+    "legacy_file": "sasa_yoga.json",
+    "new_formed": false,
+    "legacy_active": false,
+    "verdict": "MATCH",
+    "reason": "both agree on NOT_FORMED/inactive"
+  },
+  {
+    "rule_id": "PARASHARI.YOGA.BUDHA_ADITYA",
+    "legacy_file": "budhaditya_yoga.json",
+    "new_formed": false,
+    "legacy_active": false,
+    "verdict": "MATCH",
+    "reason": "both agree on NOT_FORMED/inactive"
+  },
+  {
+    "rule_id": "PARASHARI.YOGA.CHANDRA_MANGALA",
+    "legacy_file": "chandra_mangala_yoga.json",
+    "new_formed": false,
+    "legacy_active": false,
+    "verdict": "MATCH",
+    "reason": "both agree on NOT_FORMED/inactive"
+  },
+  {
+    "rule_id": "PARASHARI.YOGA.ADHI",
+    "legacy_file": "adhi_yoga.json",
+    "new_formed": true,
+    "legacy_active": false,
+    "verdict": "CONVENTION_DIFFERENCE",
+    "reason": "Legacy adhi_yoga.json encodes a stricter benefic configuration and scores 0 on the golden chart; new engine implements the documented lenient reading (any of Jupiter/Venus/Mercury in 6/7/8 from Moon; Mercury sits 8th from Moon) labelled TRADITION_DEPENDENT. Kept spec; no auto-change."
+  },
+  {
+    "rule_id": "PARASHARI.YOGA.KEMADRUMA",
+    "legacy_file": "kemadruma_yoga.json",
+    "new_formed": false,
+    "legacy_active": true,
+    "verdict": "CONVENTION_DIFFERENCE",
+    "reason": "Legacy kemadruma ruleset scores ACTIVE while Jupiter+Venus occupy the 5th house (a Kendra from Moon), which under the classical isolation definition breaks Kemadruma. New engine returns NOT_FORMED. Kept classical spec; no auto-change."
+  },
+  {
+    "rule_id": "PARASHARI.YOGA.SUNAPHA",
+    "legacy_file": "sunapha_yoga.json",
+    "new_formed": false,
+    "legacy_active": false,
+    "verdict": "MATCH",
+    "reason": "both agree on NOT_FORMED/inactive"
+  },
+  {
+    "rule_id": "PARASHARI.YOGA.ANAPHA",
+    "legacy_file": "anapha_yoga.json",
+    "new_formed": false,
+    "legacy_active": false,
+    "verdict": "MATCH",
+    "reason": "both agree on NOT_FORMED/inactive"
+  },
+  {
+    "rule_id": "PARASHARI.YOGA.DURUDHARA",
+    "legacy_file": "durdhara_yoga.json",
+    "new_formed": false,
+    "legacy_active": false,
+    "verdict": "MATCH",
+    "reason": "both agree on NOT_FORMED/inactive"
+  },
+  {
+    "rule_id": "PARASHARI.YOGA.LAKSHMI",
+    "legacy_file": "lakshmi_yoga.json",
+    "new_formed": false,
+    "legacy_active": false,
+    "verdict": "MATCH",
+    "reason": "both agree on NOT_FORMED/inactive"
+  },
+  {
+    "rule_id": "PARASHARI.YOGA.SARASWATI",
+    "legacy_file": "saraswati_yoga.json",
+    "new_formed": false,
+    "legacy_active": false,
+    "verdict": "MATCH",
+    "reason": "both agree on NOT_FORMED/inactive"
+  },
+  {
+    "rule_id": "PARASHARI.YOGA.AMALA",
+    "legacy_file": "amala_yoga.json",
+    "new_formed": false,
+    "legacy_active": false,
+    "verdict": "MATCH",
+    "reason": "both agree on NOT_FORMED/inactive"
+  },
+  {
+    "rule_id": "PARASHARI.YOGA.VASUMATI",
+    "legacy_file": "vasumati_yoga.json",
+    "new_formed": false,
+    "legacy_active": false,
+    "verdict": "MATCH",
+    "reason": "both agree on NOT_FORMED/inactive"
+  }
+]

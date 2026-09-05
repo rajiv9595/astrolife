@@ -19,8 +19,11 @@ DATABASE_URL = os.getenv(
 if DATABASE_URL and DATABASE_URL.startswith("postgres://"):
     DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
 
-# Create engine
-engine = create_engine(DATABASE_URL, echo=True)
+# Create engine — Phase 12: SQL echo is opt-in (SQL_ECHO=true) so production
+# logs never carry verbose SQL/schema detail by default. Reason: PII/schema
+# leak surface. Risk: developers lose SQL logs unless SQL_ECHO=true (runbook).
+_SQL_ECHO = os.getenv("SQL_ECHO", "false").strip().lower() in ("1", "true", "yes")
+engine = create_engine(DATABASE_URL, echo=_SQL_ECHO)
 
 # Create session factory
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)

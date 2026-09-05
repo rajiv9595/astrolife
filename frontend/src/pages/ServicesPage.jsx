@@ -5,7 +5,7 @@ import VedicCard from '../components/ui/VedicCard';
 import {
     Star, Database, Activity, User, Heart, Bot,
     BookOpen, MessageCircle, Clock, Calendar,
-    Search, Award, Trophy, FileText, Cpu, Users
+    Search, Award, Trophy, FileText, Cpu, Users, FlaskConical
 } from 'lucide-react';
 
 const tools = [
@@ -24,6 +24,7 @@ const tools = [
     { name: 'Numerology', icon: HashIcon, description: 'Explore the power of numbers in your life.', link: '/tools/numerology' },
     { name: 'Birth Time Finder', icon: Search, description: 'Rectify and find accurate birth time.', link: '/tools/rectification' },
     { name: 'API Builder', icon: Cpu, description: 'Build your own astrology apps.', link: '/tools/api' },
+    { name: 'Research Lab', icon: FlaskConical, description: 'Experimental rules and promotion gates (research only).', link: '/tools/research' },
     { name: 'Famous People', icon: Users, description: 'See charts of famous personalities.', link: '/tools/famous' },
     { name: 'Sports Prediction', icon: Trophy, description: 'Predict outcomes of sports events.', link: '/tools/sports' },
     { name: 'Articles', icon: FileText, description: 'Read latest articles on Vedic astrology.', link: '/blog' },

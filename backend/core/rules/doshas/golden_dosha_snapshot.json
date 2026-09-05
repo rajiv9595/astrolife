@@ -1,0 +1,97 @@
+{
+  "phase": "5C",
+  "total_doshas": 6,
+  "formed_count": 2,
+  "cancelled_count": 0,
+  "mitigated_count": 2,
+  "doshas": {
+    "DOSHA.MANGLIK.LAGNA_CLASSICAL": {
+      "name": "Manglik Dosha (Lagna Reference)",
+      "formation": "FORMED",
+      "severity": "LOW",
+      "cancellation": "NONE",
+      "mitigation": "PARTIAL",
+      "activation": "NOT_EVALUATED",
+      "confidence": "HIGH",
+      "tradition": "PARASHARI_CLASSICAL",
+      "method": "LAGNA_CLASSICAL",
+      "evidence_count": 4,
+      "relevant_planets": [
+        "Mars"
+      ]
+    },
+    "DOSHA.MANGLIK.MOON_REFERENCE": {
+      "name": "Manglik Dosha (Moon Reference)",
+      "formation": "NOT_FORMED",
+      "severity": "NONE",
+      "cancellation": "NONE",
+      "mitigation": "NONE",
+      "activation": "NOT_EVALUATED",
+      "confidence": "HIGH",
+      "tradition": "PARASHARI_CLASSICAL",
+      "method": "MOON_REFERENCE",
+      "evidence_count": 2,
+      "relevant_planets": [
+        "Moon",
+        "Mars"
+      ]
+    },
+    "DOSHA.MANGLIK.VENUS_REFERENCE": {
+      "name": "Manglik Dosha (Venus Reference)",
+      "formation": "FORMED",
+      "severity": "LOW",
+      "cancellation": "NONE",
+      "mitigation": "PARTIAL",
+      "activation": "NOT_EVALUATED",
+      "confidence": "HIGH",
+      "tradition": "PARASHARI_CLASSICAL",
+      "method": "VENUS_REFERENCE",
+      "evidence_count": 4,
+      "relevant_planets": [
+        "Venus",
+        "Mars"
+      ]
+    },
+    "DOSHA.KEMADRUMA.CLASSICAL": {
+      "name": "Kemadruma Dosha (Classical)",
+      "formation": "NOT_FORMED",
+      "severity": "NONE",
+      "cancellation": "NONE",
+      "mitigation": "NONE",
+      "activation": "NOT_EVALUATED",
+      "confidence": "HIGH",
+      "tradition": "PARASHARI_CLASSICAL",
+      "method": "CLASSICAL",
+      "evidence_count": 3,
+      "relevant_planets": [
+        "Moon"
+      ]
+    },
+    "DOSHA.KALA_SARPA.SIGN_BASED": {
+      "name": "Kala Sarpa Dosha (Sign-Based)",
+      "formation": "NOT_FORMED",
+      "severity": "NONE",
+      "cancellation": "NONE",
+      "mitigation": "NONE",
+      "activation": "NOT_EVALUATED",
+      "confidence": "TRADITION_DEPENDENT",
+      "tradition": "TRADITION_DEPENDENT",
+      "method": "SIGN_BASED",
+      "evidence_count": 2,
+      "relevant_planets": []
+    },
+    "DOSHA.PITRU.MODERN_COMMON": {
+      "name": "Pitru Dosha (Modern Common Definition)",
+      "formation": "NOT_FORMED",
+      "severity": "NONE",
+      "cancellation": "NONE",
+      "mitigation": "NONE",
+      "activation": "NOT_EVALUATED",
+      "confidence": "TRADITION_DEPENDENT",
+      "tradition": "TRADITION_DEPENDENT",
+      "method": "MODERN_COMMON",
+      "evidence_count": 1,
+      "relevant_planets": []
+    }
+  }
+}

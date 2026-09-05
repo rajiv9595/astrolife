@@ -1,0 +1,106 @@
+{
+  "chart": "Golden Chart \u2014 Aug 17, 2005 00:02 AM Anaparthy",
+  "chara_karakas": {
+    "AK": {
+      "name": "Atmakaraka",
+      "planet": "Jupiter",
+      "degree_in_sign": 21.84264299887178,
+      "formatted_degree": "21\u00b0 50' 33.51\"",
+      "sign": "Virgo",
+      "rank": 1
+    },
+    "AmK": {
+      "name": "Amatyakaraka",
+      "planet": "Moon",
+      "degree_in_sign": 17.86278483526462,
+      "formatted_degree": "17\u00b0 51' 46.03\"",
+      "sign": "Sagittarius",
+      "rank": 2
+    },
+    "BK": {
+      "name": "Bhratrukaraka",
+      "planet": "Mars",
+      "degree_in_sign": 16.593076912952483,
+      "formatted_degree": "16\u00b0 35' 35.08\"",
+      "sign": "Aries",
+      "rank": 3
+    },
+    "MK": {
+      "name": "Matrukaraka",
+      "planet": "Mercury",
+      "degree_in_sign": 14.83955929667161,
+      "formatted_degree": "14\u00b0 50' 22.41\"",
+      "sign": "Cancer",
+      "rank": 4
+    },
+    "PK": {
+      "name": "Putrakaraka",
+      "planet": "Saturn",
+      "degree_in_sign": 10.06251103364103,
+      "formatted_degree": "10\u00b0 03' 45.04\"",
+      "sign": "Cancer",
+      "rank": 5
+    },
+    "GK": {
+      "name": "Gnatikaraka",
+      "planet": "Venus",
+      "degree_in_sign": 5.641769213846771,
+      "formatted_degree": "5\u00b0 38' 30.37\"",
+      "sign": "Virgo",
+      "rank": 6
+    },
+    "DK": {
+      "name": "Darakaraka",
+      "planet": "Sun",
+      "degree_in_sign": 0.041859885786095674,
+      "formatted_degree": "0\u00b0 02' 30.70\"",
+      "sign": "Leo",
+      "rank": 7
+    }
+  },
+  "karaka_ordering": [
+    "AK",
+    "AmK",
+    "BK",
+    "MK",
+    "PK",
+    "GK",
+    "DK"
+  ],
+  "arudha_lagna": {
+    "pada_code": "A1",
+    "source_sign": "Taurus",
+    "lord": "Venus",
+    "lord_sign": "Virgo",
+    "raw_projected_sign": "Capricorn",
+    "exception_applied": null,
+    "final_sign": "Capricorn"
+  },
+  "upapada": {
+    "source_house": 12,
+    "source_sign": "Aries",
+    "lord": "Mars",
+    "lord_sign": "Aries",
+    "final_sign": "Capricorn"
+  },
+  "karakamsha": {
+    "atmakaraka_planet": "Jupiter",
+    "atmakaraka_d1_sign": "Virgo",
+    "karakamsha_sign": "Cancer",
+    "swamsa_navamsha_lagna_sign": "Pisces"
+  },
+  "arudha_padas_summary": {
+    "A1": "Capricorn",
+    "A2": "Leo",
+    "A3": "Taurus",
+    "A4": "Taurus",
+    "A5": "Taurus",
+    "A6": "Leo",
+    "A7": "Virgo",
+    "A8": "Pisces",
+    "A9": "Libra",
+    "A10": "Sagittarius",
+    "A11": "Sagittarius",
+    "A12": "Capricorn"
+  }
+}

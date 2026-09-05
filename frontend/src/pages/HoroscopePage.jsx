@@ -12,6 +12,8 @@ import AshtakavargaCard from '../components/features/horoscope/AshtakavargaCard'
 import ShadbalaCard from '../components/features/horoscope/ShadbalaCard';
 import MaitriCard from '../components/features/horoscope/MaitriCard';
 import PanchangaCard from '../components/features/horoscope/PanchangaCard';
+import DynamicStateCard from '../components/features/horoscope/DynamicStateCard';
+import { canonicalClient, normalizeApiError } from '../api/canonicalClient';
 import AdvancedDoshasCard from '../components/features/horoscope/AdvancedDoshasCard';
 import ExpertReportCard from '../components/ai/ExpertReportCard';
 import { authService } from '../services/authService';
@@ -37,6 +39,12 @@ const HoroscopePage = () => {
     const [chartStyle, setChartStyle] = useState('south'); // 'south' or 'north'
     const [chartData, setChartData] = useState(null);
     const [loading, setLoading] = useState(false);
+    // Phase 11: dynamic astrology state (evaluation datetime + dasha/transit),
+    // separate from the static natal chart above. Never recalculates natal data.
+    const [evalIso, setEvalIso] = useState(() => new Date().toISOString());
+    const [dynState, setDynState] = useState(null);
+    const [dynLoading, setDynLoading] = useState(false);
+    const [dynError, setDynError] = useState(null);
 
     // Dropdown State
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -180,6 +188,45 @@ const HoroscopePage = () => {
         setIsModalOpen(true);
         setIsDropdownOpen(false);
     };
+
+    // Phase 11: fetch backend dynamic state for the selected person.
+    // Uses the same birth params as the natal request plus an explicit
+    // evaluation datetime. Abort-guarded; stale data cleared per person.
+    useEffect(() => {
+        const person = getSelectedPerson();
+        if (!person?.date_of_birth || !person?.time_of_birth || !chartData) {
+            setDynState(null);
+            setDynError(null);
+            return;
+        }
+        const controller = new AbortController();
+        const run = async () => {
+            setDynLoading(true);
+            setDynError(null);
+            setDynState(null);
+            try {
+                const dob = person.date_of_birth.split('-');
+                const tob = (person.time_of_birth || '00:00').split(':');
+                const data = await canonicalClient.dynamicState(
+                    {
+                        year: parseInt(dob[0]), month: parseInt(dob[1]), day: parseInt(dob[2]),
+                        hour: parseInt(tob[0]), minute: parseInt(tob[1]), second: 0,
+                        tz: person.timezone || 'Asia/Kolkata',
+                        lat: person.latitude || 0.0, lon: person.longitude || 0.0,
+                    },
+                    { evaluationIso: evalIso, signal: controller.signal }
+                );
+                setDynState(data);
+            } catch (err) {
+                if (err?.code !== 'ERR_CANCELED') setDynError(normalizeApiError(err));
+            } finally {
+                setDynLoading(false);
+            }
+        };
+        run();
+        return () => controller.abort();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [selectedId, chartData, evalIso]);
 
     // --- Helpers for Display ---
     const person = getSelectedPerson();
@@ -517,6 +564,14 @@ const HoroscopePage = () => {
                                 
                                 {/* Shadbala */}
                                 <ShadbalaCard shadbala={chartData.shadbala} />
+
+                                {/* Phase 11: Dynamic State (evaluation datetime + dasha/transit) */}
+                                <DynamicStateCard
+                                    evaluationIso={evalIso}
+                                    dynamicState={dynState}
+                                    loading={dynLoading}
+                                    error={dynError}
+                                />
                             </div>
                         </div>
 

@@ -70,3 +70,11 @@ build/
 *.temp
 *.bak
 
+# Local test outputs and probes
+timing_probe.txt
+test_output.txt
+*.json.bak
+phase5gh_test_report.json
+
+# Caches
+.pytest_cache/

@@ -1,0 +1,2780 @@
+{
+  "chart": "Golden Chart \u2014 Aug 17, 2005 00:02 AM Anaparthy",
+  "engine": "jaimini-integration/1.0.0",
+  "canonical": {
+    "ascendant": "Taurus",
+    "d1_signs": {
+      "Jupiter": "Virgo",
+      "Ketu": "Virgo",
+      "Mars": "Aries",
+      "Mercury": "Cancer",
+      "Moon": "Sagittarius",
+      "Rahu": "Pisces",
+      "Saturn": "Cancer",
+      "Sun": "Leo",
+      "Venus": "Virgo"
+    },
+    "karakas": {
+      "AK": {
+        "planet": "Jupiter",
+        "sign": "Virgo",
+        "degree": 21.84264299887178
+      },
+      "AmK": {
+        "planet": "Moon",
+        "sign": "Sagittarius",
+        "degree": 17.86278483526462
+      },
+      "BK": {
+        "planet": "Mars",
+        "sign": "Aries",
+        "degree": 16.593076912952483
+      },
+      "DK": {
+        "planet": "Sun",
+        "sign": "Leo",
+        "degree": 0.041859885786095674
+      },
+      "GK": {
+        "planet": "Venus",
+        "sign": "Virgo",
+        "degree": 5.641769213846771
+      },
+      "MK": {
+        "planet": "Mercury",
+        "sign": "Cancer",
+        "degree": 14.83955929667161
+      },
+      "PK": {
+        "planet": "Saturn",
+        "sign": "Cancer",
+        "degree": 10.06251103364103
+      }
+    },
+    "padas": {
+      "A1": "Capricorn",
+      "A2": "Leo",
+      "A3": "Taurus",
+      "A4": "Taurus",
+      "A5": "Taurus",
+      "A6": "Leo",
+      "A7": "Virgo",
+      "A8": "Pisces",
+      "A9": "Libra",
+      "A10": "Sagittarius",
+      "A11": "Sagittarius",
+      "A12": "Capricorn"
+    },
+    "karakamsha": "Cancer",
+    "swamsa": "Pisces"
+  },
+  "evaluation": {
+    "profile": {
+      "karaka_method": "SEVEN_KARAKA",
+      "origin_labels": "ALL",
+      "include_unknown": true,
+      "engine": "jaimini-integration/1.0.0",
+      "source_reference": "UNVERIFIED"
+    },
+    "rules": [
+      {
+        "rule_id": "JAI.ARUDHA.A7_UL_ALIGNMENT",
+        "name": "A7\u2013UL Alignment",
+        "formed": false,
+        "formation_status": "NOT_FORMED",
+        "quality": "UNKNOWN",
+        "cancellation_status": "NONE",
+        "mitigation_status": "NONE",
+        "category": "JAIMINI",
+        "tradition": "JAIMINI",
+        "origin_label": "TRADITION_DEPENDENT",
+        "method": "a7_ul_alignment",
+        "confidence": "TRADITION_DEPENDENT",
+        "source_type": "UNVERIFIED",
+        "source_reference": "UNVERIFIED",
+        "formation_evidence": [
+          {
+            "condition": "A7 == UL",
+            "actual_value": "A7=Virgo; UL=Capricorn",
+            "expected_value": "same sign",
+            "source_fact": "JaiminiFacts.arudha_padas[7] + JaiminiFacts.upapada",
+            "passed": false
+          }
+        ],
+        "cancellation_evidence": [
+          "No cancellation: pada relationship is factual; no defensible structural cancellation."
+        ],
+        "mitigation_evidence": [
+          "No benefic occupancy or Rashi Drishti on Capricorn."
+        ],
+        "strength_factors": [],
+        "relevant_planets": [],
+        "relevant_signs": [
+          "Capricorn",
+          "Virgo"
+        ],
+        "relevant_houses": [],
+        "dependencies": [
+          "JaiminiFacts.arudha_padas",
+          "JaiminiFacts.upapada"
+        ],
+        "notes": "A7\u2013UL family-related combination; condition formed, no marriage outcome claimed.",
+        "rule_version": "1.0.0"
+      },
+      {
+        "rule_id": "JAI.ARUDHA.AL_BENEFIC_OCCUPANCY",
+        "name": "Benefic in AL",
+        "formed": false,
+        "formation_status": "NOT_FORMED",
+        "quality": "UNKNOWN",
+        "cancellation_status": "NONE",
+        "mitigation_status": "NONE",
+        "category": "JAIMINI",
+        "tradition": "JAIMINI",
+        "origin_label": "CLASSICAL_JAIMINI",
+        "method": "al_benefic_occupancy",
+        "confidence": "TRADITION_DEPENDENT",
+        "source_type": "UNVERIFIED",
+        "source_reference": "UNVERIFIED",
+        "formation_evidence": [
+          {
+            "condition": "benefic occupies AL (D1)",
+            "actual_value": "AL=Capricorn; occupants=[]; benefics=[]",
+            "expected_value": ">=1 of Jupiter/Venus/Mercury/Moon in AL",
+            "source_fact": "JaiminiFacts.arudha_padas[1] + ChartFacts.planets",
+            "passed": false
+          }
+        ],
+        "cancellation_evidence": [
+          "No cancellation: occupancy is factual; malefic co-presence is not modelled as cancellation."
+        ],
+        "mitigation_evidence": [
+          "No benefic occupancy or Rashi Drishti on Capricorn."
+        ],
+        "strength_factors": [],
+        "relevant_planets": [],
+        "relevant_signs": [
+          "Capricorn"
+        ],
+        "relevant_houses": [],
+        "dependencies": [
+          "JaiminiFacts.arudha_padas",
+          "ChartFacts.planets"
+        ],
+        "notes": "AL benefic-occupancy combination; condition formed, no outcome claimed.",
+        "rule_version": "1.0.0"
+      },
+      {
+        "rule_id": "JAI.ARUDHA.AL_LORD_KENDRA_TRINE",
+        "name": "AL Lord in Kendra/Trikona from AL",
+        "formed": true,
+        "formation_status": "FORMED",
+        "quality": "UNKNOWN",
+        "cancellation_status": "NONE",
+        "mitigation_status": "NONE",
+        "category": "JAIMINI",
+        "tradition": "JAIMINI",
+        "origin_label": "CLASSICAL_JAIMINI",
+        "method": "al_lord_kendra_trine",
+        "confidence": "TRADITION_DEPENDENT",
+        "source_type": "UNVERIFIED",
+        "source_reference": "UNVERIFIED",
+        "formation_evidence": [
+          {
+            "condition": "house_of(AL-lord from AL) in {1,4,5,7,9,10}",
+            "actual_value": "AL=Capricorn; lord=Venus in Virgo; house=9",
+            "expected_value": "kendra or trikona from AL",
+            "source_fact": "JaiminiFacts.arudha_padas[1] + ChartFacts.planets",
+            "passed": true
+          }
+        ],
+        "cancellation_evidence": [
+          "No cancellation: lord placement is factual; no defensible structural cancellation."
+        ],
+        "mitigation_evidence": [
+          "No benefic occupancy or Rashi Drishti on Capricorn."
+        ],
+        "strength_factors": [],
+        "relevant_planets": [
+          "Venus"
+        ],
+        "relevant_signs": [
+          "Capricorn",
+          "Virgo"
+        ],
+        "relevant_houses": [
+          9
+        ],
+        "dependencies": [
+          "JaiminiFacts.arudha_padas",
+          "ChartFacts.planets"
+        ],
+        "notes": "AL-lord kendra/trikona combination; condition formed, no outcome claimed.",
+        "rule_version": "1.0.0"
+      },
+      {
+        "rule_id": "JAI.ARUDHA.DHANA_A2_A11",
+        "name": "A2\u2013A11 Dhana Combination",
+        "formed": false,
+        "formation_status": "NOT_FORMED",
+        "quality": "UNKNOWN",
+        "cancellation_status": "NONE",
+        "mitigation_status": "PARTIAL",
+        "category": "JAIMINI",
+        "tradition": "JAIMINI",
+        "origin_label": "CLASSICAL_JAIMINI",
+        "method": "dhana_a2_a11",
+        "confidence": "TRADITION_DEPENDENT",
+        "source_type": "UNVERIFIED",
+        "source_reference": "UNVERIFIED",
+        "formation_evidence": [
+          {
+            "condition": "A2==A11 OR mutual-drishti(A2,A11) OR lord(A2)==lord(A11)",
+            "actual_value": "A2=Leo (lord Sun); A11=Sagittarius (lord Jupiter); mode=none",
+            "expected_value": "same_sign | mutual_drishti | shared_lord",
+            "source_fact": "JaiminiFacts.arudha_padas",
+            "passed": false
+          }
+        ],
+        "cancellation_evidence": [
+          "No cancellation: pada relationship is factual; no defensible structural cancellation."
+        ],
+        "mitigation_evidence": [
+          "No benefic occupancy or Rashi Drishti on Leo.",
+          "Supporting benefic influence on Sagittarius: occupants=['Moon'], Rashi-Drishti aspecters=['Jupiter', 'Venus']."
+        ],
+        "strength_factors": [],
+        "relevant_planets": [],
+        "relevant_signs": [
+          "Leo",
+          "Sagittarius"
+        ],
+        "relevant_houses": [],
+        "dependencies": [
+          "JaiminiFacts.arudha_padas"
+        ],
+        "notes": "A2\u2013A11 wealth-related combination; condition formed, no wealth outcome claimed.",
+        "rule_version": "1.0.0"
+      },
+      {
+        "rule_id": "JAI.DRISHTI.AK_AMK_MUTUAL",
+        "name": "AK\u2013AmK Mutual Rashi Drishti",
+        "formed": true,
+        "formation_status": "FORMED",
+        "quality": "UNKNOWN",
+        "cancellation_status": "NONE",
+        "mitigation_status": "PARTIAL",
+        "category": "JAIMINI",
+        "tradition": "JAIMINI",
+        "origin_label": "CLASSICAL_JAIMINI",
+        "method": "ak_amk_mutual_drishti",
+        "confidence": "TRADITION_DEPENDENT",
+        "source_type": "UNVERIFIED",
+        "source_reference": "UNVERIFIED",
+        "formation_evidence": [
+          {
+            "condition": "mutual_rashi_drishti(AK_sign, AmK_sign)",
+            "actual_value": "Jupiter in Virgo; Moon in Sagittarius; mutual=True",
+            "expected_value": "mutual Rashi Drishti (same-sign excluded)",
+            "source_fact": "JaiminiFacts.rashi_drishti + JaiminiFacts.chara_karakas",
+            "passed": true
+          }
+        ],
+        "cancellation_evidence": [
+          "No cancellation: Karaka identities distinct beyond tolerance: AK=21.8426\u00b0, AmK=17.8628\u00b0."
+        ],
+        "mitigation_evidence": [
+          "Supporting benefic influence on Virgo: occupants=['Jupiter', 'Venus'], Rashi-Drishti aspecters=['Moon']."
+        ],
+        "strength_factors": [],
+        "relevant_planets": [
+          "Jupiter",
+          "Moon"
+        ],
+        "relevant_signs": [
+          "Sagittarius",
+          "Virgo"
+        ],
+        "relevant_houses": [],
+        "dependencies": [
+          "JaiminiFacts.chara_karakas",
+          "JaiminiFacts.rashi_drishti"
+        ],
+        "notes": "AK\u2013AmK mutual Rashi Drishti combination; condition formed, no outcome claimed.",
+        "rule_version": "1.0.0"
+      },
+      {
+        "rule_id": "JAI.DRISHTI.AK_ON_AL",
+        "name": "AK Rashi Drishti on AL",
+        "formed": false,
+        "formation_status": "NOT_FORMED",
+        "quality": "UNKNOWN",
+        "cancellation_status": "NONE",
+        "mitigation_status": "NONE",
+        "category": "JAIMINI",
+        "tradition": "JAIMINI",
+        "origin_label": "TRADITION_DEPENDENT",
+        "method": "ak_on_al",
+        "confidence": "TRADITION_DEPENDENT",
+        "source_type": "UNVERIFIED",
+        "source_reference": "UNVERIFIED",
+        "formation_evidence": [
+          {
+            "condition": "AK_aspects_AL",
+            "actual_value": "AK=Jupiter in Virgo; AL=Capricorn; aspects_AL=False; planets_aspecting_AL=['Sun']",
+            "expected_value": "AK casts Rashi Drishti on AL",
+            "source_fact": "JaiminiFacts.rashi_drishti.planet_aspects",
+            "passed": false
+          }
+        ],
+        "cancellation_evidence": [
+          "No cancellation: Karaka identities distinct beyond tolerance: AK=21.8426\u00b0."
+        ],
+        "mitigation_evidence": [
+          "No benefic occupancy or Rashi Drishti on Capricorn."
+        ],
+        "strength_factors": [],
+        "relevant_planets": [
+          "Jupiter"
+        ],
+        "relevant_signs": [
+          "Capricorn",
+          "Virgo"
+        ],
+        "relevant_houses": [],
+        "dependencies": [
+          "JaiminiFacts.chara_karakas",
+          "JaiminiFacts.arudha_padas",
+          "JaiminiFacts.rashi_drishti"
+        ],
+        "notes": "AK\u2013AL Rashi Drishti combination; condition formed, no outcome claimed.",
+        "rule_version": "1.0.0"
+      },
+      {
+        "rule_id": "JAI.DRISHTI.AMK_ON_AL",
+        "name": "AmK Rashi Drishti on AL",
+        "formed": false,
+        "formation_status": "NOT_FORMED",
+        "quality": "UNKNOWN",
+        "cancellation_status": "NONE",
+        "mitigation_status": "NONE",
+        "category": "JAIMINI",
+        "tradition": "JAIMINI",
+        "origin_label": "TRADITION_DEPENDENT",
+        "method": "amk_on_al",
+        "confidence": "TRADITION_DEPENDENT",
+        "source_type": "UNVERIFIED",
+        "source_reference": "UNVERIFIED",
+        "formation_evidence": [
+          {
+            "condition": "AmK_aspects_AL",
+            "actual_value": "AmK=Moon in Sagittarius; AL=Capricorn; aspects_AL=False; planets_aspecting_AL=['Sun']",
+            "expected_value": "AmK casts Rashi Drishti on AL",
+            "source_fact": "JaiminiFacts.rashi_drishti.planet_aspects",
+            "passed": false
+          }
+        ],
+        "cancellation_evidence": [
+          "No cancellation: Karaka identities distinct beyond tolerance: AmK=17.8628\u00b0."
+        ],
+        "mitigation_evidence": [
+          "No benefic occupancy or Rashi Drishti on Capricorn."
+        ],
+        "strength_factors": [],
+        "relevant_planets": [
+          "Moon"
+        ],
+        "relevant_signs": [
+          "Capricorn",
+          "Sagittarius"
+        ],
+        "relevant_houses": [],
+        "dependencies": [
+          "JaiminiFacts.chara_karakas",
+          "JaiminiFacts.arudha_padas",
+          "JaiminiFacts.rashi_drishti"
+        ],
+        "notes": "AmK\u2013AL Rashi Drishti combination; condition formed, no outcome claimed.",
+        "rule_version": "1.0.0"
+      },
+      {
+        "rule_id": "JAI.KARAKA.AK_AMK_CONJUNCTION",
+        "name": "AK\u2013AmK Conjunction Combination",
+        "formed": false,
+        "formation_status": "NOT_FORMED",
+        "quality": "UNKNOWN",
+        "cancellation_status": "NONE",
+        "mitigation_status": "PARTIAL",
+        "category": "JAIMINI",
+        "tradition": "JAIMINI",
+        "origin_label": "CLASSICAL_JAIMINI",
+        "method": "ak_amk_conjunction",
+        "confidence": "TRADITION_DEPENDENT",
+        "source_type": "UNVERIFIED",
+        "source_reference": "UNVERIFIED",
+        "formation_evidence": [
+          {
+            "condition": "AK_sign == AmK_sign",
+            "actual_value": "Jupiter in Virgo; Moon in Sagittarius",
+            "expected_value": "same D1 sign",
+            "source_fact": "JaiminiFacts.chara_karakas",
+            "passed": false
+          }
+        ],
+        "cancellation_evidence": [
+          "No cancellation: Karaka identities distinct beyond tolerance: AK=21.8426\u00b0, AmK=17.8628\u00b0."
+        ],
+        "mitigation_evidence": [
+          "Supporting benefic influence on Virgo: occupants=['Jupiter', 'Venus'], Rashi-Drishti aspecters=['Moon']."
+        ],
+        "strength_factors": [],
+        "relevant_planets": [
+          "Jupiter",
+          "Moon"
+        ],
+        "relevant_signs": [
+          "Sagittarius",
+          "Virgo"
+        ],
+        "relevant_houses": [],
+        "dependencies": [
+          "JaiminiFacts.chara_karakas"
+        ],
+        "notes": "Atmakaraka\u2013Amatyakaraka conjunction combination; condition formed, no outcome claimed.",
+        "rule_version": "1.0.0"
+      },
+      {
+        "rule_id": "JAI.KARAKA.AK_KENDRA_FROM_AL",
+        "name": "AK in Kendra from AL",
+        "formed": false,
+        "formation_status": "NOT_FORMED",
+        "quality": "UNKNOWN",
+        "cancellation_status": "NONE",
+        "mitigation_status": "PARTIAL",
+        "category": "JAIMINI",
+        "tradition": "JAIMINI",
+        "origin_label": "TRADITION_DEPENDENT",
+        "method": "ak_kendra_from_al",
+        "confidence": "TRADITION_DEPENDENT",
+        "source_type": "UNVERIFIED",
+        "source_reference": "UNVERIFIED",
+        "formation_evidence": [
+          {
+            "condition": "house_of(AK_sign from AL) in {1,4,7,10}",
+            "actual_value": "Jupiter in Virgo; AL=Capricorn; house=9",
+            "expected_value": "kendra from AL",
+            "source_fact": "JaiminiFacts.arudha_padas[1] + JaiminiFacts.chara_karakas",
+            "passed": false
+          }
+        ],
+        "cancellation_evidence": [
+          "No cancellation: Karaka identities distinct beyond tolerance: AK=21.8426\u00b0."
+        ],
+        "mitigation_evidence": [
+          "Supporting benefic influence on Virgo: occupants=['Jupiter', 'Venus'], Rashi-Drishti aspecters=['Moon']."
+        ],
+        "strength_factors": [],
+        "relevant_planets": [
+          "Jupiter"
+        ],
+        "relevant_signs": [
+          "Capricorn",
+          "Virgo"
+        ],
+        "relevant_houses": [
+          9
+        ],
+        "dependencies": [
+          "JaiminiFacts.chara_karakas",
+          "JaiminiFacts.arudha_padas"
+        ],
+        "notes": "AK\u2013AL kendra relationship; condition formed, no outcome claimed.",
+        "rule_version": "1.0.0"
+      },
+      {
+        "rule_id": "JAI.KARAKA.DK_UL_SAMBANDHA",
+        "name": "DK\u2013UL Sambandha",
+        "formed": false,
+        "formation_status": "NOT_FORMED",
+        "quality": "UNKNOWN",
+        "cancellation_status": "NONE",
+        "mitigation_status": "NONE",
+        "category": "JAIMINI",
+        "tradition": "JAIMINI",
+        "origin_label": "TRADITION_DEPENDENT",
+        "method": "dk_ul_sambandha",
+        "confidence": "TRADITION_DEPENDENT",
+        "source_type": "UNVERIFIED",
+        "source_reference": "UNVERIFIED",
+        "formation_evidence": [
+          {
+            "condition": "DK in UL OR DK lords UL OR mutual-drishti(DK, UL-lord)",
+            "actual_value": "DK=Sun in Leo; UL=Capricorn (lord Saturn in Cancer); mode=none",
+            "expected_value": "occupation | lordship | mutual_drishti",
+            "source_fact": "JaiminiFacts.chara_karakas + JaiminiFacts.upapada + Rashi Drishti",
+            "passed": false
+          }
+        ],
+        "cancellation_evidence": [
+          "No cancellation: Karaka identities distinct beyond tolerance: DK=0.0419\u00b0."
+        ],
+        "mitigation_evidence": [
+          "No benefic occupancy or Rashi Drishti on Capricorn."
+        ],
+        "strength_factors": [],
+        "relevant_planets": [
+          "Saturn",
+          "Sun"
+        ],
+        "relevant_signs": [
+          "Cancer",
+          "Capricorn",
+          "Leo"
+        ],
+        "relevant_houses": [],
+        "dependencies": [
+          "JaiminiFacts.chara_karakas",
+          "JaiminiFacts.upapada",
+          "JaiminiFacts.rashi_drishti"
+        ],
+        "notes": "Darakaraka\u2013Upapada family-related combination; condition formed, no marriage outcome claimed.",
+        "rule_version": "1.0.0"
+      },
+      {
+        "rule_id": "JAI.KARAKAMSHA.BENEFIC_OCCUPANCY",
+        "name": "Benefic in Karakamsha (D9)",
+        "formed": true,
+        "formation_status": "FORMED",
+        "quality": "UNKNOWN",
+        "cancellation_status": "NONE",
+        "mitigation_status": "NONE",
+        "category": "JAIMINI",
+        "tradition": "JAIMINI",
+        "origin_label": "TRADITION_DEPENDENT",
+        "method": "karakamsha_benefic_occupancy",
+        "confidence": "TRADITION_DEPENDENT",
+        "source_type": "UNVERIFIED",
+        "source_reference": "UNVERIFIED",
+        "formation_evidence": [
+          {
+            "condition": "benefic occupies Karakamsha (D9)",
+            "actual_value": "Karakamsha=Cancer; D9 occupants=['Jupiter', 'Ketu']; benefics=['Jupiter']",
+            "expected_value": ">=1 of Jupiter/Venus/Mercury/Moon in D9 sign",
+            "source_fact": "varga_facts D9 (canonical, not recomputed)",
+            "passed": true
+          }
+        ],
+        "cancellation_evidence": [
+          "No cancellation: D9 occupancy is factual; no defensible structural cancellation."
+        ],
+        "mitigation_evidence": [
+          "No mitigation: Karakamsha is a D9-scope rule; D1 Rashi-Drishti mitigation not applicable."
+        ],
+        "strength_factors": [],
+        "relevant_planets": [
+          "Jupiter"
+        ],
+        "relevant_signs": [
+          "Cancer"
+        ],
+        "relevant_houses": [],
+        "dependencies": [
+          "JaiminiFacts.karakamsha",
+          "JaiminiFacts.chara_karakas",
+          "varga_facts.D9"
+        ],
+        "notes": "Karakamsha benefic-occupancy combination (AK=Jupiter); condition formed, no outcome claimed.",
+        "rule_version": "1.0.0"
+      },
+      {
+        "rule_id": "JAI.SWAMSA.BENEFIC_OCCUPANCY",
+        "name": "Benefic in Swamsa (D9)",
+        "formed": false,
+        "formation_status": "NOT_FORMED",
+        "quality": "UNKNOWN",
+        "cancellation_status": "NONE",
+        "mitigation_status": "NONE",
+        "category": "JAIMINI",
+        "tradition": "JAIMINI",
+        "origin_label": "TRADITION_DEPENDENT",
+        "method": "swamsa_benefic_occupancy",
+        "confidence": "TRADITION_DEPENDENT",
+        "source_type": "UNVERIFIED",
+        "source_reference": "UNVERIFIED",
+        "formation_evidence": [
+          {
+            "condition": "benefic occupies Swamsa (D9)",
+            "actual_value": "Swamsa=Pisces; D9 occupants=[]; benefics=[]",
+            "expected_value": ">=1 of Jupiter/Venus/Mercury/Moon in D9 sign",
+            "source_fact": "varga_facts D9 (canonical, not recomputed)",
+            "passed": false
+          }
+        ],
+        "cancellation_evidence": [
+          "No cancellation: D9 occupancy is factual; no defensible structural cancellation."
+        ],
+        "mitigation_evidence": [
+          "No mitigation: Swamsa is a D9-scope rule; D1 Rashi-Drishti mitigation not applicable."
+        ],
+        "strength_factors": [],
+        "relevant_planets": [],
+        "relevant_signs": [
+          "Cancer",
+          "Pisces"
+        ],
+        "relevant_houses": [],
+        "dependencies": [
+          "JaiminiFacts.karakamsha",
+          "varga_facts.D9"
+        ],
+        "notes": "Swamsa benefic-occupancy combination; condition formed, no outcome claimed. Karakamsha=Cancer tracked separately (interchange guard).",
+        "rule_version": "1.0.0"
+      }
+    ],
+    "formed_rules": [
+      "JAI.ARUDHA.AL_LORD_KENDRA_TRINE",
+      "JAI.DRISHTI.AK_AMK_MUTUAL",
+      "JAI.KARAKAMSHA.BENEFIC_OCCUPANCY"
+    ],
+    "not_formed_rules": [
+      "JAI.ARUDHA.A7_UL_ALIGNMENT",
+      "JAI.ARUDHA.AL_BENEFIC_OCCUPANCY",
+      "JAI.ARUDHA.DHANA_A2_A11",
+      "JAI.DRISHTI.AK_ON_AL",
+      "JAI.DRISHTI.AMK_ON_AL",
+      "JAI.KARAKA.AK_AMK_CONJUNCTION",
+      "JAI.KARAKA.AK_KENDRA_FROM_AL",
+      "JAI.KARAKA.DK_UL_SAMBANDHA",
+      "JAI.SWAMSA.BENEFIC_OCCUPANCY"
+    ],
+    "unknown_rules": [],
+    "conflicts": [
+      {
+        "rule_a": "JAI.KARAKA.AK_AMK_CONJUNCTION",
+        "rule_b": "JAI.DRISHTI.AK_AMK_MUTUAL",
+        "conflict_class": "DIFFERENT_DIMENSIONS",
+        "same_proposition": true,
+        "detail": "AK\u2013AmK relationship: conjunction and mutual-drishti are disjoint by construction; distinct conditions, no contradiction (formed=False/True).",
+        "resolution": "REPORTED_ONLY"
+      },
+      {
+        "rule_a": "JAI.KARAKA.DK_UL_SAMBANDHA",
+        "rule_b": "JAI.ARUDHA.A7_UL_ALIGNMENT",
+        "conflict_class": "DIFFERENT_DIMENSIONS",
+        "same_proposition": true,
+        "detail": "UL family dimension via DK vs via A7; distinct conditions, no contradiction (formed=False/False).",
+        "resolution": "REPORTED_ONLY"
+      },
+      {
+        "rule_a": "JAI.KARAKAMSHA.BENEFIC_OCCUPANCY",
+        "rule_b": "JAI.SWAMSA.BENEFIC_OCCUPANCY",
+        "conflict_class": "DIFFERENT_DIMENSIONS",
+        "same_proposition": true,
+        "detail": "D9 benefic dimension via Karakamsha vs via Swamsa; distinct conditions, no contradiction (formed=True/False).",
+        "resolution": "REPORTED_ONLY"
+      }
+    ],
+    "dependencies": [
+      {
+        "rule_id": "JAI.ARUDHA.A7_UL_ALIGNMENT",
+        "origin_label": "TRADITION_DEPENDENT",
+        "dependencies": [
+          {
+            "type": "DERIVED_FACT",
+            "fact_path": "JaiminiFacts.arudha_padas[7]",
+            "required": true,
+            "description": "A7 final sign"
+          },
+          {
+            "type": "DERIVED_FACT",
+            "fact_path": "JaiminiFacts.upapada",
+            "required": true,
+            "description": "UL final sign"
+          }
+        ],
+        "varga_dependencies": [],
+        "strength_dependencies": []
+      },
+      {
+        "rule_id": "JAI.ARUDHA.AL_BENEFIC_OCCUPANCY",
+        "origin_label": "CLASSICAL_JAIMINI",
+        "dependencies": [
+          {
+            "type": "FACT",
+            "fact_path": "ChartFacts.planets[D1]",
+            "required": true,
+            "description": "D1 occupants of AL"
+          },
+          {
+            "type": "DERIVED_FACT",
+            "fact_path": "JaiminiFacts.arudha_padas[1]",
+            "required": true,
+            "description": "AL final sign"
+          },
+          {
+            "type": "DERIVED_FACT",
+            "fact_path": "JaiminiFacts.rashi_drishti",
+            "required": false,
+            "description": "supporting benefic-drishti mitigation context"
+          }
+        ],
+        "varga_dependencies": [],
+        "strength_dependencies": []
+      },
+      {
+        "rule_id": "JAI.ARUDHA.AL_LORD_KENDRA_TRINE",
+        "origin_label": "CLASSICAL_JAIMINI",
+        "dependencies": [
+          {
+            "type": "FACT",
+            "fact_path": "ChartFacts.planets[D1]",
+            "required": true,
+            "description": "D1 sign of AL lord"
+          },
+          {
+            "type": "DERIVED_FACT",
+            "fact_path": "JaiminiFacts.arudha_padas[1]",
+            "required": true,
+            "description": "AL final sign and house lord"
+          },
+          {
+            "type": "DERIVED_FACT",
+            "fact_path": "JaiminiFacts.rashi_drishti",
+            "required": false,
+            "description": "supporting benefic-drishti mitigation context"
+          }
+        ],
+        "varga_dependencies": [],
+        "strength_dependencies": []
+      },
+      {
+        "rule_id": "JAI.ARUDHA.DHANA_A2_A11",
+        "origin_label": "CLASSICAL_JAIMINI",
+        "dependencies": [
+          {
+            "type": "DERIVED_FACT",
+            "fact_path": "JaiminiFacts.arudha_padas[11]",
+            "required": true,
+            "description": "A11 final sign"
+          },
+          {
+            "type": "DERIVED_FACT",
+            "fact_path": "JaiminiFacts.arudha_padas[2]",
+            "required": true,
+            "description": "A2 final sign"
+          },
+          {
+            "type": "DERIVED_FACT",
+            "fact_path": "JaiminiFacts.rashi_drishti",
+            "required": true,
+            "description": "mutual-drishti mode evaluation"
+          }
+        ],
+        "varga_dependencies": [],
+        "strength_dependencies": []
+      },
+      {
+        "rule_id": "JAI.DRISHTI.AK_AMK_MUTUAL",
+        "origin_label": "CLASSICAL_JAIMINI",
+        "dependencies": [
+          {
+            "type": "DERIVED_FACT",
+            "fact_path": "JaiminiFacts.chara_karakas",
+            "required": true,
+            "description": "AK and AmK assignments"
+          },
+          {
+            "type": "DERIVED_FACT",
+            "fact_path": "JaiminiFacts.rashi_drishti",
+            "required": true,
+            "description": "mutual-drishti evaluation"
+          }
+        ],
+        "varga_dependencies": [],
+        "strength_dependencies": []
+      },
+      {
+        "rule_id": "JAI.DRISHTI.AK_ON_AL",
+        "origin_label": "TRADITION_DEPENDENT",
+        "dependencies": [
+          {
+            "type": "DERIVED_FACT",
+            "fact_path": "JaiminiFacts.arudha_padas[1]",
+            "required": true,
+            "description": "AL final sign"
+          },
+          {
+            "type": "DERIVED_FACT",
+            "fact_path": "JaiminiFacts.chara_karakas",
+            "required": true,
+            "description": "AK assignment"
+          },
+          {
+            "type": "DERIVED_FACT",
+            "fact_path": "JaiminiFacts.rashi_drishti",
+            "required": true,
+            "description": "planet_aspects evaluation"
+          }
+        ],
+        "varga_dependencies": [],
+        "strength_dependencies": []
+      },
+      {
+        "rule_id": "JAI.DRISHTI.AMK_ON_AL",
+        "origin_label": "TRADITION_DEPENDENT",
+        "dependencies": [
+          {
+            "type": "DERIVED_FACT",
+            "fact_path": "JaiminiFacts.arudha_padas[1]",
+            "required": true,
+            "description": "AL final sign"
+          },
+          {
+            "type": "DERIVED_FACT",
+            "fact_path": "JaiminiFacts.chara_karakas",
+            "required": true,
+            "description": "AmK assignment"
+          },
+          {
+            "type": "DERIVED_FACT",
+            "fact_path": "JaiminiFacts.rashi_drishti",
+            "required": true,
+            "description": "planet_aspects evaluation"
+          }
+        ],
+        "varga_dependencies": [],
+        "strength_dependencies": []
+      },
+      {
+        "rule_id": "JAI.KARAKA.AK_AMK_CONJUNCTION",
+        "origin_label": "CLASSICAL_JAIMINI",
+        "dependencies": [
+          {
+            "type": "FACT",
+            "fact_path": "ChartFacts.planets[D1]",
+            "required": true,
+            "description": "D1 signs of AK/AmK planets"
+          },
+          {
+            "type": "DERIVED_FACT",
+            "fact_path": "JaiminiFacts.chara_karakas",
+            "required": true,
+            "description": "AK and AmK assignments"
+          },
+          {
+            "type": "DERIVED_FACT",
+            "fact_path": "JaiminiFacts.rashi_drishti",
+            "required": false,
+            "description": "supporting benefic-drishti mitigation context"
+          }
+        ],
+        "varga_dependencies": [],
+        "strength_dependencies": []
+      },
+      {
+        "rule_id": "JAI.KARAKA.AK_KENDRA_FROM_AL",
+        "origin_label": "TRADITION_DEPENDENT",
+        "dependencies": [
+          {
+            "type": "FACT",
+            "fact_path": "ChartFacts.planets[D1]",
+            "required": false,
+            "description": "benefic-support mitigation context"
+          },
+          {
+            "type": "DERIVED_FACT",
+            "fact_path": "JaiminiFacts.arudha_padas[1]",
+            "required": true,
+            "description": "AL final sign"
+          },
+          {
+            "type": "DERIVED_FACT",
+            "fact_path": "JaiminiFacts.chara_karakas",
+            "required": true,
+            "description": "AK assignment"
+          },
+          {
+            "type": "DERIVED_FACT",
+            "fact_path": "JaiminiFacts.rashi_drishti",
+            "required": false,
+            "description": "supporting benefic-drishti mitigation context"
+          }
+        ],
+        "varga_dependencies": [],
+        "strength_dependencies": []
+      },
+      {
+        "rule_id": "JAI.KARAKA.DK_UL_SAMBANDHA",
+        "origin_label": "TRADITION_DEPENDENT",
+        "dependencies": [
+          {
+            "type": "FACT",
+            "fact_path": "ChartFacts.planets[D1]",
+            "required": true,
+            "description": "D1 signs of DK and UL lord"
+          },
+          {
+            "type": "DERIVED_FACT",
+            "fact_path": "JaiminiFacts.chara_karakas",
+            "required": true,
+            "description": "DK assignment"
+          },
+          {
+            "type": "DERIVED_FACT",
+            "fact_path": "JaiminiFacts.rashi_drishti",
+            "required": true,
+            "description": "mutual-drishti mode evaluation"
+          },
+          {
+            "type": "DERIVED_FACT",
+            "fact_path": "JaiminiFacts.upapada",
+            "required": true,
+            "description": "UL final sign"
+          }
+        ],
+        "varga_dependencies": [],
+        "strength_dependencies": []
+      },
+      {
+        "rule_id": "JAI.KARAKAMSHA.BENEFIC_OCCUPANCY",
+        "origin_label": "TRADITION_DEPENDENT",
+        "dependencies": [
+          {
+            "type": "DERIVED_FACT",
+            "fact_path": "JaiminiFacts.chara_karakas",
+            "required": true,
+            "description": "AK identity"
+          },
+          {
+            "type": "DERIVED_FACT",
+            "fact_path": "JaiminiFacts.karakamsha",
+            "required": true,
+            "description": "Karakamsha sign"
+          },
+          {
+            "type": "FACT",
+            "fact_path": "varga_facts.D9",
+            "required": true,
+            "description": "D9 occupants of Karakamsha sign"
+          }
+        ],
+        "varga_dependencies": [
+          "D9"
+        ],
+        "strength_dependencies": []
+      },
+      {
+        "rule_id": "JAI.SWAMSA.BENEFIC_OCCUPANCY",
+        "origin_label": "TRADITION_DEPENDENT",
+        "dependencies": [
+          {
+            "type": "DERIVED_FACT",
+            "fact_path": "JaiminiFacts.karakamsha",
+            "required": true,
+            "description": "Swamsa (D9 Lagna) sign"
+          },
+          {
+            "type": "FACT",
+            "fact_path": "varga_facts.D9",
+            "required": true,
+            "description": "D9 occupants of Swamsa sign"
+          }
+        ],
+        "varga_dependencies": [
+          "D9"
+        ],
+        "strength_dependencies": []
+      }
+    ],
+    "evidence_graph": {
+      "nodes": [
+        {
+          "node_id": "d1:lagna",
+          "tier": "DIRECT_FACT",
+          "label": "D1 Lagna sign",
+          "value": "Taurus",
+          "source": "ChartFacts.ascendant"
+        },
+        {
+          "node_id": "d1:planet:Jupiter:sign",
+          "tier": "DIRECT_FACT",
+          "label": "D1 sign of Jupiter",
+          "value": "Virgo",
+          "source": "ChartFacts.planets"
+        },
+        {
+          "node_id": "d1:planet:Ketu:sign",
+          "tier": "DIRECT_FACT",
+          "label": "D1 sign of Ketu",
+          "value": "Virgo",
+          "source": "ChartFacts.planets"
+        },
+        {
+          "node_id": "d1:planet:Mars:sign",
+          "tier": "DIRECT_FACT",
+          "label": "D1 sign of Mars",
+          "value": "Aries",
+          "source": "ChartFacts.planets"
+        },
+        {
+          "node_id": "d1:planet:Mercury:sign",
+          "tier": "DIRECT_FACT",
+          "label": "D1 sign of Mercury",
+          "value": "Cancer",
+          "source": "ChartFacts.planets"
+        },
+        {
+          "node_id": "d1:planet:Moon:sign",
+          "tier": "DIRECT_FACT",
+          "label": "D1 sign of Moon",
+          "value": "Sagittarius",
+          "source": "ChartFacts.planets"
+        },
+        {
+          "node_id": "d1:planet:Rahu:sign",
+          "tier": "DIRECT_FACT",
+          "label": "D1 sign of Rahu",
+          "value": "Pisces",
+          "source": "ChartFacts.planets"
+        },
+        {
+          "node_id": "d1:planet:Saturn:sign",
+          "tier": "DIRECT_FACT",
+          "label": "D1 sign of Saturn",
+          "value": "Cancer",
+          "source": "ChartFacts.planets"
+        },
+        {
+          "node_id": "d1:planet:Sun:sign",
+          "tier": "DIRECT_FACT",
+          "label": "D1 sign of Sun",
+          "value": "Leo",
+          "source": "ChartFacts.planets"
+        },
+        {
+          "node_id": "d1:planet:Venus:sign",
+          "tier": "DIRECT_FACT",
+          "label": "D1 sign of Venus",
+          "value": "Virgo",
+          "source": "ChartFacts.planets"
+        },
+        {
+          "node_id": "d9:planet:Jupiter:sign",
+          "tier": "DIRECT_FACT",
+          "label": "D9 sign of Jupiter",
+          "value": "Cancer",
+          "source": "varga_facts.D9"
+        },
+        {
+          "node_id": "d9:planet:Ketu:sign",
+          "tier": "DIRECT_FACT",
+          "label": "D9 sign of Ketu",
+          "value": "Cancer",
+          "source": "varga_facts.D9"
+        },
+        {
+          "node_id": "d9:planet:Mars:sign",
+          "tier": "DIRECT_FACT",
+          "label": "D9 sign of Mars",
+          "value": "Leo",
+          "source": "varga_facts.D9"
+        },
+        {
+          "node_id": "d9:planet:Mercury:sign",
+          "tier": "DIRECT_FACT",
+          "label": "D9 sign of Mercury",
+          "value": "Scorpio",
+          "source": "varga_facts.D9"
+        },
+        {
+          "node_id": "d9:planet:Moon:sign",
+          "tier": "DIRECT_FACT",
+          "label": "D9 sign of Moon",
+          "value": "Virgo",
+          "source": "varga_facts.D9"
+        },
+        {
+          "node_id": "d9:planet:Rahu:sign",
+          "tier": "DIRECT_FACT",
+          "label": "D9 sign of Rahu",
+          "value": "Capricorn",
+          "source": "varga_facts.D9"
+        },
+        {
+          "node_id": "d9:planet:Saturn:sign",
+          "tier": "DIRECT_FACT",
+          "label": "D9 sign of Saturn",
+          "value": "Libra",
+          "source": "varga_facts.D9"
+        },
+        {
+          "node_id": "d9:planet:Sun:sign",
+          "tier": "DIRECT_FACT",
+          "label": "D9 sign of Sun",
+          "value": "Aries",
+          "source": "varga_facts.D9"
+        },
+        {
+          "node_id": "d9:planet:Venus:sign",
+          "tier": "DIRECT_FACT",
+          "label": "D9 sign of Venus",
+          "value": "Aquarius",
+          "source": "varga_facts.D9"
+        },
+        {
+          "node_id": "karaka:AK",
+          "tier": "DERIVED_FACT",
+          "label": "AK = Jupiter (21.8426\u00b0 in Virgo)",
+          "value": {
+            "planet": "Jupiter",
+            "sign": "Virgo",
+            "degree": 21.84264299887178
+          },
+          "source": "JaiminiFacts.chara_karakas"
+        },
+        {
+          "node_id": "karaka:AmK",
+          "tier": "DERIVED_FACT",
+          "label": "AmK = Moon (17.8628\u00b0 in Sagittarius)",
+          "value": {
+            "planet": "Moon",
+            "sign": "Sagittarius",
+            "degree": 17.86278483526462
+          },
+          "source": "JaiminiFacts.chara_karakas"
+        },
+        {
+          "node_id": "karaka:BK",
+          "tier": "DERIVED_FACT",
+          "label": "BK = Mars (16.5931\u00b0 in Aries)",
+          "value": {
+            "planet": "Mars",
+            "sign": "Aries",
+            "degree": 16.593076912952483
+          },
+          "source": "JaiminiFacts.chara_karakas"
+        },
+        {
+          "node_id": "karaka:DK",
+          "tier": "DERIVED_FACT",
+          "label": "DK = Sun (0.0419\u00b0 in Leo)",
+          "value": {
+            "planet": "Sun",
+            "sign": "Leo",
+            "degree": 0.041859885786095674
+          },
+          "source": "JaiminiFacts.chara_karakas"
+        },
+        {
+          "node_id": "karaka:GK",
+          "tier": "DERIVED_FACT",
+          "label": "GK = Venus (5.6418\u00b0 in Virgo)",
+          "value": {
+            "planet": "Venus",
+            "sign": "Virgo",
+            "degree": 5.641769213846771
+          },
+          "source": "JaiminiFacts.chara_karakas"
+        },
+        {
+          "node_id": "karaka:MK",
+          "tier": "DERIVED_FACT",
+          "label": "MK = Mercury (14.8396\u00b0 in Cancer)",
+          "value": {
+            "planet": "Mercury",
+            "sign": "Cancer",
+            "degree": 14.83955929667161
+          },
+          "source": "JaiminiFacts.chara_karakas"
+        },
+        {
+          "node_id": "karaka:PK",
+          "tier": "DERIVED_FACT",
+          "label": "PK = Saturn (10.0625\u00b0 in Cancer)",
+          "value": {
+            "planet": "Saturn",
+            "sign": "Cancer",
+            "degree": 10.06251103364103
+          },
+          "source": "JaiminiFacts.chara_karakas"
+        },
+        {
+          "node_id": "karakamsha:sign",
+          "tier": "DERIVED_FACT",
+          "label": "Karakamsha = Cancer (AK Jupiter D9)",
+          "value": "Cancer",
+          "source": "JaiminiFacts.karakamsha"
+        },
+        {
+          "node_id": "pada:A10:final",
+          "tier": "DERIVED_FACT",
+          "label": "A10 = Sagittarius (src Aquarius/Saturn in Cancer, raw Sagittarius, exc=False)",
+          "value": {
+            "final": "Sagittarius",
+            "source": "Aquarius",
+            "lord": "Saturn",
+            "lord_sign": "Cancer",
+            "raw": "Sagittarius",
+            "exception": null
+          },
+          "source": "JaiminiFacts.arudha_padas"
+        },
+        {
+          "node_id": "pada:A11:final",
+          "tier": "DERIVED_FACT",
+          "label": "A11 = Sagittarius (src Pisces/Jupiter in Virgo, raw Pisces, exc=True)",
+          "value": {
+            "final": "Sagittarius",
+            "source": "Pisces",
+            "lord": "Jupiter",
+            "lord_sign": "Virgo",
+            "raw": "Pisces",
+            "exception": "1st House Exception: Raw projection fell in source house (Pisces). Shifted 10 houses forward to Sagittarius."
+          },
+          "source": "JaiminiFacts.arudha_padas"
+        },
+        {
+          "node_id": "pada:A12:final",
+          "tier": "DERIVED_FACT",
+          "label": "A12 = Capricorn (src Aries/Mars in Aries, raw Aries, exc=True)",
+          "value": {
+            "final": "Capricorn",
+            "source": "Aries",
+            "lord": "Mars",
+            "lord_sign": "Aries",
+            "raw": "Aries",
+            "exception": "1st House Exception: Raw projection fell in source house (Aries). Shifted 10 houses forward to Capricorn."
+          },
+          "source": "JaiminiFacts.arudha_padas"
+        },
+        {
+          "node_id": "pada:A1:final",
+          "tier": "DERIVED_FACT",
+          "label": "A1 = Capricorn (src Taurus/Venus in Virgo, raw Capricorn, exc=False)",
+          "value": {
+            "final": "Capricorn",
+            "source": "Taurus",
+            "lord": "Venus",
+            "lord_sign": "Virgo",
+            "raw": "Capricorn",
+            "exception": null
+          },
+          "source": "JaiminiFacts.arudha_padas"
+        },
+        {
+          "node_id": "pada:A2:final",
+          "tier": "DERIVED_FACT",
+          "label": "A2 = Leo (src Gemini/Mercury in Cancer, raw Leo, exc=False)",
+          "value": {
+            "final": "Leo",
+            "source": "Gemini",
+            "lord": "Mercury",
+            "lord_sign": "Cancer",
+            "raw": "Leo",
+            "exception": null
+          },
+          "source": "JaiminiFacts.arudha_padas"
+        },
+        {
+          "node_id": "pada:A3:final",
+          "tier": "DERIVED_FACT",
+          "label": "A3 = Taurus (src Cancer/Moon in Sagittarius, raw Taurus, exc=False)",
+          "value": {
+            "final": "Taurus",
+            "source": "Cancer",
+            "lord": "Moon",
+            "lord_sign": "Sagittarius",
+            "raw": "Taurus",
+            "exception": null
+          },
+          "source": "JaiminiFacts.arudha_padas"
+        },
+        {
+          "node_id": "pada:A4:final",
+          "tier": "DERIVED_FACT",
+          "label": "A4 = Taurus (src Leo/Sun in Leo, raw Leo, exc=True)",
+          "value": {
+            "final": "Taurus",
+            "source": "Leo",
+            "lord": "Sun",
+            "lord_sign": "Leo",
+            "raw": "Leo",
+            "exception": "1st House Exception: Raw projection fell in source house (Leo). Shifted 10 houses forward to Taurus."
+          },
+          "source": "JaiminiFacts.arudha_padas"
+        },
+        {
+          "node_id": "pada:A5:final",
+          "tier": "DERIVED_FACT",
+          "label": "A5 = Taurus (src Virgo/Mercury in Cancer, raw Taurus, exc=False)",
+          "value": {
+            "final": "Taurus",
+            "source": "Virgo",
+            "lord": "Mercury",
+            "lord_sign": "Cancer",
+            "raw": "Taurus",
+            "exception": null
+          },
+          "source": "JaiminiFacts.arudha_padas"
+        },
+        {
+          "node_id": "pada:A6:final",
+          "tier": "DERIVED_FACT",
+          "label": "A6 = Leo (src Libra/Venus in Virgo, raw Leo, exc=False)",
+          "value": {
+            "final": "Leo",
+            "source": "Libra",
+            "lord": "Venus",
+            "lord_sign": "Virgo",
+            "raw": "Leo",
+            "exception": null
+          },
+          "source": "JaiminiFacts.arudha_padas"
+        },
+        {
+          "node_id": "pada:A7:final",
+          "tier": "DERIVED_FACT",
+          "label": "A7 = Virgo (src Scorpio/Mars in Aries, raw Virgo, exc=False)",
+          "value": {
+            "final": "Virgo",
+            "source": "Scorpio",
+            "lord": "Mars",
+            "lord_sign": "Aries",
+            "raw": "Virgo",
+            "exception": null
+          },
+          "source": "JaiminiFacts.arudha_padas"
+        },
+        {
+          "node_id": "pada:A8:final",
+          "tier": "DERIVED_FACT",
+          "label": "A8 = Pisces (src Sagittarius/Jupiter in Virgo, raw Gemini, exc=True)",
+          "value": {
+            "final": "Pisces",
+            "source": "Sagittarius",
+            "lord": "Jupiter",
+            "lord_sign": "Virgo",
+            "raw": "Gemini",
+            "exception": "7th House Exception: Raw projection fell in 7th from source house (Gemini). Shifted 10 houses forward from 7th (4th from house) to Pisces."
+          },
+          "source": "JaiminiFacts.arudha_padas"
+        },
+        {
+          "node_id": "pada:A9:final",
+          "tier": "DERIVED_FACT",
+          "label": "A9 = Libra (src Capricorn/Saturn in Cancer, raw Capricorn, exc=True)",
+          "value": {
+            "final": "Libra",
+            "source": "Capricorn",
+            "lord": "Saturn",
+            "lord_sign": "Cancer",
+            "raw": "Capricorn",
+            "exception": "1st House Exception: Raw projection fell in source house (Capricorn). Shifted 10 houses forward to Libra."
+          },
+          "source": "JaiminiFacts.arudha_padas"
+        },
+        {
+          "node_id": "rule:JAI.ARUDHA.A7_UL_ALIGNMENT:formation",
+          "tier": "RULE_DERIVED",
+          "label": "JAI.ARUDHA.A7_UL_ALIGNMENT conditions: A7 == UL",
+          "value": {
+            "passed": [
+              false
+            ]
+          },
+          "source": "JaiminiRuleResult.formation_evidence"
+        },
+        {
+          "node_id": "rule:JAI.ARUDHA.A7_UL_ALIGNMENT:result",
+          "tier": "RULE_DERIVED",
+          "label": "JAI.ARUDHA.A7_UL_ALIGNMENT = NOT_FORMED",
+          "value": {
+            "formed": false,
+            "formation_status": "NOT_FORMED",
+            "cancellation": "NONE",
+            "mitigation": "NONE"
+          },
+          "source": "JaiminiRuleResult"
+        },
+        {
+          "node_id": "rule:JAI.ARUDHA.AL_BENEFIC_OCCUPANCY:formation",
+          "tier": "RULE_DERIVED",
+          "label": "JAI.ARUDHA.AL_BENEFIC_OCCUPANCY conditions: benefic occupies AL (D1)",
+          "value": {
+            "passed": [
+              false
+            ]
+          },
+          "source": "JaiminiRuleResult.formation_evidence"
+        },
+        {
+          "node_id": "rule:JAI.ARUDHA.AL_BENEFIC_OCCUPANCY:result",
+          "tier": "RULE_DERIVED",
+          "label": "JAI.ARUDHA.AL_BENEFIC_OCCUPANCY = NOT_FORMED",
+          "value": {
+            "formed": false,
+            "formation_status": "NOT_FORMED",
+            "cancellation": "NONE",
+            "mitigation": "NONE"
+          },
+          "source": "JaiminiRuleResult"
+        },
+        {
+          "node_id": "rule:JAI.ARUDHA.AL_LORD_KENDRA_TRINE:formation",
+          "tier": "RULE_DERIVED",
+          "label": "JAI.ARUDHA.AL_LORD_KENDRA_TRINE conditions: house_of(AL-lord from AL) in {1,4,5,7,9,10}",
+          "value": {
+            "passed": [
+              true
+            ]
+          },
+          "source": "JaiminiRuleResult.formation_evidence"
+        },
+        {
+          "node_id": "rule:JAI.ARUDHA.AL_LORD_KENDRA_TRINE:result",
+          "tier": "RULE_DERIVED",
+          "label": "JAI.ARUDHA.AL_LORD_KENDRA_TRINE = FORMED",
+          "value": {
+            "formed": true,
+            "formation_status": "FORMED",
+            "cancellation": "NONE",
+            "mitigation": "NONE"
+          },
+          "source": "JaiminiRuleResult"
+        },
+        {
+          "node_id": "rule:JAI.ARUDHA.DHANA_A2_A11:formation",
+          "tier": "RULE_DERIVED",
+          "label": "JAI.ARUDHA.DHANA_A2_A11 conditions: A2==A11 OR mutual-drishti(A2,A11) OR lord(A2)==lord(A11)",
+          "value": {
+            "passed": [
+              false
+            ]
+          },
+          "source": "JaiminiRuleResult.formation_evidence"
+        },
+        {
+          "node_id": "rule:JAI.ARUDHA.DHANA_A2_A11:result",
+          "tier": "RULE_DERIVED",
+          "label": "JAI.ARUDHA.DHANA_A2_A11 = NOT_FORMED",
+          "value": {
+            "formed": false,
+            "formation_status": "NOT_FORMED",
+            "cancellation": "NONE",
+            "mitigation": "PARTIAL"
+          },
+          "source": "JaiminiRuleResult"
+        },
+        {
+          "node_id": "rule:JAI.DRISHTI.AK_AMK_MUTUAL:formation",
+          "tier": "RULE_DERIVED",
+          "label": "JAI.DRISHTI.AK_AMK_MUTUAL conditions: mutual_rashi_drishti(AK_sign, AmK_sign)",
+          "value": {
+            "passed": [
+              true
+            ]
+          },
+          "source": "JaiminiRuleResult.formation_evidence"
+        },
+        {
+          "node_id": "rule:JAI.DRISHTI.AK_AMK_MUTUAL:result",
+          "tier": "RULE_DERIVED",
+          "label": "JAI.DRISHTI.AK_AMK_MUTUAL = FORMED",
+          "value": {
+            "formed": true,
+            "formation_status": "FORMED",
+            "cancellation": "NONE",
+            "mitigation": "PARTIAL"
+          },
+          "source": "JaiminiRuleResult"
+        },
+        {
+          "node_id": "rule:JAI.DRISHTI.AK_ON_AL:formation",
+          "tier": "RULE_DERIVED",
+          "label": "JAI.DRISHTI.AK_ON_AL conditions: AK_aspects_AL",
+          "value": {
+            "passed": [
+              false
+            ]
+          },
+          "source": "JaiminiRuleResult.formation_evidence"
+        },
+        {
+          "node_id": "rule:JAI.DRISHTI.AK_ON_AL:result",
+          "tier": "RULE_DERIVED",
+          "label": "JAI.DRISHTI.AK_ON_AL = NOT_FORMED",
+          "value": {
+            "formed": false,
+            "formation_status": "NOT_FORMED",
+            "cancellation": "NONE",
+            "mitigation": "NONE"
+          },
+          "source": "JaiminiRuleResult"
+        },
+        {
+          "node_id": "rule:JAI.DRISHTI.AMK_ON_AL:formation",
+          "tier": "RULE_DERIVED",
+          "label": "JAI.DRISHTI.AMK_ON_AL conditions: AmK_aspects_AL",
+          "value": {
+            "passed": [
+              false
+            ]
+          },
+          "source": "JaiminiRuleResult.formation_evidence"
+        },
+        {
+          "node_id": "rule:JAI.DRISHTI.AMK_ON_AL:result",
+          "tier": "RULE_DERIVED",
+          "label": "JAI.DRISHTI.AMK_ON_AL = NOT_FORMED",
+          "value": {
+            "formed": false,
+            "formation_status": "NOT_FORMED",
+            "cancellation": "NONE",
+            "mitigation": "NONE"
+          },
+          "source": "JaiminiRuleResult"
+        },
+        {
+          "node_id": "rule:JAI.KARAKA.AK_AMK_CONJUNCTION:formation",
+          "tier": "RULE_DERIVED",
+          "label": "JAI.KARAKA.AK_AMK_CONJUNCTION conditions: AK_sign == AmK_sign",
+          "value": {
+            "passed": [
+              false
+            ]
+          },
+          "source": "JaiminiRuleResult.formation_evidence"
+        },
+        {
+          "node_id": "rule:JAI.KARAKA.AK_AMK_CONJUNCTION:result",
+          "tier": "RULE_DERIVED",
+          "label": "JAI.KARAKA.AK_AMK_CONJUNCTION = NOT_FORMED",
+          "value": {
+            "formed": false,
+            "formation_status": "NOT_FORMED",
+            "cancellation": "NONE",
+            "mitigation": "PARTIAL"
+          },
+          "source": "JaiminiRuleResult"
+        },
+        {
+          "node_id": "rule:JAI.KARAKA.AK_KENDRA_FROM_AL:formation",
+          "tier": "RULE_DERIVED",
+          "label": "JAI.KARAKA.AK_KENDRA_FROM_AL conditions: house_of(AK_sign from AL) in {1,4,7,10}",
+          "value": {
+            "passed": [
+              false
+            ]
+          },
+          "source": "JaiminiRuleResult.formation_evidence"
+        },
+        {
+          "node_id": "rule:JAI.KARAKA.AK_KENDRA_FROM_AL:result",
+          "tier": "RULE_DERIVED",
+          "label": "JAI.KARAKA.AK_KENDRA_FROM_AL = NOT_FORMED",
+          "value": {
+            "formed": false,
+            "formation_status": "NOT_FORMED",
+            "cancellation": "NONE",
+            "mitigation": "PARTIAL"
+          },
+          "source": "JaiminiRuleResult"
+        },
+        {
+          "node_id": "rule:JAI.KARAKA.DK_UL_SAMBANDHA:formation",
+          "tier": "RULE_DERIVED",
+          "label": "JAI.KARAKA.DK_UL_SAMBANDHA conditions: DK in UL OR DK lords UL OR mutual-drishti(DK, UL-lord)",
+          "value": {
+            "passed": [
+              false
+            ]
+          },
+          "source": "JaiminiRuleResult.formation_evidence"
+        },
+        {
+          "node_id": "rule:JAI.KARAKA.DK_UL_SAMBANDHA:result",
+          "tier": "RULE_DERIVED",
+          "label": "JAI.KARAKA.DK_UL_SAMBANDHA = NOT_FORMED",
+          "value": {
+            "formed": false,
+            "formation_status": "NOT_FORMED",
+            "cancellation": "NONE",
+            "mitigation": "NONE"
+          },
+          "source": "JaiminiRuleResult"
+        },
+        {
+          "node_id": "rule:JAI.KARAKAMSHA.BENEFIC_OCCUPANCY:formation",
+          "tier": "RULE_DERIVED",
+          "label": "JAI.KARAKAMSHA.BENEFIC_OCCUPANCY conditions: benefic occupies Karakamsha (D9)",
+          "value": {
+            "passed": [
+              true
+            ]
+          },
+          "source": "JaiminiRuleResult.formation_evidence"
+        },
+        {
+          "node_id": "rule:JAI.KARAKAMSHA.BENEFIC_OCCUPANCY:result",
+          "tier": "RULE_DERIVED",
+          "label": "JAI.KARAKAMSHA.BENEFIC_OCCUPANCY = FORMED",
+          "value": {
+            "formed": true,
+            "formation_status": "FORMED",
+            "cancellation": "NONE",
+            "mitigation": "NONE"
+          },
+          "source": "JaiminiRuleResult"
+        },
+        {
+          "node_id": "rule:JAI.SWAMSA.BENEFIC_OCCUPANCY:formation",
+          "tier": "RULE_DERIVED",
+          "label": "JAI.SWAMSA.BENEFIC_OCCUPANCY conditions: benefic occupies Swamsa (D9)",
+          "value": {
+            "passed": [
+              false
+            ]
+          },
+          "source": "JaiminiRuleResult.formation_evidence"
+        },
+        {
+          "node_id": "rule:JAI.SWAMSA.BENEFIC_OCCUPANCY:result",
+          "tier": "RULE_DERIVED",
+          "label": "JAI.SWAMSA.BENEFIC_OCCUPANCY = NOT_FORMED",
+          "value": {
+            "formed": false,
+            "formation_status": "NOT_FORMED",
+            "cancellation": "NONE",
+            "mitigation": "NONE"
+          },
+          "source": "JaiminiRuleResult"
+        },
+        {
+          "node_id": "swamsa:lagna",
+          "tier": "DERIVED_FACT",
+          "label": "Swamsa = Pisces (D9 Lagna)",
+          "value": "Pisces",
+          "source": "JaiminiFacts.karakamsha"
+        }
+      ],
+      "edges": [
+        {
+          "from_id": "d1:lagna",
+          "to_id": "d1:planet:Jupiter:sign",
+          "relation": "co-chart-fact"
+        },
+        {
+          "from_id": "d1:lagna",
+          "to_id": "d1:planet:Ketu:sign",
+          "relation": "co-chart-fact"
+        },
+        {
+          "from_id": "d1:lagna",
+          "to_id": "d1:planet:Mars:sign",
+          "relation": "co-chart-fact"
+        },
+        {
+          "from_id": "d1:lagna",
+          "to_id": "d1:planet:Mercury:sign",
+          "relation": "co-chart-fact"
+        },
+        {
+          "from_id": "d1:lagna",
+          "to_id": "d1:planet:Moon:sign",
+          "relation": "co-chart-fact"
+        },
+        {
+          "from_id": "d1:lagna",
+          "to_id": "d1:planet:Rahu:sign",
+          "relation": "co-chart-fact"
+        },
+        {
+          "from_id": "d1:lagna",
+          "to_id": "d1:planet:Saturn:sign",
+          "relation": "co-chart-fact"
+        },
+        {
+          "from_id": "d1:lagna",
+          "to_id": "d1:planet:Sun:sign",
+          "relation": "co-chart-fact"
+        },
+        {
+          "from_id": "d1:lagna",
+          "to_id": "d1:planet:Venus:sign",
+          "relation": "co-chart-fact"
+        },
+        {
+          "from_id": "d1:lagna",
+          "to_id": "rule:JAI.DRISHTI.AK_AMK_MUTUAL:formation",
+          "relation": "context"
+        },
+        {
+          "from_id": "d1:lagna",
+          "to_id": "rule:JAI.DRISHTI.AK_ON_AL:formation",
+          "relation": "context"
+        },
+        {
+          "from_id": "d1:lagna",
+          "to_id": "rule:JAI.DRISHTI.AMK_ON_AL:formation",
+          "relation": "context"
+        },
+        {
+          "from_id": "d1:lagna",
+          "to_id": "rule:JAI.KARAKA.DK_UL_SAMBANDHA:formation",
+          "relation": "context"
+        },
+        {
+          "from_id": "d1:planet:Jupiter:sign",
+          "to_id": "karaka:AK",
+          "relation": "derives"
+        },
+        {
+          "from_id": "d1:planet:Jupiter:sign",
+          "to_id": "pada:A11:final",
+          "relation": "derives"
+        },
+        {
+          "from_id": "d1:planet:Jupiter:sign",
+          "to_id": "pada:A8:final",
+          "relation": "derives"
+        },
+        {
+          "from_id": "d1:planet:Jupiter:sign",
+          "to_id": "rule:JAI.ARUDHA.AL_BENEFIC_OCCUPANCY:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "d1:planet:Jupiter:sign",
+          "to_id": "rule:JAI.ARUDHA.AL_LORD_KENDRA_TRINE:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "d1:planet:Ketu:sign",
+          "to_id": "rule:JAI.ARUDHA.AL_BENEFIC_OCCUPANCY:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "d1:planet:Ketu:sign",
+          "to_id": "rule:JAI.ARUDHA.AL_LORD_KENDRA_TRINE:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "d1:planet:Mars:sign",
+          "to_id": "karaka:BK",
+          "relation": "derives"
+        },
+        {
+          "from_id": "d1:planet:Mars:sign",
+          "to_id": "pada:A12:final",
+          "relation": "derives"
+        },
+        {
+          "from_id": "d1:planet:Mars:sign",
+          "to_id": "pada:A7:final",
+          "relation": "derives"
+        },
+        {
+          "from_id": "d1:planet:Mars:sign",
+          "to_id": "rule:JAI.ARUDHA.AL_BENEFIC_OCCUPANCY:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "d1:planet:Mars:sign",
+          "to_id": "rule:JAI.ARUDHA.AL_LORD_KENDRA_TRINE:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "d1:planet:Mercury:sign",
+          "to_id": "karaka:MK",
+          "relation": "derives"
+        },
+        {
+          "from_id": "d1:planet:Mercury:sign",
+          "to_id": "pada:A2:final",
+          "relation": "derives"
+        },
+        {
+          "from_id": "d1:planet:Mercury:sign",
+          "to_id": "pada:A5:final",
+          "relation": "derives"
+        },
+        {
+          "from_id": "d1:planet:Mercury:sign",
+          "to_id": "rule:JAI.ARUDHA.AL_BENEFIC_OCCUPANCY:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "d1:planet:Mercury:sign",
+          "to_id": "rule:JAI.ARUDHA.AL_LORD_KENDRA_TRINE:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "d1:planet:Moon:sign",
+          "to_id": "karaka:AmK",
+          "relation": "derives"
+        },
+        {
+          "from_id": "d1:planet:Moon:sign",
+          "to_id": "pada:A3:final",
+          "relation": "derives"
+        },
+        {
+          "from_id": "d1:planet:Moon:sign",
+          "to_id": "rule:JAI.ARUDHA.AL_BENEFIC_OCCUPANCY:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "d1:planet:Moon:sign",
+          "to_id": "rule:JAI.ARUDHA.AL_LORD_KENDRA_TRINE:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "d1:planet:Rahu:sign",
+          "to_id": "rule:JAI.ARUDHA.AL_BENEFIC_OCCUPANCY:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "d1:planet:Rahu:sign",
+          "to_id": "rule:JAI.ARUDHA.AL_LORD_KENDRA_TRINE:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "d1:planet:Saturn:sign",
+          "to_id": "karaka:PK",
+          "relation": "derives"
+        },
+        {
+          "from_id": "d1:planet:Saturn:sign",
+          "to_id": "pada:A10:final",
+          "relation": "derives"
+        },
+        {
+          "from_id": "d1:planet:Saturn:sign",
+          "to_id": "pada:A9:final",
+          "relation": "derives"
+        },
+        {
+          "from_id": "d1:planet:Saturn:sign",
+          "to_id": "rule:JAI.ARUDHA.AL_BENEFIC_OCCUPANCY:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "d1:planet:Saturn:sign",
+          "to_id": "rule:JAI.ARUDHA.AL_LORD_KENDRA_TRINE:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "d1:planet:Sun:sign",
+          "to_id": "karaka:DK",
+          "relation": "derives"
+        },
+        {
+          "from_id": "d1:planet:Sun:sign",
+          "to_id": "pada:A4:final",
+          "relation": "derives"
+        },
+        {
+          "from_id": "d1:planet:Sun:sign",
+          "to_id": "rule:JAI.ARUDHA.AL_BENEFIC_OCCUPANCY:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "d1:planet:Sun:sign",
+          "to_id": "rule:JAI.ARUDHA.AL_LORD_KENDRA_TRINE:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "d1:planet:Venus:sign",
+          "to_id": "karaka:GK",
+          "relation": "derives"
+        },
+        {
+          "from_id": "d1:planet:Venus:sign",
+          "to_id": "pada:A1:final",
+          "relation": "derives"
+        },
+        {
+          "from_id": "d1:planet:Venus:sign",
+          "to_id": "pada:A6:final",
+          "relation": "derives"
+        },
+        {
+          "from_id": "d1:planet:Venus:sign",
+          "to_id": "rule:JAI.ARUDHA.AL_BENEFIC_OCCUPANCY:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "d1:planet:Venus:sign",
+          "to_id": "rule:JAI.ARUDHA.AL_LORD_KENDRA_TRINE:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "d9:planet:Jupiter:sign",
+          "to_id": "rule:JAI.KARAKAMSHA.BENEFIC_OCCUPANCY:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "d9:planet:Jupiter:sign",
+          "to_id": "rule:JAI.SWAMSA.BENEFIC_OCCUPANCY:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "d9:planet:Ketu:sign",
+          "to_id": "rule:JAI.KARAKAMSHA.BENEFIC_OCCUPANCY:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "d9:planet:Ketu:sign",
+          "to_id": "rule:JAI.SWAMSA.BENEFIC_OCCUPANCY:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "d9:planet:Mars:sign",
+          "to_id": "rule:JAI.KARAKAMSHA.BENEFIC_OCCUPANCY:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "d9:planet:Mars:sign",
+          "to_id": "rule:JAI.SWAMSA.BENEFIC_OCCUPANCY:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "d9:planet:Mercury:sign",
+          "to_id": "rule:JAI.KARAKAMSHA.BENEFIC_OCCUPANCY:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "d9:planet:Mercury:sign",
+          "to_id": "rule:JAI.SWAMSA.BENEFIC_OCCUPANCY:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "d9:planet:Moon:sign",
+          "to_id": "rule:JAI.KARAKAMSHA.BENEFIC_OCCUPANCY:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "d9:planet:Moon:sign",
+          "to_id": "rule:JAI.SWAMSA.BENEFIC_OCCUPANCY:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "d9:planet:Rahu:sign",
+          "to_id": "rule:JAI.KARAKAMSHA.BENEFIC_OCCUPANCY:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "d9:planet:Rahu:sign",
+          "to_id": "rule:JAI.SWAMSA.BENEFIC_OCCUPANCY:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "d9:planet:Saturn:sign",
+          "to_id": "rule:JAI.KARAKAMSHA.BENEFIC_OCCUPANCY:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "d9:planet:Saturn:sign",
+          "to_id": "rule:JAI.SWAMSA.BENEFIC_OCCUPANCY:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "d9:planet:Sun:sign",
+          "to_id": "rule:JAI.KARAKAMSHA.BENEFIC_OCCUPANCY:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "d9:planet:Sun:sign",
+          "to_id": "rule:JAI.SWAMSA.BENEFIC_OCCUPANCY:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "d9:planet:Venus:sign",
+          "to_id": "rule:JAI.KARAKAMSHA.BENEFIC_OCCUPANCY:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "d9:planet:Venus:sign",
+          "to_id": "rule:JAI.SWAMSA.BENEFIC_OCCUPANCY:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "karaka:AK",
+          "to_id": "rule:JAI.DRISHTI.AK_AMK_MUTUAL:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "karaka:AK",
+          "to_id": "rule:JAI.DRISHTI.AK_ON_AL:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "karaka:AK",
+          "to_id": "rule:JAI.DRISHTI.AMK_ON_AL:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "karaka:AK",
+          "to_id": "rule:JAI.KARAKA.AK_AMK_CONJUNCTION:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "karaka:AK",
+          "to_id": "rule:JAI.KARAKA.AK_KENDRA_FROM_AL:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "karaka:AK",
+          "to_id": "rule:JAI.KARAKA.DK_UL_SAMBANDHA:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "karaka:AK",
+          "to_id": "rule:JAI.KARAKAMSHA.BENEFIC_OCCUPANCY:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "karaka:AmK",
+          "to_id": "rule:JAI.DRISHTI.AK_AMK_MUTUAL:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "karaka:AmK",
+          "to_id": "rule:JAI.DRISHTI.AK_ON_AL:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "karaka:AmK",
+          "to_id": "rule:JAI.DRISHTI.AMK_ON_AL:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "karaka:AmK",
+          "to_id": "rule:JAI.KARAKA.AK_AMK_CONJUNCTION:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "karaka:AmK",
+          "to_id": "rule:JAI.KARAKA.AK_KENDRA_FROM_AL:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "karaka:AmK",
+          "to_id": "rule:JAI.KARAKA.DK_UL_SAMBANDHA:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "karaka:AmK",
+          "to_id": "rule:JAI.KARAKAMSHA.BENEFIC_OCCUPANCY:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "karaka:BK",
+          "to_id": "rule:JAI.DRISHTI.AK_AMK_MUTUAL:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "karaka:BK",
+          "to_id": "rule:JAI.DRISHTI.AK_ON_AL:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "karaka:BK",
+          "to_id": "rule:JAI.DRISHTI.AMK_ON_AL:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "karaka:BK",
+          "to_id": "rule:JAI.KARAKA.AK_AMK_CONJUNCTION:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "karaka:BK",
+          "to_id": "rule:JAI.KARAKA.AK_KENDRA_FROM_AL:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "karaka:BK",
+          "to_id": "rule:JAI.KARAKA.DK_UL_SAMBANDHA:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "karaka:BK",
+          "to_id": "rule:JAI.KARAKAMSHA.BENEFIC_OCCUPANCY:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "karaka:DK",
+          "to_id": "rule:JAI.DRISHTI.AK_AMK_MUTUAL:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "karaka:DK",
+          "to_id": "rule:JAI.DRISHTI.AK_ON_AL:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "karaka:DK",
+          "to_id": "rule:JAI.DRISHTI.AMK_ON_AL:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "karaka:DK",
+          "to_id": "rule:JAI.KARAKA.AK_AMK_CONJUNCTION:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "karaka:DK",
+          "to_id": "rule:JAI.KARAKA.AK_KENDRA_FROM_AL:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "karaka:DK",
+          "to_id": "rule:JAI.KARAKA.DK_UL_SAMBANDHA:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "karaka:DK",
+          "to_id": "rule:JAI.KARAKAMSHA.BENEFIC_OCCUPANCY:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "karaka:GK",
+          "to_id": "rule:JAI.DRISHTI.AK_AMK_MUTUAL:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "karaka:GK",
+          "to_id": "rule:JAI.DRISHTI.AK_ON_AL:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "karaka:GK",
+          "to_id": "rule:JAI.DRISHTI.AMK_ON_AL:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "karaka:GK",
+          "to_id": "rule:JAI.KARAKA.AK_AMK_CONJUNCTION:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "karaka:GK",
+          "to_id": "rule:JAI.KARAKA.AK_KENDRA_FROM_AL:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "karaka:GK",
+          "to_id": "rule:JAI.KARAKA.DK_UL_SAMBANDHA:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "karaka:GK",
+          "to_id": "rule:JAI.KARAKAMSHA.BENEFIC_OCCUPANCY:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "karaka:MK",
+          "to_id": "rule:JAI.DRISHTI.AK_AMK_MUTUAL:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "karaka:MK",
+          "to_id": "rule:JAI.DRISHTI.AK_ON_AL:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "karaka:MK",
+          "to_id": "rule:JAI.DRISHTI.AMK_ON_AL:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "karaka:MK",
+          "to_id": "rule:JAI.KARAKA.AK_AMK_CONJUNCTION:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "karaka:MK",
+          "to_id": "rule:JAI.KARAKA.AK_KENDRA_FROM_AL:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "karaka:MK",
+          "to_id": "rule:JAI.KARAKA.DK_UL_SAMBANDHA:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "karaka:MK",
+          "to_id": "rule:JAI.KARAKAMSHA.BENEFIC_OCCUPANCY:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "karaka:PK",
+          "to_id": "rule:JAI.DRISHTI.AK_AMK_MUTUAL:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "karaka:PK",
+          "to_id": "rule:JAI.DRISHTI.AK_ON_AL:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "karaka:PK",
+          "to_id": "rule:JAI.DRISHTI.AMK_ON_AL:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "karaka:PK",
+          "to_id": "rule:JAI.KARAKA.AK_AMK_CONJUNCTION:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "karaka:PK",
+          "to_id": "rule:JAI.KARAKA.AK_KENDRA_FROM_AL:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "karaka:PK",
+          "to_id": "rule:JAI.KARAKA.DK_UL_SAMBANDHA:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "karaka:PK",
+          "to_id": "rule:JAI.KARAKAMSHA.BENEFIC_OCCUPANCY:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "karakamsha:sign",
+          "to_id": "rule:JAI.KARAKAMSHA.BENEFIC_OCCUPANCY:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "karakamsha:sign",
+          "to_id": "rule:JAI.SWAMSA.BENEFIC_OCCUPANCY:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "karakamsha:sign",
+          "to_id": "swamsa:lagna",
+          "relation": "tracked-separately"
+        },
+        {
+          "from_id": "pada:A10:final",
+          "to_id": "rule:JAI.ARUDHA.A7_UL_ALIGNMENT:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "pada:A10:final",
+          "to_id": "rule:JAI.ARUDHA.AL_BENEFIC_OCCUPANCY:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "pada:A10:final",
+          "to_id": "rule:JAI.ARUDHA.AL_LORD_KENDRA_TRINE:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "pada:A10:final",
+          "to_id": "rule:JAI.ARUDHA.DHANA_A2_A11:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "pada:A10:final",
+          "to_id": "rule:JAI.DRISHTI.AK_ON_AL:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "pada:A10:final",
+          "to_id": "rule:JAI.DRISHTI.AMK_ON_AL:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "pada:A10:final",
+          "to_id": "rule:JAI.KARAKA.AK_KENDRA_FROM_AL:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "pada:A11:final",
+          "to_id": "rule:JAI.ARUDHA.A7_UL_ALIGNMENT:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "pada:A11:final",
+          "to_id": "rule:JAI.ARUDHA.AL_BENEFIC_OCCUPANCY:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "pada:A11:final",
+          "to_id": "rule:JAI.ARUDHA.AL_LORD_KENDRA_TRINE:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "pada:A11:final",
+          "to_id": "rule:JAI.ARUDHA.DHANA_A2_A11:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "pada:A11:final",
+          "to_id": "rule:JAI.DRISHTI.AK_ON_AL:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "pada:A11:final",
+          "to_id": "rule:JAI.DRISHTI.AMK_ON_AL:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "pada:A11:final",
+          "to_id": "rule:JAI.KARAKA.AK_KENDRA_FROM_AL:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "pada:A12:final",
+          "to_id": "rule:JAI.ARUDHA.A7_UL_ALIGNMENT:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "pada:A12:final",
+          "to_id": "rule:JAI.ARUDHA.A7_UL_ALIGNMENT:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "pada:A12:final",
+          "to_id": "rule:JAI.ARUDHA.AL_BENEFIC_OCCUPANCY:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "pada:A12:final",
+          "to_id": "rule:JAI.ARUDHA.AL_LORD_KENDRA_TRINE:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "pada:A12:final",
+          "to_id": "rule:JAI.ARUDHA.DHANA_A2_A11:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "pada:A12:final",
+          "to_id": "rule:JAI.DRISHTI.AK_ON_AL:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "pada:A12:final",
+          "to_id": "rule:JAI.DRISHTI.AMK_ON_AL:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "pada:A12:final",
+          "to_id": "rule:JAI.KARAKA.AK_KENDRA_FROM_AL:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "pada:A12:final",
+          "to_id": "rule:JAI.KARAKA.DK_UL_SAMBANDHA:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "pada:A1:final",
+          "to_id": "rule:JAI.ARUDHA.A7_UL_ALIGNMENT:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "pada:A1:final",
+          "to_id": "rule:JAI.ARUDHA.AL_BENEFIC_OCCUPANCY:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "pada:A1:final",
+          "to_id": "rule:JAI.ARUDHA.AL_LORD_KENDRA_TRINE:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "pada:A1:final",
+          "to_id": "rule:JAI.ARUDHA.DHANA_A2_A11:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "pada:A1:final",
+          "to_id": "rule:JAI.DRISHTI.AK_ON_AL:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "pada:A1:final",
+          "to_id": "rule:JAI.DRISHTI.AMK_ON_AL:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "pada:A1:final",
+          "to_id": "rule:JAI.KARAKA.AK_KENDRA_FROM_AL:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "pada:A2:final",
+          "to_id": "rule:JAI.ARUDHA.A7_UL_ALIGNMENT:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "pada:A2:final",
+          "to_id": "rule:JAI.ARUDHA.AL_BENEFIC_OCCUPANCY:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "pada:A2:final",
+          "to_id": "rule:JAI.ARUDHA.AL_LORD_KENDRA_TRINE:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "pada:A2:final",
+          "to_id": "rule:JAI.ARUDHA.DHANA_A2_A11:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "pada:A2:final",
+          "to_id": "rule:JAI.DRISHTI.AK_ON_AL:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "pada:A2:final",
+          "to_id": "rule:JAI.DRISHTI.AMK_ON_AL:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "pada:A2:final",
+          "to_id": "rule:JAI.KARAKA.AK_KENDRA_FROM_AL:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "pada:A3:final",
+          "to_id": "rule:JAI.ARUDHA.A7_UL_ALIGNMENT:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "pada:A3:final",
+          "to_id": "rule:JAI.ARUDHA.AL_BENEFIC_OCCUPANCY:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "pada:A3:final",
+          "to_id": "rule:JAI.ARUDHA.AL_LORD_KENDRA_TRINE:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "pada:A3:final",
+          "to_id": "rule:JAI.ARUDHA.DHANA_A2_A11:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "pada:A3:final",
+          "to_id": "rule:JAI.DRISHTI.AK_ON_AL:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "pada:A3:final",
+          "to_id": "rule:JAI.DRISHTI.AMK_ON_AL:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "pada:A3:final",
+          "to_id": "rule:JAI.KARAKA.AK_KENDRA_FROM_AL:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "pada:A4:final",
+          "to_id": "rule:JAI.ARUDHA.A7_UL_ALIGNMENT:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "pada:A4:final",
+          "to_id": "rule:JAI.ARUDHA.AL_BENEFIC_OCCUPANCY:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "pada:A4:final",
+          "to_id": "rule:JAI.ARUDHA.AL_LORD_KENDRA_TRINE:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "pada:A4:final",
+          "to_id": "rule:JAI.ARUDHA.DHANA_A2_A11:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "pada:A4:final",
+          "to_id": "rule:JAI.DRISHTI.AK_ON_AL:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "pada:A4:final",
+          "to_id": "rule:JAI.DRISHTI.AMK_ON_AL:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "pada:A4:final",
+          "to_id": "rule:JAI.KARAKA.AK_KENDRA_FROM_AL:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "pada:A5:final",
+          "to_id": "rule:JAI.ARUDHA.A7_UL_ALIGNMENT:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "pada:A5:final",
+          "to_id": "rule:JAI.ARUDHA.AL_BENEFIC_OCCUPANCY:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "pada:A5:final",
+          "to_id": "rule:JAI.ARUDHA.AL_LORD_KENDRA_TRINE:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "pada:A5:final",
+          "to_id": "rule:JAI.ARUDHA.DHANA_A2_A11:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "pada:A5:final",
+          "to_id": "rule:JAI.DRISHTI.AK_ON_AL:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "pada:A5:final",
+          "to_id": "rule:JAI.DRISHTI.AMK_ON_AL:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "pada:A5:final",
+          "to_id": "rule:JAI.KARAKA.AK_KENDRA_FROM_AL:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "pada:A6:final",
+          "to_id": "rule:JAI.ARUDHA.A7_UL_ALIGNMENT:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "pada:A6:final",
+          "to_id": "rule:JAI.ARUDHA.AL_BENEFIC_OCCUPANCY:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "pada:A6:final",
+          "to_id": "rule:JAI.ARUDHA.AL_LORD_KENDRA_TRINE:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "pada:A6:final",
+          "to_id": "rule:JAI.ARUDHA.DHANA_A2_A11:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "pada:A6:final",
+          "to_id": "rule:JAI.DRISHTI.AK_ON_AL:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "pada:A6:final",
+          "to_id": "rule:JAI.DRISHTI.AMK_ON_AL:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "pada:A6:final",
+          "to_id": "rule:JAI.KARAKA.AK_KENDRA_FROM_AL:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "pada:A7:final",
+          "to_id": "rule:JAI.ARUDHA.A7_UL_ALIGNMENT:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "pada:A7:final",
+          "to_id": "rule:JAI.ARUDHA.AL_BENEFIC_OCCUPANCY:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "pada:A7:final",
+          "to_id": "rule:JAI.ARUDHA.AL_LORD_KENDRA_TRINE:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "pada:A7:final",
+          "to_id": "rule:JAI.ARUDHA.DHANA_A2_A11:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "pada:A7:final",
+          "to_id": "rule:JAI.DRISHTI.AK_ON_AL:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "pada:A7:final",
+          "to_id": "rule:JAI.DRISHTI.AMK_ON_AL:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "pada:A7:final",
+          "to_id": "rule:JAI.KARAKA.AK_KENDRA_FROM_AL:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "pada:A8:final",
+          "to_id": "rule:JAI.ARUDHA.A7_UL_ALIGNMENT:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "pada:A8:final",
+          "to_id": "rule:JAI.ARUDHA.AL_BENEFIC_OCCUPANCY:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "pada:A8:final",
+          "to_id": "rule:JAI.ARUDHA.AL_LORD_KENDRA_TRINE:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "pada:A8:final",
+          "to_id": "rule:JAI.ARUDHA.DHANA_A2_A11:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "pada:A8:final",
+          "to_id": "rule:JAI.DRISHTI.AK_ON_AL:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "pada:A8:final",
+          "to_id": "rule:JAI.DRISHTI.AMK_ON_AL:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "pada:A8:final",
+          "to_id": "rule:JAI.KARAKA.AK_KENDRA_FROM_AL:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "pada:A9:final",
+          "to_id": "rule:JAI.ARUDHA.A7_UL_ALIGNMENT:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "pada:A9:final",
+          "to_id": "rule:JAI.ARUDHA.AL_BENEFIC_OCCUPANCY:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "pada:A9:final",
+          "to_id": "rule:JAI.ARUDHA.AL_LORD_KENDRA_TRINE:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "pada:A9:final",
+          "to_id": "rule:JAI.ARUDHA.DHANA_A2_A11:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "pada:A9:final",
+          "to_id": "rule:JAI.DRISHTI.AK_ON_AL:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "pada:A9:final",
+          "to_id": "rule:JAI.DRISHTI.AMK_ON_AL:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "pada:A9:final",
+          "to_id": "rule:JAI.KARAKA.AK_KENDRA_FROM_AL:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "rule:JAI.ARUDHA.A7_UL_ALIGNMENT:formation",
+          "to_id": "rule:JAI.ARUDHA.A7_UL_ALIGNMENT:result",
+          "relation": "evaluates-to"
+        },
+        {
+          "from_id": "rule:JAI.ARUDHA.AL_BENEFIC_OCCUPANCY:formation",
+          "to_id": "rule:JAI.ARUDHA.AL_BENEFIC_OCCUPANCY:result",
+          "relation": "evaluates-to"
+        },
+        {
+          "from_id": "rule:JAI.ARUDHA.AL_LORD_KENDRA_TRINE:formation",
+          "to_id": "rule:JAI.ARUDHA.AL_LORD_KENDRA_TRINE:result",
+          "relation": "evaluates-to"
+        },
+        {
+          "from_id": "rule:JAI.ARUDHA.DHANA_A2_A11:formation",
+          "to_id": "rule:JAI.ARUDHA.DHANA_A2_A11:result",
+          "relation": "evaluates-to"
+        },
+        {
+          "from_id": "rule:JAI.DRISHTI.AK_AMK_MUTUAL:formation",
+          "to_id": "rule:JAI.DRISHTI.AK_AMK_MUTUAL:result",
+          "relation": "evaluates-to"
+        },
+        {
+          "from_id": "rule:JAI.DRISHTI.AK_ON_AL:formation",
+          "to_id": "rule:JAI.DRISHTI.AK_ON_AL:result",
+          "relation": "evaluates-to"
+        },
+        {
+          "from_id": "rule:JAI.DRISHTI.AMK_ON_AL:formation",
+          "to_id": "rule:JAI.DRISHTI.AMK_ON_AL:result",
+          "relation": "evaluates-to"
+        },
+        {
+          "from_id": "rule:JAI.KARAKA.AK_AMK_CONJUNCTION:formation",
+          "to_id": "rule:JAI.KARAKA.AK_AMK_CONJUNCTION:result",
+          "relation": "evaluates-to"
+        },
+        {
+          "from_id": "rule:JAI.KARAKA.AK_KENDRA_FROM_AL:formation",
+          "to_id": "rule:JAI.KARAKA.AK_KENDRA_FROM_AL:result",
+          "relation": "evaluates-to"
+        },
+        {
+          "from_id": "rule:JAI.KARAKA.DK_UL_SAMBANDHA:formation",
+          "to_id": "rule:JAI.KARAKA.DK_UL_SAMBANDHA:result",
+          "relation": "evaluates-to"
+        },
+        {
+          "from_id": "rule:JAI.KARAKAMSHA.BENEFIC_OCCUPANCY:formation",
+          "to_id": "rule:JAI.KARAKAMSHA.BENEFIC_OCCUPANCY:result",
+          "relation": "evaluates-to"
+        },
+        {
+          "from_id": "rule:JAI.SWAMSA.BENEFIC_OCCUPANCY:formation",
+          "to_id": "rule:JAI.SWAMSA.BENEFIC_OCCUPANCY:result",
+          "relation": "evaluates-to"
+        },
+        {
+          "from_id": "swamsa:lagna",
+          "to_id": "rule:JAI.KARAKAMSHA.BENEFIC_OCCUPANCY:formation",
+          "relation": "feeds"
+        },
+        {
+          "from_id": "swamsa:lagna",
+          "to_id": "rule:JAI.SWAMSA.BENEFIC_OCCUPANCY:formation",
+          "relation": "feeds"
+        }
+      ]
+    },
+    "provenance_summary": {
+      "tradition": "JAIMINI",
+      "source_reference": "UNVERIFIED",
+      "confidence": "TRADITION_DEPENDENT",
+      "completeness_violations": [],
+      "provenance_violations": [],
+      "policy_violations": []
+    },
+    "limitations": [
+      "Quality (strength) intentionally UNASSESSED for all rules.",
+      "Source confidence UNVERIFIED for all rules; confidence never affects formation.",
+      "UNKNOWN results reflect unavailable inputs, never negative evidence.",
+      "Conflicts are reported only; no precedence or auto-resolution.",
+      "D9 consumed only by rules declaring varga_dependencies=['D9']; no strength inputs on this path."
+    ],
+    "total_rules": 12
+  }
+}
