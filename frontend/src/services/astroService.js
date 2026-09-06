@@ -2,9 +2,9 @@ import api from './api';
 
 export const astroService = {
     // Compute Full Chart
-    computeChart: async (params) => {
+    computeChart: async (params, config = {}) => {
         // params: { year, month, day, hour, minute, lat, lon, tz }
-        const response = await api.post('/compute', params);
+        const response = await api.post('/compute', params, config);
         return response.data;
     },
 

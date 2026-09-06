@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../components/ui/Navbar';
 import VedicCard from '../components/ui/VedicCard';
@@ -77,24 +77,44 @@ const YogasPage = () => {
     const [yogas, setYogas] = useState([]);
     const [loading, setLoading] = useState(true);
     const [selectedYoga, setSelectedYoga] = useState(null);
+    // HOTFIX 1: component-scope request generation. Every fetch captures its
+    // own generation; only the latest generation may write state/side effects.
+    // Kept alongside isMounted + AbortController (not a substitute).
+    const requestGenerationRef = useRef(0);
 
     useEffect(() => {
+        const abortController = new AbortController();
+        const signal = abortController.signal;
+        let isMounted = true;
+        const generation = ++requestGenerationRef.current;
+        const isCurrentGeneration = () =>
+            isMounted && generation === requestGenerationRef.current;
+
         const fetchYogas = async () => {
             try {
                 // Always fetch fresh data to ensure we have the latest Yogas from backend
-                const formData = await authService.getChartDataParams();
+                const formData = await authService.getChartDataParams({ signal });
+                if (!isCurrentGeneration()) return;
+
                 if (!formData) {
+                    if (!isCurrentGeneration()) return;
                     toast.error("Please enter birth details.");
                     navigate('/enter-details');
                     return;
                 }
-                const data = await astroService.computeChart(formData);
+
+                const data = await astroService.computeChart(formData, { signal });
+                if (!isCurrentGeneration()) return;
+
                 setYogas(data.yogas || []);
                 // Update cache with fresh data
                 localStorage.setItem('chartData', JSON.stringify(data));
                 setLoading(false);
 
             } catch (err) {
+                if (!isCurrentGeneration() || err.name === 'CanceledError' || err.name === 'AbortError') {
+                    return; // Ignore aborted/stale requests
+                }
                 console.error("Error loading yogas:", err);
                 toast.error("Could not load yogas.");
                 setLoading(false);
@@ -102,6 +122,11 @@ const YogasPage = () => {
         };
 
         fetchYogas();
+
+        return () => {
+            isMounted = false;
+            abortController.abort();
+        };
     }, [navigate]);
 
     const getYogaContent = (yoga) => {

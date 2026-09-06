@@ -39,14 +39,14 @@ export const authService = {
     },
 
     // Get Current User
-    getCurrentUser: async () => {
-        const response = await api.get('/auth/me');
+    getCurrentUser: async (config = {}) => {
+        const response = await api.get('/auth/me', config);
         return response.data;
     },
 
     // Get Chart Params
-    getChartDataParams: async () => {
-        const response = await api.get('/auth/chart-data');
+    getChartDataParams: async (config = {}) => {
+        const response = await api.get('/auth/chart-data', config);
         return response.data;
     },
 

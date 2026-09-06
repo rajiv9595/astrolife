@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../components/ui/Navbar';
 import VedicCard from '../components/ui/VedicCard';
@@ -12,40 +12,78 @@ const PlanetsPage = () => {
     const [chartData, setChartData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [userName, setUserName] = useState('');
+    // HOTFIX 1: component-scope request generation. Every fetch captures its
+    // own generation; only the latest generation may write state/side effects.
+    // This is separate from (and kept alongside) isMounted + AbortController.
+    const requestGenerationRef = useRef(0);
 
     useEffect(() => {
+        const abortController = new AbortController();
+        const signal = abortController.signal;
+        let isMounted = true;
+        const generation = ++requestGenerationRef.current;
+        const isCurrentGeneration = () =>
+            isMounted && generation === requestGenerationRef.current;
+
         const fetchChartData = async () => {
             try {
                 // Get user details
                 let currentUser = null;
                 try {
-                    currentUser = await authService.getCurrentUser();
-                    if (currentUser) setUserName(currentUser.name);
+                    currentUser = await authService.getCurrentUser({ signal });
+                    if (isCurrentGeneration() && currentUser) setUserName(currentUser.name);
                 } catch (e) {
-                    console.warn("Could not fetch user details", e);
+                    if (e.name !== 'CanceledError' && e.name !== 'AbortError') {
+                        if (isCurrentGeneration()) {
+                            console.warn("Could not fetch user details", e);
+                        }
+                    }
                 }
+
+                if (!isCurrentGeneration()) return;
 
                 // Check for cached chart data first
                 const cachedData = localStorage.getItem('chartData');
                 if (cachedData) {
-                    setChartData(JSON.parse(cachedData));
-                    setLoading(false);
+                    try {
+                        const parsedCache = JSON.parse(cachedData);
+                        if (parsedCache && parsedCache.planets) {
+                            // Re-check: a newer generation may have already
+                            // written fresh network data; stale cache must
+                            // never overwrite it.
+                            if (!isCurrentGeneration()) return;
+                            setChartData(parsedCache);
+                            setLoading(false);
+                        }
+                    } catch (e) {
+                        console.warn("Could not parse cached chart data", e);
+                    }
                 }
 
+                if (!isCurrentGeneration()) return;
+
                 // Verify or fetch fresh data
-                const formData = await authService.getChartDataParams();
+                const formData = await authService.getChartDataParams({ signal });
+                if (!isCurrentGeneration()) return;
+
                 if (!formData) {
+                    if (!isCurrentGeneration()) return;
                     toast.error("Please enter your birth details first.");
                     navigate('/enter-details');
                     return;
                 }
 
-                const data = await astroService.computeChart(formData);
+                const data = await astroService.computeChart(formData, { signal });
+                if (!isCurrentGeneration()) return;
+
                 setChartData(data);
                 localStorage.setItem('chartData', JSON.stringify(data));
                 setLoading(false);
 
             } catch (err) {
+                if (!isCurrentGeneration() || err.name === 'CanceledError' || err.name === 'AbortError') {
+                    return; // Ignore aborted/stale requests
+                }
                 console.error("Error fetching chart data:", err);
                 toast.error("Failed to load planetary positions.");
                 setLoading(false);
@@ -53,6 +91,11 @@ const PlanetsPage = () => {
         };
 
         fetchChartData();
+
+        return () => {
+            isMounted = false;
+            abortController.abort();
+        };
     }, [navigate]);
 
     const formatDMS = (decimalDeg) => {
