@@ -292,10 +292,11 @@ const PlanetsPage = () => {
                                             <td className="px-6 py-4">
                                                 <span className={`px-2 py-1 rounded text-xs font-bold ${str.nature === 'Exalted' ? 'bg-green-100 text-green-700' :
                                                         str.nature === 'Own Sign' ? 'bg-blue-100 text-blue-700' :
-                                                            str.nature === 'Debilitated' ? 'bg-red-100 text-red-700' :
-                                                                str.nature === 'Friend Sign' ? 'bg-yellow-50 text-yellow-700' :
-                                                                    'bg-stone-100 text-stone-500'
-                                                    }`}>
+                                                            str.nature === 'Moolatrikona' ? 'bg-teal-100 text-teal-700' :
+                                                                str.nature === 'Debilitated' ? 'bg-red-100 text-red-700' :
+                                                                    str.nature === 'Friend Sign' ? 'bg-yellow-50 text-yellow-700' :
+                                                                        'bg-stone-100 text-stone-500'
+                                                     }`}>
                                                     {str.nature}
                                                 </span>
                                             </td>
@@ -303,18 +304,23 @@ const PlanetsPage = () => {
                                                 <div className="flex items-center gap-2">
                                                     <span className={`font-bold ${str.label === 'Very Strong' ? 'text-green-600' :
                                                             str.label === 'Strong' ? 'text-blue-600' :
-                                                                str.label === 'Weak' ? 'text-orange-500' :
-                                                                    str.label === 'Very Weak' ? 'text-red-500' :
-                                                                        'text-stone-600'
+                                                                str.label === 'Moderate' ? 'text-amber-600' :
+                                                                    str.label === 'Weak' ? 'text-orange-500' :
+                                                                        str.label === 'Very Weak' ? 'text-red-500' :
+                                                                            'text-stone-600'
                                                         }`}>{str.label}</span>
                                                 </div>
                                             </td>
                                             <td className="px-6 py-4 font-mono font-bold text-stone-700">
-                                                {str.score}/100
+                                                {str.score === null || str.score === undefined
+                                                    ? '—'
+                                                    : str.score_unit === 'rupas'
+                                                        ? `${str.score} Rupas`
+                                                        : `${str.score}/100`}
                                             </td>
                                             <td className="px-6 py-4 text-stone-600 text-xs">
                                                 <div className="flex flex-wrap gap-1">
-                                                    {str.reasons.map((reason, rIdx) => (
+                                                    {(str.reasons || []).map((reason, rIdx) => (
                                                         <span key={rIdx} className="bg-stone-50 border border-stone-200 px-2 py-0.5 rounded text-[10px]">
                                                             {reason}
                                                         </span>

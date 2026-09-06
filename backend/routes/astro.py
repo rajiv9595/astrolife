@@ -7,10 +7,12 @@ from backend.models import User
 from backend.dependencies import get_current_user_optional
 from backend.calculations import compute_chart, compute_match_for_birth_data
 from backend.tables import compute_lucky_factors, SIGN_LORDS as TABLES_SIGN_LORDS
-from backend.strength_evaluator import calculate_chart_strengths
+from backend.canonical_strength import build_strength_rows, build_shadbala_payload
+from backend.core.calculation.pipeline import generate_chart_facts
+from backend.core.strength.shadbala import calculate_all_shadbala
+from backend.core.strength.dignity import calculate_all_dignities
 from backend.jaimini import compute_jaimini_system
 from backend.ashtakavarga import compute_ashtakavarga
-from backend.shadbala import compute_shadbala
 from backend.maitri import compute_maitri_chakra
 from backend.panchanga_advanced import compute_advanced_panchanga
 from backend.doshas_advanced import compute_advanced_doshas
@@ -41,8 +43,27 @@ def compute(
         topo_alt=req.topo_alt or 0.0
     )
 
-    # Calculate Signs & Strengths
-    planet_strengths = calculate_chart_strengths(chart_data)
+    # Canonical Phase 4 strength: the ONLY authoritative Shadbala source.
+    # ChartFacts use the same source of truth as the rest of the system
+    # (Swiss Ephemeris, Lahiri ayanamsha, Mean Node, Whole Sign houses).
+    chart_facts = generate_chart_facts(
+        year=req.year,
+        month=req.month,
+        day=req.day,
+        hour=req.hour,
+        minute=req.minute,
+        second=req.second,
+        lat=req.lat,
+        lon=req.lon,
+        tz_name=req.tz,
+    )
+    canonical_shadbala = calculate_all_shadbala(chart_facts)
+    canonical_dignity = calculate_all_dignities(chart_facts)
+
+    # Planetary Strength & Analysis rows (canonical Shadbala + dignity).
+    planet_strengths = build_strength_rows(
+        canonical_shadbala, canonical_dignity, chart_data.get("planets", {})
+    )
 
     # Evaluate yogas using rulesets - ONLY for authenticated users
     yogas = []
@@ -84,9 +105,8 @@ def compute(
     jaimini_data = compute_jaimini_system(chart_data["planets"], chart_data["asc_sign"])
     ashtakavarga_data = compute_ashtakavarga(chart_data["planets"], chart_data["asc_sign"])
     
-    # Simple day/night check (6 AM to 6 PM)
-    is_day = 6 <= req.hour < 18
-    shadbala_data = compute_shadbala(chart_data["planets"], chart_data["asc_sign"], is_day)
+    # Canonical Phase 4 Shadbala payload (replaces legacy backend/shadbala.py).
+    shadbala_data = build_shadbala_payload(canonical_shadbala)
 
     maitri_data = compute_maitri_chakra(chart_data["planets"])
     

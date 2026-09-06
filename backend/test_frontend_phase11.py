@@ -235,20 +235,31 @@ moon = (DATA.get("planets") or {}).get("Moon", {})
 check((moon.get("nakshatra") or {}).get("nakshatra") == "Purvashada" and (moon.get("nakshatra") or {}).get("pada") == 2, "ct.golden.moon.purvashada2")
 check("d9" in DATA and "vimshottari" in DATA, "ct.golden.d9.vimshottari")
 check("vargas" in DATA or "d10" in DATA, "ct.golden.vargas.present")
-# Route-handler enrichment (same calls as POST /compute in routes/astro.py)
-from strength_evaluator import calculate_chart_strengths
+# Route-handler enrichment (same calls as POST /compute in routes/astro.py:
+# canonical Phase 4 Shadbala is the sole authoritative strength source)
+from canonical_strength import build_strength_rows, build_shadbala_payload
+from core.calculation.pipeline import generate_chart_facts
+from core.strength.shadbala import calculate_all_shadbala
+from core.strength.dignity import calculate_all_dignities
 from jaimini import compute_jaimini_system
 from ashtakavarga import compute_ashtakavarga
-from shadbala import compute_shadbala
 from maitri import compute_maitri_chakra
 from panchanga_advanced import compute_advanced_panchanga
 from doshas_advanced import compute_advanced_doshas
 _asc = DATA.get("ascendant", {}).get("sign") or DATA.get("asc_sign")
-_strengths = calculate_chart_strengths(DATA)
+_facts = generate_chart_facts(year=GOLD["year"], month=GOLD["month"], day=GOLD["day"],
+                              hour=GOLD["hour"], minute=GOLD["minute"], second=GOLD["second"],
+                              lat=GOLD["lat"], lon=GOLD["lon"], tz_name=GOLD["tz"])
+_canon_shadbala = calculate_all_shadbala(_facts)
+_canon_dignity = calculate_all_dignities(_facts)
+_strengths = build_strength_rows(_canon_shadbala, _canon_dignity, DATA.get("planets", {}))
 check(isinstance(_strengths, (dict, list)) and len(_strengths) > 0, "ct.enrich.strengths")
+check(all(r.get("score_unit") == "rupas" for r in _strengths if r.get("planet") not in ("Rahu", "Ketu")),
+      "ct.enrich.strengths.canonical.rupas")
 check(compute_jaimini_system(DATA["planets"], _asc) is not None, "ct.enrich.jaimini")
 check(compute_ashtakavarga(DATA["planets"], _asc) is not None, "ct.enrich.ashtakavarga")
-check(compute_shadbala(DATA["planets"], _asc, True) is not None, "ct.enrich.shadbala")
+_shadbala_payload = build_shadbala_payload(_canon_shadbala)
+check(_shadbala_payload.get("Sun", {}).get("total_rupas") is not None, "ct.enrich.shadbala")
 check(compute_maitri_chakra(DATA["planets"]) is not None, "ct.enrich.maitri")
 _moon_nak = (moon.get("nakshatra") or {}).get("nakshatra", "")
 check(compute_advanced_panchanga(DATA.get("moon_sign", ""), _moon_nak) is not None, "ct.enrich.panchanga")
