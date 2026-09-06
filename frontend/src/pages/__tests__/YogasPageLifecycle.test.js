@@ -61,7 +61,23 @@ const runYogasFetch = async (
         if (!isCurrentGeneration()) return `${id}:stale-suppressed`;
 
         store.yogas = data.yogas;
-        store.ls.set('chartData', JSON.stringify({ ...data, _gen: generation }));
+        try {
+            if (store.throwOnLsSet === 'QuotaExceededError') {
+                const err = new Error('Quota exceeded');
+                err.name = 'QuotaExceededError';
+                throw err;
+            }
+            const cachePayload = {
+                _cache_version: 1,
+                yogas: data.yogas,
+                id: data.id,
+                _gen: generation
+            };
+            store.ls.set('chartData', JSON.stringify(cachePayload));
+        } catch (storageErr) {
+            // cache failure does not throw to outer catch block
+            store.storageErrors = (store.storageErrors || 0) + 1;
+        }
         store.loading = false;
         return `${id}:wrote`;
     } catch (err) {
@@ -143,5 +159,19 @@ describe('HOTFIX 1 — same-mounted stale-response protection (YogasPage)', () =
 
         assert.equal(r, 'A:error-suppressed');
         assert.equal(store.toastErrors.length, 0);
+    });
+
+    it('TEST 11: YogasPage successful compute + cache quota failure', async () => {
+        const component = createComponent();
+        const effectRun = createEffectRun(component);
+        const store = createStore();
+        store.throwOnLsSet = 'QuotaExceededError';
+
+        const r = await runYogasFetch(effectRun, store, { id: 'N', latency: 10, networkYogas: [{ id: 'yoga1' }] });
+
+        assert.equal(r, 'N:wrote');
+        assert.equal(store.toastErrors.length, 0, 'No false yoga error toast');
+        assert.equal(store.loading, false);
+        assert.equal(store.yogas[0].id, 'yoga1', 'yoga data still displayed');
     });
 });

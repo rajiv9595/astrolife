@@ -47,7 +47,7 @@ const PlanetsPage = () => {
                 if (cachedData) {
                     try {
                         const parsedCache = JSON.parse(cachedData);
-                        if (parsedCache && parsedCache.planets) {
+                        if (parsedCache && parsedCache._cache_version === 1 && parsedCache.planets) {
                             // Re-check: a newer generation may have already
                             // written fresh network data; stale cache must
                             // never overwrite it.
@@ -77,7 +77,21 @@ const PlanetsPage = () => {
                 if (!isCurrentGeneration()) return;
 
                 setChartData(data);
-                localStorage.setItem('chartData', JSON.stringify(data));
+
+                try {
+                    const cachePayload = {
+                        _cache_version: 1,
+                        planets: data.planets,
+                        ascendant: data.ascendant,
+                        whole_sign_houses: data.whole_sign_houses,
+                        strengths: data.strengths,
+                        yogas: data.yogas
+                    };
+                    localStorage.setItem('chartData', JSON.stringify(cachePayload));
+                } catch (storageErr) {
+                    console.warn("Could not cache chart data (cache persistence failed):", storageErr);
+                }
+
                 setLoading(false);
 
             } catch (err) {

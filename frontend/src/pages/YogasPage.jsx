@@ -108,7 +108,19 @@ const YogasPage = () => {
 
                 setYogas(data.yogas || []);
                 // Update cache with fresh data
-                localStorage.setItem('chartData', JSON.stringify(data));
+                try {
+                    const cachePayload = {
+                        _cache_version: 1,
+                        planets: data.planets,
+                        ascendant: data.ascendant,
+                        whole_sign_houses: data.whole_sign_houses,
+                        strengths: data.strengths,
+                        yogas: data.yogas
+                    };
+                    localStorage.setItem('chartData', JSON.stringify(cachePayload));
+                } catch (storageErr) {
+                    console.warn("Could not cache yogas (cache persistence failed):", storageErr);
+                }
                 setLoading(false);
 
             } catch (err) {

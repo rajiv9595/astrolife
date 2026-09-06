@@ -120,7 +120,34 @@ const runPlanetsFetch = async (
         if (!isCurrentGeneration()) return `${id}:stale-suppressed`;
 
         store.chartData = { ...data, _gen: generation };
-        store.ls.set('chartData', JSON.stringify({ ...data, _gen: generation }));
+        try {
+            if (store.throwOnLsSet) {
+                if (store.throwOnLsSet === 'QuotaExceededError') {
+                    const err = new Error('Quota exceeded');
+                    err.name = 'QuotaExceededError';
+                    throw err;
+                } else if (store.throwOnLsSet === 'SerializationError') {
+                    throw new TypeError('Converting circular structure to JSON');
+                } else {
+                    throw new Error('Generic storage error');
+                }
+            }
+            const cachePayload = {
+                _cache_version: 1,
+                planets: data.planets,
+                ascendant: data.ascendant,
+                whole_sign_houses: data.whole_sign_houses,
+                strengths: data.strengths,
+                yogas: data.yogas,
+                id: data.id,
+                _gen: generation
+            };
+            store.ls.set('chartData', JSON.stringify(cachePayload));
+            store.lsWrites = (store.lsWrites || 0) + 1;
+        } catch (storageErr) {
+            // cache failure does not throw to outer catch block
+            store.storageErrors = (store.storageErrors || 0) + 1;
+        }
         store.loading = false;
         return `${id}:wrote`;
     } catch (err) {
@@ -296,5 +323,76 @@ describe('HOTFIX 1 — same-mounted stale-response protection (PlanetsPage)', ()
         assert.ok(rA === 'A:stale-suppressed' || rA === 'A:error-suppressed');
         assert.equal(stripGen(store.chartData).id, 'B');
         assert.equal(store.toastErrors.length, 0);
+    });
+    it('TEST 2: Successful /compute + localStorage.setItem throws QuotaExceededError', async () => {
+        const component = createComponent();
+        const effectRun = createEffectRun(component);
+        const store = createStore();
+        store.throwOnLsSet = 'QuotaExceededError';
+
+        const r = await runPlanetsFetch(effectRun, store, { id: 'N', latency: 10 });
+
+        assert.equal(r, 'N:wrote');
+        assert.equal(store.toastErrors.length, 0, 'No network failure toast');
+        assert.equal(store.loading, false, 'Loading completes');
+        assert.equal(stripGen(store.chartData).id, 'N', 'chartData still displayed');
+    });
+
+    it('TEST 3: Successful /compute + generic storage exception', async () => {
+        const component = createComponent();
+        const effectRun = createEffectRun(component);
+        const store = createStore();
+        store.throwOnLsSet = 'GenericError';
+
+        const r = await runPlanetsFetch(effectRun, store, { id: 'N', latency: 10 });
+        assert.equal(r, 'N:wrote');
+        assert.equal(store.toastErrors.length, 0);
+        assert.equal(stripGen(store.chartData).id, 'N');
+    });
+
+    it('TEST 4: JSON serialization/cache preparation failure', async () => {
+        const component = createComponent();
+        const effectRun = createEffectRun(component);
+        const store = createStore();
+        store.throwOnLsSet = 'SerializationError';
+
+        const r = await runPlanetsFetch(effectRun, store, { id: 'N', latency: 10 });
+        assert.equal(r, 'N:wrote');
+        assert.equal(store.toastErrors.length, 0);
+        assert.equal(stripGen(store.chartData).id, 'N');
+    });
+
+    it('TEST 6: Existing malformed cache safely ignored', async () => {
+        const component = createComponent();
+        const effectRun = createEffectRun(component);
+        const store = createStore();
+        store.ls.set('chartData', '{ invalid_json'); // malformed
+
+        const r = await runPlanetsFetch(effectRun, store, { id: 'N', latency: 10 });
+        assert.equal(r, 'N:wrote');
+        assert.equal(stripGen(store.chartData).id, 'N');
+    });
+
+    it('TEST 7: Existing obsolete/version-mismatched cache safely ignored', async () => {
+        const component = createComponent();
+        const effectRun = createEffectRun(component);
+        const store = createStore();
+        // Missing _cache_version
+        store.ls.set('chartData', JSON.stringify({ planets: { Sun: {} } }));
+
+        const r = await runPlanetsFetch(effectRun, store, { id: 'N', latency: 10 });
+        assert.equal(r, 'N:wrote');
+        assert.equal(stripGen(store.chartData).id, 'N');
+    });
+
+    it('TEST 12: No unrelated localStorage/sessionStorage keys are removed', async () => {
+        const component = createComponent();
+        const effectRun = createEffectRun(component);
+        const store = createStore();
+        store.ls.set('otherKey', 'preserve-me');
+
+        await runPlanetsFetch(effectRun, store, { id: 'N', latency: 10 });
+
+        assert.equal(store.ls.get('otherKey'), 'preserve-me');
     });
 });
