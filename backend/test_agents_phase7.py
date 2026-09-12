@@ -539,7 +539,7 @@ def main() -> None:
     from core.rules.dynamic.knowledge import KnowledgeContext as KCtx6E
     from core.rules.dynamic import build_context as _bc
     cat = build_golden_catalogue()
-    check(len(cat.entries) == 56, "6E golden catalogue intact (56 entries)")
+    check(len(cat.entries) == 102, "6E golden catalogue intact (102 entries, Migration #3C)")
     check(ACCESSOR.get_rule("CUSTOM.NATAL.TEST", "1.0.0") is not None,
           "KnowledgeAccessor reads catalogue")
     check(len(ACCESSOR.find_conflicts()) >= 3, "accessor surfaces conflicts")

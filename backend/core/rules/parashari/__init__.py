@@ -11,6 +11,9 @@ from .structural import (
     is_kendra_house, is_trikona_house, is_dusthana_house,
     sambandha_kind, parivartana_pairs, house_from_moon,
     is_kendra_from_moon, planets_in_house_from_moon,
+    sun_house, house_from_sun, is_kendra_from_sun,
+    planets_in_house_from_sun, house_from_planet, planets_in_house_from_planet,
+    is_kendra_from_planet, is_6_8_12_from,
 )
 from .strength import evaluate_yoga_strength
 from .exceptions import (
@@ -31,6 +34,9 @@ __all__ = [
     "is_kendra_house", "is_trikona_house", "is_dusthana_house",
     "sambandha_kind", "parivartana_pairs", "house_from_moon",
     "is_kendra_from_moon", "planets_in_house_from_moon",
+    "sun_house", "house_from_sun", "is_kendra_from_sun",
+    "planets_in_house_from_sun", "house_from_planet", "planets_in_house_from_planet",
+    "is_kendra_from_planet", "is_6_8_12_from",
     "evaluate_yoga_strength",
     "evaluate_cancellation", "evaluate_mitigation",
     "CANCELLATION_EVALUATORS", "MITIGATION_EVALUATORS",

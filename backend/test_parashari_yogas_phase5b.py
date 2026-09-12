@@ -48,7 +48,7 @@ print("=" * 70)
 # ============ 0. Catalogue integrity ============
 print("\n--- 0. Catalogue integrity ---")
 rules = build_parashari_catalog()
-check("31 yogas implemented", len(rules) == 31, f"got {len(rules)}")
+check("77 yogas implemented (62 + 15 Category D, Migration #3C)", len(rules) == 77, f"got {len(rules)}")
 ids = [r.metadata.rule_id for r in rules]
 check("rule IDs unique", len(set(ids)) == len(ids))
 for r in rules:
@@ -420,7 +420,7 @@ checked = 0
 for asc in ASC:
     ctx = make_synthetic_context(asc, dict(std))
     res = evaluate_all_parashari(ctx)
-    check(f"sweep {asc} 31 results", len(res) == 31)
+    check(f"sweep {asc} 77 results", len(res) == 77)
     check(f"sweep {asc} statuses valid",
           all(str(r.formation_status).startswith("FormationStatus.") for r in res))
     checked += 1

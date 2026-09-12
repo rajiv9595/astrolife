@@ -1,3 +1,11 @@
+"""DEPRECATED (Migration #11 audit): legacy strength scorer.
+
+Source of truth is the canonical engine
+(backend/core/strength/* via backend/canonical_strength.py).
+No production route, adapter, or functional test imports this module
+(only import-presence checks). Kept on disk for reference;
+do NOT wire it into production.
+"""
 from typing import Dict, Any, List
 
 # Import tables to reuse mappings

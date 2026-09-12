@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-05T16:55:27.442861",
+  "generated_at": "2026-09-12T05:52:24.225625",
   "engine_version": "5.1.0",
   "chart": "MEDAPATI BHASKARA VENKATA RAJEEV REDDY 17/08/2005 00:02 IST Anaparthy",
   "results": [
@@ -38,8 +38,8 @@
       "confidence": "HIGH",
       "n_evidence": 2,
       "planets": [
-        "Venus",
-        "Saturn"
+        "Saturn",
+        "Venus"
       ]
     },
     {
@@ -206,8 +206,8 @@
       "confidence": "TRADITION_DEPENDENT",
       "n_evidence": 2,
       "planets": [
-        "Venus",
-        "Saturn"
+        "Saturn",
+        "Venus"
       ]
     },
     {
@@ -384,6 +384,561 @@
       "planets": [
         "Venus"
       ]
+    },
+    {
+      "rule_id": "PARASHARI.YOGA.AKHANDA_SAMRAJYA",
+      "formation": "FORMED",
+      "strength": "MODERATE",
+      "cancellation": "PARTIAL",
+      "mitigation": "PARTIAL",
+      "confidence": "MEDIUM",
+      "n_evidence": 14,
+      "planets": [
+        "Jupiter",
+        "Mercury",
+        "Moon",
+        "Saturn"
+      ]
+    },
+    {
+      "rule_id": "PARASHARI.YOGA.BHAGYA",
+      "formation": "NOT_FORMED",
+      "strength": "UNKNOWN",
+      "cancellation": "NONE",
+      "mitigation": "NONE",
+      "confidence": "MEDIUM",
+      "n_evidence": 3,
+      "planets": [
+        "Saturn"
+      ]
+    },
+    {
+      "rule_id": "PARASHARI.YOGA.CHAMARA",
+      "formation": "NOT_FORMED",
+      "strength": "UNKNOWN",
+      "cancellation": "NONE",
+      "mitigation": "NONE",
+      "confidence": "MEDIUM",
+      "n_evidence": 2,
+      "planets": [
+        "Venus"
+      ]
+    },
+    {
+      "rule_id": "PARASHARI.YOGA.CHHATRA",
+      "formation": "FORMED",
+      "strength": "MODERATE",
+      "cancellation": "PARTIAL",
+      "mitigation": "NONE",
+      "confidence": "HIGH",
+      "n_evidence": 5,
+      "planets": [
+        "Mercury"
+      ]
+    },
+    {
+      "rule_id": "PARASHARI.YOGA.DHENU",
+      "formation": "NOT_FORMED",
+      "strength": "UNKNOWN",
+      "cancellation": "NONE",
+      "mitigation": "NONE",
+      "confidence": "HIGH",
+      "n_evidence": 1,
+      "planets": [
+        "Mercury"
+      ]
+    },
+    {
+      "rule_id": "PARASHARI.YOGA.GANDHARVA",
+      "formation": "NOT_FORMED",
+      "strength": "UNKNOWN",
+      "cancellation": "NONE",
+      "mitigation": "NONE",
+      "confidence": "MEDIUM",
+      "n_evidence": 3,
+      "planets": [
+        "Sun",
+        "Saturn",
+        "Moon"
+      ]
+    },
+    {
+      "rule_id": "PARASHARI.YOGA.GO",
+      "formation": "NOT_FORMED",
+      "strength": "UNKNOWN",
+      "cancellation": "NONE",
+      "mitigation": "NONE",
+      "confidence": "HIGH",
+      "n_evidence": 2,
+      "planets": [
+        "Jupiter",
+        "Venus"
+      ]
+    },
+    {
+      "rule_id": "PARASHARI.YOGA.HARA",
+      "formation": "NOT_FORMED",
+      "strength": "UNKNOWN",
+      "cancellation": "NONE",
+      "mitigation": "NONE",
+      "confidence": "HIGH",
+      "n_evidence": 4,
+      "planets": [
+        "Mars"
+      ]
+    },
+    {
+      "rule_id": "PARASHARI.YOGA.HARI",
+      "formation": "NOT_FORMED",
+      "strength": "UNKNOWN",
+      "cancellation": "NONE",
+      "mitigation": "NONE",
+      "confidence": "HIGH",
+      "n_evidence": 4,
+      "planets": [
+        "Mercury"
+      ]
+    },
+    {
+      "rule_id": "PARASHARI.YOGA.JALADHI",
+      "formation": "NOT_FORMED",
+      "strength": "UNKNOWN",
+      "cancellation": "NONE",
+      "mitigation": "NONE",
+      "confidence": "MEDIUM",
+      "n_evidence": 3,
+      "planets": [
+        "Sun"
+      ]
+    },
+    {
+      "rule_id": "PARASHARI.YOGA.KAHALA",
+      "formation": "NOT_FORMED",
+      "strength": "UNKNOWN",
+      "cancellation": "NONE",
+      "mitigation": "NONE",
+      "confidence": "MEDIUM",
+      "n_evidence": 1,
+      "planets": [
+        "Sun",
+        "Saturn"
+      ]
+    },
+    {
+      "rule_id": "PARASHARI.YOGA.KALANIDHI",
+      "formation": "FORMED",
+      "strength": "STRONG",
+      "cancellation": "PARTIAL",
+      "mitigation": "PARTIAL",
+      "confidence": "HIGH",
+      "n_evidence": 11,
+      "planets": [
+        "Jupiter",
+        "Mercury",
+        "Venus"
+      ]
+    },
+    {
+      "rule_id": "PARASHARI.YOGA.KAMA",
+      "formation": "FORMED",
+      "strength": "MODERATE",
+      "cancellation": "PARTIAL",
+      "mitigation": "PARTIAL",
+      "confidence": "HIGH",
+      "n_evidence": 5,
+      "planets": [
+        "Mars"
+      ]
+    },
+    {
+      "rule_id": "PARASHARI.YOGA.KHYATHI",
+      "formation": "NOT_FORMED",
+      "strength": "UNKNOWN",
+      "cancellation": "NONE",
+      "mitigation": "NONE",
+      "confidence": "HIGH",
+      "n_evidence": 2,
+      "planets": [
+        "Saturn"
+      ]
+    },
+    {
+      "rule_id": "PARASHARI.YOGA.KUSUMA",
+      "formation": "NOT_FORMED",
+      "strength": "UNKNOWN",
+      "cancellation": "NONE",
+      "mitigation": "NONE",
+      "confidence": "HIGH",
+      "n_evidence": 3,
+      "planets": [
+        "Saturn",
+        "Moon",
+        "Venus"
+      ]
+    },
+    {
+      "rule_id": "PARASHARI.YOGA.MALA",
+      "formation": "NOT_FORMED",
+      "strength": "UNKNOWN",
+      "cancellation": "NONE",
+      "mitigation": "NONE",
+      "confidence": "MEDIUM",
+      "n_evidence": 5,
+      "planets": []
+    },
+    {
+      "rule_id": "PARASHARI.YOGA.MUSALA",
+      "formation": "NOT_FORMED",
+      "strength": "UNKNOWN",
+      "cancellation": "NONE",
+      "mitigation": "NONE",
+      "confidence": "MEDIUM",
+      "n_evidence": 2,
+      "planets": [
+        "Venus"
+      ]
+    },
+    {
+      "rule_id": "PARASHARI.YOGA.PARIJATA",
+      "formation": "NOT_FORMED",
+      "strength": "UNKNOWN",
+      "cancellation": "NONE",
+      "mitigation": "NONE",
+      "confidence": "HIGH",
+      "n_evidence": 1,
+      "planets": [
+        "Venus",
+        "Mercury"
+      ]
+    },
+    {
+      "rule_id": "PARASHARI.YOGA.PARVATA",
+      "formation": "NOT_FORMED",
+      "strength": "UNKNOWN",
+      "cancellation": "NONE",
+      "mitigation": "NONE",
+      "confidence": "HIGH",
+      "n_evidence": 2,
+      "planets": []
+    },
+    {
+      "rule_id": "PARASHARI.YOGA.PUSHKALA",
+      "formation": "NOT_FORMED",
+      "strength": "UNKNOWN",
+      "cancellation": "NONE",
+      "mitigation": "NONE",
+      "confidence": "HIGH",
+      "n_evidence": 1,
+      "planets": [
+        "Jupiter",
+        "Moon",
+        "Venus"
+      ]
+    },
+    {
+      "rule_id": "PARASHARI.YOGA.RAJA_LAKSHANA",
+      "formation": "NOT_FORMED",
+      "strength": "UNKNOWN",
+      "cancellation": "NONE",
+      "mitigation": "NONE",
+      "confidence": "MEDIUM",
+      "n_evidence": 4,
+      "planets": [
+        "Jupiter",
+        "Moon",
+        "Venus",
+        "Mercury"
+      ]
+    },
+    {
+      "rule_id": "PARASHARI.YOGA.RAVI",
+      "formation": "NOT_FORMED",
+      "strength": "UNKNOWN",
+      "cancellation": "NONE",
+      "mitigation": "NONE",
+      "confidence": "HIGH",
+      "n_evidence": 2,
+      "planets": [
+        "Sun",
+        "Saturn"
+      ]
+    },
+    {
+      "rule_id": "PARASHARI.YOGA.SHAKATA",
+      "formation": "NOT_FORMED",
+      "strength": "UNKNOWN",
+      "cancellation": "NONE",
+      "mitigation": "NONE",
+      "confidence": "HIGH",
+      "n_evidence": 1,
+      "planets": [
+        "Jupiter",
+        "Moon"
+      ]
+    },
+    {
+      "rule_id": "PARASHARI.YOGA.SHAURYA",
+      "formation": "NOT_FORMED",
+      "strength": "UNKNOWN",
+      "cancellation": "NONE",
+      "mitigation": "NONE",
+      "confidence": "HIGH",
+      "n_evidence": 2,
+      "planets": [
+        "Moon"
+      ]
+    },
+    {
+      "rule_id": "PARASHARI.YOGA.SHIVA",
+      "formation": "NOT_FORMED",
+      "strength": "UNKNOWN",
+      "cancellation": "NONE",
+      "mitigation": "NONE",
+      "confidence": "HIGH",
+      "n_evidence": 3,
+      "planets": [
+        "Saturn",
+        "Mercury"
+      ]
+    },
+    {
+      "rule_id": "PARASHARI.YOGA.SRINATHA",
+      "formation": "NOT_FORMED",
+      "strength": "UNKNOWN",
+      "cancellation": "NONE",
+      "mitigation": "NONE",
+      "confidence": "MEDIUM",
+      "n_evidence": 2,
+      "planets": [
+        "Saturn",
+        "Mars"
+      ]
+    },
+    {
+      "rule_id": "PARASHARI.YOGA.SUPARIJATA",
+      "formation": "FORMED",
+      "strength": "MODERATE",
+      "cancellation": "NONE",
+      "mitigation": "PARTIAL",
+      "confidence": "HIGH",
+      "n_evidence": 6,
+      "planets": [
+        "Jupiter"
+      ]
+    },
+    {
+      "rule_id": "PARASHARI.YOGA.UBHAYACHARI",
+      "formation": "FORMED",
+      "strength": "MODERATE",
+      "cancellation": "NONE",
+      "mitigation": "PARTIAL",
+      "confidence": "HIGH",
+      "n_evidence": 7,
+      "planets": [
+        "Sun"
+      ]
+    },
+    {
+      "rule_id": "PARASHARI.YOGA.VASI",
+      "formation": "FORMED",
+      "strength": "MODERATE",
+      "cancellation": "NONE",
+      "mitigation": "PARTIAL",
+      "confidence": "HIGH",
+      "n_evidence": 6,
+      "planets": [
+        "Sun"
+      ]
+    },
+    {
+      "rule_id": "PARASHARI.YOGA.VESI",
+      "formation": "FORMED",
+      "strength": "MODERATE",
+      "cancellation": "NONE",
+      "mitigation": "PARTIAL",
+      "confidence": "HIGH",
+      "n_evidence": 6,
+      "planets": [
+        "Sun"
+      ]
+    },
+    {
+      "rule_id": "PARASHARI.YOGA.VISHNU",
+      "formation": "NOT_FORMED",
+      "strength": "UNKNOWN",
+      "cancellation": "NONE",
+      "mitigation": "NONE",
+      "confidence": "HIGH",
+      "n_evidence": 2,
+      "planets": [
+        "Saturn"
+      ]
+    },
+    {
+      "rule_id": "PARASHARI.YOGA.ASTRA",
+      "formation": "NOT_FORMED",
+      "strength": "UNKNOWN",
+      "cancellation": "NONE",
+      "mitigation": "NONE",
+      "confidence": "MEDIUM",
+      "n_evidence": 3,
+      "planets": [
+        "Venus"
+      ]
+    },
+    {
+      "rule_id": "PARASHARI.YOGA.ASURA",
+      "formation": "NOT_FORMED",
+      "strength": "UNKNOWN",
+      "cancellation": "NONE",
+      "mitigation": "NONE",
+      "confidence": "MEDIUM",
+      "n_evidence": 3,
+      "planets": [
+        "Jupiter"
+      ]
+    },
+    {
+      "rule_id": "PARASHARI.YOGA.BHERI",
+      "formation": "NOT_FORMED",
+      "strength": "UNKNOWN",
+      "cancellation": "NONE",
+      "mitigation": "NONE",
+      "confidence": "MEDIUM",
+      "n_evidence": 5,
+      "planets": []
+    },
+    {
+      "rule_id": "PARASHARI.YOGA.BHRIGU_MANGALA",
+      "formation": "NOT_FORMED",
+      "strength": "UNKNOWN",
+      "cancellation": "NONE",
+      "mitigation": "NONE",
+      "confidence": "HIGH",
+      "n_evidence": 1,
+      "planets": [
+        "Venus",
+        "Mars"
+      ]
+    },
+    {
+      "rule_id": "PARASHARI.YOGA.BRAHMA",
+      "formation": "NOT_FORMED",
+      "strength": "UNKNOWN",
+      "cancellation": "NONE",
+      "mitigation": "NONE",
+      "confidence": "HIGH",
+      "n_evidence": 3,
+      "planets": [
+        "Jupiter",
+        "Venus",
+        "Mercury"
+      ]
+    },
+    {
+      "rule_id": "PARASHARI.YOGA.DAMA",
+      "formation": "NOT_FORMED",
+      "strength": "UNKNOWN",
+      "cancellation": "NONE",
+      "mitigation": "NONE",
+      "confidence": "HIGH",
+      "n_evidence": 2,
+      "planets": []
+    },
+    {
+      "rule_id": "PARASHARI.YOGA.GOLA",
+      "formation": "NOT_FORMED",
+      "strength": "UNKNOWN",
+      "cancellation": "NONE",
+      "mitigation": "NONE",
+      "confidence": "HIGH",
+      "n_evidence": 2,
+      "planets": []
+    },
+    {
+      "rule_id": "PARASHARI.YOGA.INDRA",
+      "formation": "NOT_FORMED",
+      "strength": "UNKNOWN",
+      "cancellation": "NONE",
+      "mitigation": "NONE",
+      "confidence": "HIGH",
+      "n_evidence": 3,
+      "planets": [
+        "Saturn",
+        "Moon",
+        "Venus",
+        "Mars"
+      ]
+    },
+    {
+      "rule_id": "PARASHARI.YOGA.KEDARA",
+      "formation": "NOT_FORMED",
+      "strength": "UNKNOWN",
+      "cancellation": "NONE",
+      "mitigation": "NONE",
+      "confidence": "HIGH",
+      "n_evidence": 2,
+      "planets": []
+    },
+    {
+      "rule_id": "PARASHARI.YOGA.KURMA",
+      "formation": "NOT_FORMED",
+      "strength": "UNKNOWN",
+      "cancellation": "NONE",
+      "mitigation": "NONE",
+      "confidence": "HIGH",
+      "n_evidence": 6,
+      "planets": []
+    },
+    {
+      "rule_id": "PARASHARI.YOGA.PASHA",
+      "formation": "FORMED",
+      "strength": "WEAK",
+      "cancellation": "NONE",
+      "mitigation": "NONE",
+      "confidence": "HIGH",
+      "n_evidence": 4,
+      "planets": []
+    },
+    {
+      "rule_id": "PARASHARI.YOGA.SARPA",
+      "formation": "NOT_FORMED",
+      "strength": "UNKNOWN",
+      "cancellation": "NONE",
+      "mitigation": "NONE",
+      "confidence": "MEDIUM",
+      "n_evidence": 5,
+      "planets": []
+    },
+    {
+      "rule_id": "PARASHARI.YOGA.SHULA",
+      "formation": "NOT_FORMED",
+      "strength": "UNKNOWN",
+      "cancellation": "NONE",
+      "mitigation": "NONE",
+      "confidence": "HIGH",
+      "n_evidence": 2,
+      "planets": []
+    },
+    {
+      "rule_id": "PARASHARI.YOGA.VEENA",
+      "formation": "NOT_FORMED",
+      "strength": "UNKNOWN",
+      "cancellation": "NONE",
+      "mitigation": "NONE",
+      "confidence": "HIGH",
+      "n_evidence": 2,
+      "planets": []
+    },
+    {
+      "rule_id": "PARASHARI.YOGA.YUGA",
+      "formation": "NOT_FORMED",
+      "strength": "UNKNOWN",
+      "cancellation": "NONE",
+      "mitigation": "NONE",
+      "confidence": "HIGH",
+      "n_evidence": 2,
+      "planets": []
     }
   ]
 }

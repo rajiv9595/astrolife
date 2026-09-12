@@ -66,8 +66,25 @@ export const canonicalClient = {
     return res.data;
   },
 
-  expertReport: async (chartData, { signal } = {}) => {
-    const res = await api.post(ENDPOINTS.AI_EXPERT_REPORT, { context_data: chartData }, toAbort(signal));
+  expertReport: async (chartData, { signal, birthParams, evaluationIso } = {}) => {
+    const res = await api.post(
+      ENDPOINTS.AI_EXPERT_REPORT,
+      {
+        context_data: chartData,
+        ...(birthParams || {}),
+        ...(evaluationIso ? { evaluation_iso: evaluationIso } : {}),
+      },
+      toAbort(signal)
+    );
+    return res.data;
+  },
+
+  predictEvaluate: async (birthParams, prediction, { signal } = {}) => {
+    const res = await api.post(
+      ENDPOINTS.PREDICT_EVALUATE,
+      { ...birthParams, ...prediction },
+      toAbort(signal)
+    );
     return res.data;
   },
 };

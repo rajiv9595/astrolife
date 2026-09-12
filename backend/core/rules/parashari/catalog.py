@@ -10,6 +10,8 @@ from ..evaluator import RuleEvaluator, EvaluationConfig
 from ..registry import RuleRegistry
 from ..enums import RuleCategory, RuleTradition
 from . import raja_yoga, dhana_yoga, mahapurusha, major_yogas, parivartana, viparita, neecha_bhanga
+from . import classical_yogas
+from . import category_d_yogas
 from .exceptions import CANCELLATION_EVALUATORS, MITIGATION_EVALUATORS
 from .strength import evaluate_yoga_strength
 
@@ -17,7 +19,8 @@ from .strength import evaluate_yoga_strength
 def _collect_formation_evaluators() -> Dict:
     ev: Dict = {}
     for mod in (raja_yoga, dhana_yoga, mahapurusha, major_yogas,
-                parivartana, viparita, neecha_bhanga):
+                parivartana, viparita, neecha_bhanga, classical_yogas,
+                category_d_yogas):
         ev.update(getattr(mod, "FORMATION_EVALUATORS", {}))
     return ev
 
@@ -65,7 +68,8 @@ def build_parashari_catalog() -> List:
         # Neecha bhanga (2)
         neecha_bhanga.build_neecha_bhanga(),
         neecha_bhanga.build_neecha_bhanga_raja(),
-    ]
+    ] + classical_yogas.build_classical_catalog() \
+      + category_d_yogas.build_category_d_catalog()
 
 
 PARASHARI_RULE_IDS: List[str] = [r.metadata.rule_id for r in build_parashari_catalog()]

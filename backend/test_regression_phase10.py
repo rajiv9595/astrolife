@@ -245,15 +245,22 @@ check(str(getattr(SR.dignity.get("Mars"), "dignity", SR.dignity.get("Mars"))) ==
 check(hasattr(SR, "planets"), "str.classical.shadbala.present", "Strength")
 
 # ============ 14. yoga ============
-section("14 yoga (31 rules)")
+section("14 yoga (77 rules: 62 + 15 Category D, Migration #3C)")
 from core.rules.parashari.fixtures import make_golden_context
 from core.rules.parashari.catalog import evaluate_all_parashari
 CTX = make_golden_context()
 YRES = evaluate_all_parashari(CTX)
-check(len(YRES) == 31, "yoga.count.31", "Yoga")
+check(len(YRES) == 77, "yoga.count.77", "Yoga")
 FORMED8 = {"PARASHARI.YOGA.RAJA_KENDRA_TRIKONA", "PARASHARI.YOGA.DHANA_5_9", "PARASHARI.YOGA.DHANA_LAGNA_WEALTH",
            "PARASHARI.YOGA.GAJA_KESARI", "PARASHARI.YOGA.ADHI", "PARASHARI.YOGA.VIPARITA_VIMALA",
-           "PARASHARI.YOGA.NEECHA_BHANGA", "PARASHARI.YOGA.NEECHA_BHANGA_RAJA"}
+           "PARASHARI.YOGA.NEECHA_BHANGA", "PARASHARI.YOGA.NEECHA_BHANGA_RAJA",
+           # Migration #3B Category C golden additions (verified 2026-09-11)
+           "PARASHARI.YOGA.AKHANDA_SAMRAJYA", "PARASHARI.YOGA.CHHATRA",
+           "PARASHARI.YOGA.KALANIDHI", "PARASHARI.YOGA.KAMA",
+           "PARASHARI.YOGA.SUPARIJATA", "PARASHARI.YOGA.UBHAYACHARI",
+           "PARASHARI.YOGA.VASI", "PARASHARI.YOGA.VESI",
+           # Migration #3C Category D golden addition (verified 2026-09-11)
+           "PARASHARI.YOGA.PASHA"}
 for r in YRES:
     rid = getattr(r, "rule_id")
     st = getattr(getattr(r, "formation_status"), "value", str(getattr(r, "formation_status")))

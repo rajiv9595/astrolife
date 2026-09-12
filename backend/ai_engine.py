@@ -103,6 +103,7 @@ class AIEngine:
         2. Incorporate references to the advanced data (e.g. "Because your Atmakaraka is...").
         3. Do not be overly fatalistic; frame challenges as areas for growth.
         4. Return ONLY valid JSON.
+        5. CANONICAL TRANSIT GROUNDING: CURRENT_TRANSITS / TRANSIT_NATAL_RELATIONS / TRANSIT_ASPECTS / TRANSIT_EVENTS (when present) come from the canonical Swiss Ephemeris transit engine (Lahiri, Mean Node) and are authoritative. Do NOT recalculate longitudes or invent transit positions. Distinguish natal placement from current transit. Do NOT claim a transit is active unless the backend supplies the relevant relationship/event. If transit status is "unavailable", say timing/current-transit analysis is unavailable rather than inventing it.
         """
 
         try:

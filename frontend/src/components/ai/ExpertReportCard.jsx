@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { astroService } from '../../services/astroService';
 import { toast } from 'react-toastify';
 
-const ExpertReportCard = ({ chartData }) => {
+const ExpertReportCard = ({ chartData, birthParams = null, evaluationIso = null }) => {
     const [loading, setLoading] = useState(false);
     const [report, setReport] = useState(null);
     const [activeTab, setActiveTab] = useState('personality');
@@ -12,7 +12,7 @@ const ExpertReportCard = ({ chartData }) => {
     const generateReport = async () => {
         try {
             setLoading(true);
-            const data = await astroService.generateExpertReport(chartData);
+            const data = await astroService.generateExpertReport(chartData, { birthParams, evaluationIso });
             if (data.report) {
                 setReport(data.report);
                 toast.success("Cosmic analysis complete!");

@@ -15,6 +15,27 @@ from typing import Any, Dict, List
 CLASSICAL_PLANETS = ["Sun", "Moon", "Mars", "Mercury", "Jupiter", "Venus", "Saturn"]
 NODES = ["Rahu", "Ketu"]
 
+
+def _num(value: Any, digits: int = 4) -> Any:
+    """Round numeric values for stable JSON output; pass through the rest."""
+    if isinstance(value, bool):
+        return value
+    if isinstance(value, (int, float)):
+        return round(float(value), digits)
+    return value
+
+
+def _source_tag() -> str:
+    return "canonical"
+
+
+def _enum(value: Any, default: Any = None) -> Any:
+    """Serialize enums to their values (e.g. StrengthClassification.CLASSICAL
+    becomes 'CLASSICAL'); pass anything else through."""
+    if value is None:
+        return default
+    return getattr(value, "value", value)
+
 # Canonical DignityResult.dignity -> UI nature badge text.
 DIGNITY_DISPLAY = {
     "EXALTED": "Exalted",
@@ -143,18 +164,159 @@ def build_shadbala_payload(shadbala: Dict[str, Any]) -> Dict[str, Dict[str, Any]
         status = getattr(result, "strength_status", None)
 
         payload[planet] = {
-            "sthana_bala": round(float(getattr(sthana, "total", 0.0) or 0.0), 1),
-            "dig_bala": round(float(getattr(dig_bala, "value", 0.0) or 0.0), 1),
-            "kaala_bala": round(float(getattr(kala, "total", 0.0) or 0.0), 1),
-            "chesta_bala": round(float(getattr(chesta, "value", 0.0) or 0.0), 1),
-            "naisargika_bala": round(float(getattr(naisargika, "value", 0.0) or 0.0), 1),
-            "drig_bala": round(float(getattr(drig, "value", 0.0) or 0.0), 1),
+            "sthana_bala": round(float(getattr(sthana, 'total', 0.0) or 0.0), 1),
+            "dig_bala": round(float(getattr(dig_bala, 'value', 0.0) or 0.0), 1),
+            "kaala_bala": round(float(getattr(kala, 'total', 0.0) or 0.0), 1),
+            "chesta_bala": round(float(getattr(chesta, 'value', 0.0) or 0.0), 1),
+            "naisargika_bala": round(float(getattr(naisargika, 'value', 0.0) or 0.0), 1),
+            "drig_bala": round(float(getattr(drig, 'value', 0.0) or 0.0), 1),
             "total_virupas": getattr(result, "total_virupas", None),
             "total_rupas": getattr(result, "total_rupas", None),
             "minimum_rupas": getattr(result, "minimum_rupas", None),
             "ratio": getattr(result, "ratio", None),
             "status": status,
             "strength_level": STATUS_LEVEL.get(status, "Low"),
+        }
+
+    return payload
+
+
+def build_bhava_bala_payload(bhava_bala: Dict[Any, Any]) -> Dict[str, Dict[str, Any]]:
+    """
+    Project canonical BhavaBalaResult per house. No astrology; pure projection.
+    Keys are strings for JSON stability.
+    """
+    payload: Dict[str, Dict[str, Any]] = {}
+
+    for house, result in (bhava_bala or {}).items():
+        payload[str(house)] = {
+            "house": getattr(result, "house", house),
+            "sign": getattr(result, "sign", None),
+            "system": _enum(getattr(result, "system", None), "BHAVA_BALA"),
+            "method": getattr(result, "method", None),
+            "classification": _enum(getattr(result, "classification", None), ""),
+            "bhavadhipati_bala": _num(getattr(result, "bhavadhipati_bala", None)),
+            "dig_bala": _num(getattr(result, "dig_bala", None)),
+            "drishti_bala": _num(getattr(result, "drishti_bala", None)),
+            "total": _num(getattr(result, "total", None)),
+            "maximum": _num(getattr(result, "maximum", None)),
+            "unit": getattr(result, "unit", "virupas"),
+            "_source": _source_tag(),
+        }
+
+    return payload
+
+
+def build_vimsopaka_payload(vimsopaka: Dict[str, Any]) -> Dict[str, Dict[str, Any]]:
+    """
+    Project canonical VimsopakaBalaResult per planet, preserving the weighted
+    per-varga contributions as evidence. No astrology; pure projection.
+    """
+    payload: Dict[str, Dict[str, Any]] = {}
+
+    for planet, result in (vimsopaka or {}).items():
+        contributions = getattr(result, "varga_contributions", []) or []
+        payload[planet] = {
+            "planet": planet,
+            "system": _enum(getattr(result, "system", None), "VIMSOPAKA"),
+            "method": getattr(result, "method", None),
+            "classification": _enum(getattr(result, "classification", None), ""),
+            "score": _num(getattr(result, "score", None)),
+            "maximum": _num(getattr(result, "maximum", 20.0)),
+            "ratio": _num(getattr(result, "ratio", None)),
+            "vargas_used": list(getattr(result, "vargas_used", []) or []),
+            "weights": {str(k): _num(v) for k, v in
+                        dict(getattr(result, "weights", {}) or {}).items()},
+            "varga_contributions": [
+                {"varga": c.get("varga"),
+                 "sign": c.get("sign"),
+                 "dignity_score": _num(c.get("dignity_score")),
+                 "weight": _num(c.get("weight")),
+                 "weighted_score": _num(c.get("weighted_score"))}
+                for c in contributions
+            ],
+            "_source": _source_tag(),
+        }
+
+    return payload
+
+
+def build_avastha_payload(avastha: Dict[str, Any]) -> Dict[str, Dict[str, Any]]:
+    """
+    Project canonical AvasthaResult systems per planet. Whatever systems the
+    canonical profile enabled are passed through unchanged (default: Bala).
+    """
+    payload: Dict[str, Dict[str, Any]] = {}
+
+    for planet, systems in (avastha or {}).items():
+        planet_entry: Dict[str, Any] = {}
+        for system_name, result in (systems or {}).items():
+            planet_entry[str(system_name)] = {
+                "avastha_name": getattr(result, "avastha_name", None),
+                "avastha_index": getattr(result, "avastha_index", None),
+                "degree_range": getattr(result, "degree_range", None),
+                "description": getattr(result, "description", ""),
+                "method": getattr(result, "method", None),
+                "classification": _enum(getattr(result, "classification", None), ""),
+            }
+        planet_entry["_source"] = _source_tag()
+        payload[planet] = planet_entry
+
+    return payload
+
+
+def build_functional_payload(functional_strength: Dict[str, Any]) -> Dict[str, Dict[str, Any]]:
+    """
+    Project canonical FunctionalStrengthResult per planet. Functional nature
+    stays distinct from natural benefic/malefic, dignity, and Shadbala.
+    """
+    payload: Dict[str, Dict[str, Any]] = {}
+
+    for planet, result in (functional_strength or {}).items():
+        lordship = getattr(result, "lordship", {}) or {}
+        payload[planet] = {
+            "planet": planet,
+            "system": _enum(getattr(result, "system", None), "PARASHARI_FUNCTIONAL"),
+            "method": getattr(result, "method", None),
+            "classification": _enum(getattr(result, "classification", None), ""),
+            "functional_nature": getattr(result, "functional_nature", ""),
+            "yogakaraka": bool(getattr(result, "yogakaraka", False)),
+            "houses_ruled": list((lordship.get("houses_ruled", [])
+                                  if isinstance(lordship, dict) else [])),
+            "ascendant": lordship.get("ascendant") if isinstance(lordship, dict) else None,
+            "kendra_trikona": bool(getattr(result, "kendra_trikona", False)),
+            "dusthana_lord": bool(getattr(result, "dusthana_lord", False)),
+            "maraka": bool(getattr(result, "maraka", False)),
+            "score": _num(getattr(result, "score", None)),
+            "details": list(getattr(result, "details", []) or []),
+            "_source": _source_tag(),
+        }
+
+    return payload
+
+
+def build_composite_payload(composite: Dict[str, Any]) -> Dict[str, Dict[str, Any]]:
+    """
+    Project the canonical Astrolife CUSTOM composite per planet. The custom
+    method and disclaimer travel with every entry; composite is never merged
+    into Shadbala.
+    """
+    payload: Dict[str, Dict[str, Any]] = {}
+
+    for planet, result in (composite or {}).items():
+        payload[planet] = {
+            "planet": planet,
+            "system": _enum(getattr(result, "system", None), "ASTROLIFE_COMPOSITE"),
+            "method": getattr(result, "method", "ASTROLIFE_CUSTOM"),
+            "classification": _enum(getattr(result, "classification", None), ""),
+            "score": _num(getattr(result, "score", None), 1),
+            "label": getattr(result, "label", ""),
+            "nature": getattr(result, "nature", ""),
+            "reasons": list(getattr(result, "reasons", []) or []),
+            "components": {str(k): _num(v) for k, v in
+                           dict(getattr(result, "components", {}) or {}).items()},
+            "disclaimer": getattr(result, "disclaimer", ""),
+            "_source": _source_tag(),
         }
 
     return payload

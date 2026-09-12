@@ -231,6 +231,22 @@ const HoroscopePage = () => {
     // --- Helpers for Display ---
     const person = getSelectedPerson();
 
+    // Hotfix: birth params for server-side canonical transit wiring in AI calls.
+    // No astrology is computed here; the backend builds ChartFacts + transits.
+    const getBirthParams = (p) => {
+        if (!p?.date_of_birth || !p?.time_of_birth) return null;
+        const dob = p.date_of_birth.split('-');
+        const tob = (p.time_of_birth || '00:00').split(':');
+        if (dob.length < 3) return null;
+        return {
+            year: parseInt(dob[0]), month: parseInt(dob[1]), day: parseInt(dob[2]),
+            hour: parseInt(tob[0]), minute: parseInt(tob[1]), second: 0,
+            tz: p.timezone || 'Asia/Kolkata',
+            lat: p.latitude || 0.0, lon: p.longitude || 0.0,
+        };
+    };
+    const aiBirthParams = getBirthParams(person);
+
     const getChartDataByType = (fullData, type) => {
         if (!fullData) return {};
         const vKey = type.toLowerCase();
@@ -544,7 +560,7 @@ const HoroscopePage = () => {
                                 </VedicCard>
                                 
                                 {/* Expert AI Life Reading */}
-                                <ExpertReportCard chartData={chartData} />
+                                <ExpertReportCard chartData={chartData} birthParams={aiBirthParams} evaluationIso={evalIso} />
 
                                 {/* Mangal Dosha (Kuja Dosha) Card */}
                                 <MangalDoshaCard mangalDosha={chartData.mangal_dosha} />
@@ -587,7 +603,7 @@ const HoroscopePage = () => {
             </main>
 
             {/* AI Assistant */}
-            {chartData && <AIAstrologer chartData={chartData} />}
+            {chartData && <AIAstrologer chartData={chartData} birthParams={aiBirthParams} evaluationIso={evalIso} />}
 
             {/* Modal */}
             <FamilyMemberModal

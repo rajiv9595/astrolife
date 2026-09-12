@@ -5,7 +5,7 @@ import CosmicButton from '../ui/CosmicButton';
 import { Send, MessageSquare, X, Sparkles } from 'lucide-react';
 import classNames from 'classnames';
 
-const AIAstrologer = ({ chartData }) => {
+const AIAstrologer = ({ chartData, birthParams = null, evaluationIso = null }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [query, setQuery] = useState('');
     const [messages, setMessages] = useState([
@@ -30,7 +30,7 @@ const AIAstrologer = ({ chartData }) => {
         setLoading(true);
 
         try {
-            const result = await aiService.analyze(query, chartData);
+            const result = await aiService.analyze(query, chartData, { birthParams, evaluationIso });
             setMessages(prev => [...prev, { role: 'assistant', text: result.response }]);
         } catch (err) {
             setMessages(prev => [...prev, { role: 'assistant', text: "The cosmic signals are weak right now. Please try again." }]);

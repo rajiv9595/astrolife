@@ -13,7 +13,7 @@
     "new_formed": false,
     "legacy_active": true,
     "verdict": "CONVENTION_DIFFERENCE",
-    "reason": "Legacy raja_yoga_9_10 pattern returns True when 9th and 10th lords share a house; on the golden chart both are Saturn, so the legacy check trivially self-matches. New engine requires a genuine sambandha between two different lords (or KT placement for a shared lord); Saturn sits in house 3. Kept classical spec; no auto-change."
+    "reason": "legacy weighted-score predicates differ structurally from the classical spec (e.g. legacy orb/conjunction handling, merged variants, score thresholds vs deterministic formation). New engine keeps classical spec; no auto-change. score=100.0 status=ACTIVE"
   },
   {
     "rule_id": "PARASHARI.YOGA.RUCHAKA",
@@ -77,7 +77,7 @@
     "new_formed": true,
     "legacy_active": false,
     "verdict": "CONVENTION_DIFFERENCE",
-    "reason": "Legacy adhi_yoga.json encodes a stricter benefic configuration and scores 0 on the golden chart; new engine implements the documented lenient reading (any of Jupiter/Venus/Mercury in 6/7/8 from Moon; Mercury sits 8th from Moon) labelled TRADITION_DEPENDENT. Kept spec; no auto-change."
+    "reason": "legacy weighted-score predicates differ structurally from the classical spec (e.g. legacy orb/conjunction handling, merged variants, score thresholds vs deterministic formation). New engine keeps classical spec; no auto-change. score=0.0 status=INACTIVE"
   },
   {
     "rule_id": "PARASHARI.YOGA.KEMADRUMA",
@@ -85,7 +85,7 @@
     "new_formed": false,
     "legacy_active": true,
     "verdict": "CONVENTION_DIFFERENCE",
-    "reason": "Legacy kemadruma ruleset scores ACTIVE while Jupiter+Venus occupy the 5th house (a Kendra from Moon), which under the classical isolation definition breaks Kemadruma. New engine returns NOT_FORMED. Kept classical spec; no auto-change."
+    "reason": "legacy weighted-score predicates differ structurally from the classical spec (e.g. legacy orb/conjunction handling, merged variants, score thresholds vs deterministic formation). New engine keeps classical spec; no auto-change. score=100.0 status=ACTIVE"
   },
   {
     "rule_id": "PARASHARI.YOGA.SUNAPHA",
@@ -138,6 +138,374 @@
   {
     "rule_id": "PARASHARI.YOGA.VASUMATI",
     "legacy_file": "vasumati_yoga.json",
+    "new_formed": false,
+    "legacy_active": false,
+    "verdict": "MATCH",
+    "reason": "both agree on NOT_FORMED/inactive"
+  },
+  {
+    "rule_id": "PARASHARI.YOGA.AKHANDA_SAMRAJYA",
+    "legacy_file": "akhanda_samrajya_yoga.json",
+    "new_formed": true,
+    "legacy_active": true,
+    "verdict": "MATCH",
+    "reason": "both agree on FORMED/active"
+  },
+  {
+    "rule_id": "PARASHARI.YOGA.BHAGYA",
+    "legacy_file": "bhagya_yoga.json",
+    "new_formed": false,
+    "legacy_active": false,
+    "verdict": "MATCH",
+    "reason": "both agree on NOT_FORMED/inactive"
+  },
+  {
+    "rule_id": "PARASHARI.YOGA.CHAMARA",
+    "legacy_file": "chamara_yoga.json",
+    "new_formed": false,
+    "legacy_active": false,
+    "verdict": "MATCH",
+    "reason": "both agree on NOT_FORMED/inactive"
+  },
+  {
+    "rule_id": "PARASHARI.YOGA.CHHATRA",
+    "legacy_file": "chhatra_yoga.json",
+    "new_formed": true,
+    "legacy_active": false,
+    "verdict": "CONVENTION_DIFFERENCE",
+    "reason": "legacy weighted-score predicates differ structurally from the classical spec (e.g. legacy orb/conjunction handling, merged variants, score thresholds vs deterministic formation). New engine keeps classical spec; no auto-change. score=0.0 status=INACTIVE"
+  },
+  {
+    "rule_id": "PARASHARI.YOGA.DHENU",
+    "legacy_file": "dhenu_yoga.json",
+    "new_formed": false,
+    "legacy_active": false,
+    "verdict": "MATCH",
+    "reason": "both agree on NOT_FORMED/inactive"
+  },
+  {
+    "rule_id": "PARASHARI.YOGA.GANDHARVA",
+    "legacy_file": "gandharva_yoga.json",
+    "new_formed": false,
+    "legacy_active": false,
+    "verdict": "MATCH",
+    "reason": "both agree on NOT_FORMED/inactive"
+  },
+  {
+    "rule_id": "PARASHARI.YOGA.GO",
+    "legacy_file": "go_yoga.json",
+    "new_formed": false,
+    "legacy_active": false,
+    "verdict": "MATCH",
+    "reason": "both agree on NOT_FORMED/inactive"
+  },
+  {
+    "rule_id": "PARASHARI.YOGA.HARA",
+    "legacy_file": "hara_yoga.json",
+    "new_formed": false,
+    "legacy_active": false,
+    "verdict": "MATCH",
+    "reason": "both agree on NOT_FORMED/inactive"
+  },
+  {
+    "rule_id": "PARASHARI.YOGA.HARI",
+    "legacy_file": "hari_yoga.json",
+    "new_formed": false,
+    "legacy_active": false,
+    "verdict": "MATCH",
+    "reason": "both agree on NOT_FORMED/inactive"
+  },
+  {
+    "rule_id": "PARASHARI.YOGA.JALADHI",
+    "legacy_file": "jaladhi_yoga.json",
+    "new_formed": false,
+    "legacy_active": true,
+    "verdict": "CONVENTION_DIFFERENCE",
+    "reason": "legacy weighted-score predicates differ structurally from the classical spec (e.g. legacy orb/conjunction handling, merged variants, score thresholds vs deterministic formation). New engine keeps classical spec; no auto-change. score=100.0 status=ACTIVE"
+  },
+  {
+    "rule_id": "PARASHARI.YOGA.KAHALA",
+    "legacy_file": "kahala_yoga.json",
+    "new_formed": false,
+    "legacy_active": false,
+    "verdict": "MATCH",
+    "reason": "both agree on NOT_FORMED/inactive"
+  },
+  {
+    "rule_id": "PARASHARI.YOGA.KALANIDHI",
+    "legacy_file": "kalanidhi_yoga.json",
+    "new_formed": true,
+    "legacy_active": true,
+    "verdict": "MATCH",
+    "reason": "both agree on FORMED/active"
+  },
+  {
+    "rule_id": "PARASHARI.YOGA.KAMA",
+    "legacy_file": "kama_yoga.json",
+    "new_formed": true,
+    "legacy_active": true,
+    "verdict": "MATCH",
+    "reason": "both agree on FORMED/active"
+  },
+  {
+    "rule_id": "PARASHARI.YOGA.KHYATHI",
+    "legacy_file": "khyathi_yoga.json",
+    "new_formed": false,
+    "legacy_active": false,
+    "verdict": "MATCH",
+    "reason": "both agree on NOT_FORMED/inactive"
+  },
+  {
+    "rule_id": "PARASHARI.YOGA.KUSUMA",
+    "legacy_file": "kusuma_yoga.json",
+    "new_formed": false,
+    "legacy_active": false,
+    "verdict": "MATCH",
+    "reason": "both agree on NOT_FORMED/inactive"
+  },
+  {
+    "rule_id": "PARASHARI.YOGA.MALA",
+    "legacy_file": "mala_yoga.json",
+    "new_formed": false,
+    "legacy_active": false,
+    "verdict": "MATCH",
+    "reason": "both agree on NOT_FORMED/inactive"
+  },
+  {
+    "rule_id": "PARASHARI.YOGA.MUSALA",
+    "legacy_file": "musala_yoga.json",
+    "new_formed": false,
+    "legacy_active": false,
+    "verdict": "MATCH",
+    "reason": "both agree on NOT_FORMED/inactive"
+  },
+  {
+    "rule_id": "PARASHARI.YOGA.PARIJATA",
+    "legacy_file": "parijata_yoga.json",
+    "new_formed": false,
+    "legacy_active": false,
+    "verdict": "MATCH",
+    "reason": "both agree on NOT_FORMED/inactive"
+  },
+  {
+    "rule_id": "PARASHARI.YOGA.PARVATA",
+    "legacy_file": "parvata_yoga.json",
+    "new_formed": false,
+    "legacy_active": false,
+    "verdict": "MATCH",
+    "reason": "both agree on NOT_FORMED/inactive"
+  },
+  {
+    "rule_id": "PARASHARI.YOGA.PUSHKALA",
+    "legacy_file": "pushkala_yoga.json",
+    "new_formed": false,
+    "legacy_active": false,
+    "verdict": "MATCH",
+    "reason": "both agree on NOT_FORMED/inactive"
+  },
+  {
+    "rule_id": "PARASHARI.YOGA.RAJA_LAKSHANA",
+    "legacy_file": "raja_lakshana_yoga.json",
+    "new_formed": false,
+    "legacy_active": false,
+    "verdict": "MATCH",
+    "reason": "both agree on NOT_FORMED/inactive"
+  },
+  {
+    "rule_id": "PARASHARI.YOGA.RAVI",
+    "legacy_file": "ravi_yoga.json",
+    "new_formed": false,
+    "legacy_active": false,
+    "verdict": "MATCH",
+    "reason": "both agree on NOT_FORMED/inactive"
+  },
+  {
+    "rule_id": "PARASHARI.YOGA.SHAKATA",
+    "legacy_file": "shakata_yoga.json",
+    "new_formed": false,
+    "legacy_active": false,
+    "verdict": "MATCH",
+    "reason": "both agree on NOT_FORMED/inactive"
+  },
+  {
+    "rule_id": "PARASHARI.YOGA.SHAURYA",
+    "legacy_file": "shaurya_yoga.json",
+    "new_formed": false,
+    "legacy_active": false,
+    "verdict": "MATCH",
+    "reason": "both agree on NOT_FORMED/inactive"
+  },
+  {
+    "rule_id": "PARASHARI.YOGA.SHIVA",
+    "legacy_file": "shiva_yoga.json",
+    "new_formed": false,
+    "legacy_active": false,
+    "verdict": "MATCH",
+    "reason": "both agree on NOT_FORMED/inactive"
+  },
+  {
+    "rule_id": "PARASHARI.YOGA.SRINATHA",
+    "legacy_file": "srinatha_yoga.json",
+    "new_formed": false,
+    "legacy_active": false,
+    "verdict": "MATCH",
+    "reason": "both agree on NOT_FORMED/inactive"
+  },
+  {
+    "rule_id": "PARASHARI.YOGA.SUPARIJATA",
+    "legacy_file": "suparijata_yoga.json",
+    "new_formed": true,
+    "legacy_active": false,
+    "verdict": "CONVENTION_DIFFERENCE",
+    "reason": "legacy weighted-score predicates differ structurally from the classical spec (e.g. legacy orb/conjunction handling, merged variants, score thresholds vs deterministic formation). New engine keeps classical spec; no auto-change. score=0.0 status=INACTIVE"
+  },
+  {
+    "rule_id": "PARASHARI.YOGA.UBHAYACHARI",
+    "legacy_file": "ubhayachari_yoga.json",
+    "new_formed": true,
+    "legacy_active": false,
+    "verdict": "CONVENTION_DIFFERENCE",
+    "reason": "legacy weighted-score predicates differ structurally from the classical spec (e.g. legacy orb/conjunction handling, merged variants, score thresholds vs deterministic formation). New engine keeps classical spec; no auto-change. score=0.0 status=INACTIVE"
+  },
+  {
+    "rule_id": "PARASHARI.YOGA.VASI",
+    "legacy_file": "vasi_yoga.json",
+    "new_formed": true,
+    "legacy_active": false,
+    "verdict": "CONVENTION_DIFFERENCE",
+    "reason": "legacy weighted-score predicates differ structurally from the classical spec (e.g. legacy orb/conjunction handling, merged variants, score thresholds vs deterministic formation). New engine keeps classical spec; no auto-change. score=0.0 status=INACTIVE"
+  },
+  {
+    "rule_id": "PARASHARI.YOGA.VESI",
+    "legacy_file": "vesi_yoga.json",
+    "new_formed": true,
+    "legacy_active": false,
+    "verdict": "CONVENTION_DIFFERENCE",
+    "reason": "legacy weighted-score predicates differ structurally from the classical spec (e.g. legacy orb/conjunction handling, merged variants, score thresholds vs deterministic formation). New engine keeps classical spec; no auto-change. score=0.0 status=INACTIVE"
+  },
+  {
+    "rule_id": "PARASHARI.YOGA.VISHNU",
+    "legacy_file": "vishnu_yoga.json",
+    "new_formed": false,
+    "legacy_active": false,
+    "verdict": "MATCH",
+    "reason": "both agree on NOT_FORMED/inactive"
+  },
+  {
+    "rule_id": "PARASHARI.YOGA.ASTRA",
+    "legacy_file": "astra_yoga.json",
+    "new_formed": false,
+    "legacy_active": false,
+    "verdict": "MATCH",
+    "reason": "both agree on NOT_FORMED/inactive"
+  },
+  {
+    "rule_id": "PARASHARI.YOGA.ASURA",
+    "legacy_file": "asura_yoga.json",
+    "new_formed": false,
+    "legacy_active": false,
+    "verdict": "MATCH",
+    "reason": "both agree on NOT_FORMED/inactive"
+  },
+  {
+    "rule_id": "PARASHARI.YOGA.BHERI",
+    "legacy_file": "bheri_yoga.json",
+    "new_formed": false,
+    "legacy_active": false,
+    "verdict": "MATCH",
+    "reason": "both agree on NOT_FORMED/inactive"
+  },
+  {
+    "rule_id": "PARASHARI.YOGA.BHRIGU_MANGALA",
+    "legacy_file": "bhrigu_mangala_yoga.json",
+    "new_formed": false,
+    "legacy_active": false,
+    "verdict": "MATCH",
+    "reason": "both agree on NOT_FORMED/inactive"
+  },
+  {
+    "rule_id": "PARASHARI.YOGA.BRAHMA",
+    "legacy_file": "brahma_yoga.json",
+    "new_formed": false,
+    "legacy_active": false,
+    "verdict": "MATCH",
+    "reason": "both agree on NOT_FORMED/inactive"
+  },
+  {
+    "rule_id": "PARASHARI.YOGA.DAMA",
+    "legacy_file": "dama_yoga.json",
+    "new_formed": false,
+    "legacy_active": false,
+    "verdict": "MATCH",
+    "reason": "both agree on NOT_FORMED/inactive"
+  },
+  {
+    "rule_id": "PARASHARI.YOGA.GOLA",
+    "legacy_file": "gola_yoga.json",
+    "new_formed": false,
+    "legacy_active": false,
+    "verdict": "MATCH",
+    "reason": "both agree on NOT_FORMED/inactive"
+  },
+  {
+    "rule_id": "PARASHARI.YOGA.INDRA",
+    "legacy_file": "indra_yoga.json",
+    "new_formed": false,
+    "legacy_active": false,
+    "verdict": "MATCH",
+    "reason": "both agree on NOT_FORMED/inactive"
+  },
+  {
+    "rule_id": "PARASHARI.YOGA.KEDARA",
+    "legacy_file": "kedara_yoga.json",
+    "new_formed": false,
+    "legacy_active": false,
+    "verdict": "MATCH",
+    "reason": "both agree on NOT_FORMED/inactive"
+  },
+  {
+    "rule_id": "PARASHARI.YOGA.KURMA",
+    "legacy_file": "kurma_yoga.json",
+    "new_formed": false,
+    "legacy_active": false,
+    "verdict": "MATCH",
+    "reason": "both agree on NOT_FORMED/inactive"
+  },
+  {
+    "rule_id": "PARASHARI.YOGA.PASHA",
+    "legacy_file": "pasha_yoga.json",
+    "new_formed": true,
+    "legacy_active": false,
+    "verdict": "CONVENTION_DIFFERENCE",
+    "reason": "legacy weighted-score predicates differ structurally from the classical spec (e.g. legacy orb/conjunction handling, merged variants, score thresholds vs deterministic formation). New engine keeps classical spec; no auto-change. score=0.0 status=INACTIVE"
+  },
+  {
+    "rule_id": "PARASHARI.YOGA.SARPA",
+    "legacy_file": "sarpa_yoga.json",
+    "new_formed": false,
+    "legacy_active": false,
+    "verdict": "MATCH",
+    "reason": "both agree on NOT_FORMED/inactive"
+  },
+  {
+    "rule_id": "PARASHARI.YOGA.SHULA",
+    "legacy_file": "shula_yoga.json",
+    "new_formed": false,
+    "legacy_active": false,
+    "verdict": "MATCH",
+    "reason": "both agree on NOT_FORMED/inactive"
+  },
+  {
+    "rule_id": "PARASHARI.YOGA.VEENA",
+    "legacy_file": "veena_yoga.json",
+    "new_formed": false,
+    "legacy_active": false,
+    "verdict": "MATCH",
+    "reason": "both agree on NOT_FORMED/inactive"
+  },
+  {
+    "rule_id": "PARASHARI.YOGA.YUGA",
+    "legacy_file": "yuga_yoga.json",
     "new_formed": false,
     "legacy_active": false,
     "verdict": "MATCH",

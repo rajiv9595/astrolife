@@ -25,6 +25,15 @@ INJECTION_PATTERNS = (
     r"exec(ute)?\s+this\s+code",
     r"disregard\s+the\s+contract",
     r"you\s+are\s+now\s+",
+    # Migration #10: production prompt-injection sentences (narrow, DATA-only
+    # detection; matched text still only yields WARNING findings).
+    r"ignore\s+the\s+canonical",
+    r"calculat\w*\s+it\s+yourself",
+    r"use\s+western\s+astrology",
+    r"assume\s+(this|that|the)\s+\w+\s+is\s+formed",
+    r"exact\s+date\s+even\s+if",
+    r"use\s+experimental\s+rules?",
+    r"ignore\s+the\s+evidence",
 )
 
 PREDICTION_PATTERNS = (

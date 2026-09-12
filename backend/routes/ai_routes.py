@@ -13,8 +13,28 @@ router = APIRouter(prefix="/ai", tags=["AI Astrologer"])
 class AIRequest(BaseModel):
     query: str
     context_data: Dict[str, Any]  # The astrological data from frontend
+    # Optional canonical transit wiring (additive; omitted => legacy behavior + explicit unavailable state).
+    year: Optional[int] = None
+    month: Optional[int] = None
+    day: Optional[int] = None
+    hour: Optional[int] = None
+    minute: Optional[int] = None
+    second: Optional[int] = None
+    tz: Optional[str] = None
+    lat: Optional[float] = None
+    lon: Optional[float] = None
+    evaluation_datetime: Optional[str] = None
+    evaluation_iso: Optional[str] = None
+    evaluation_tz: Optional[str] = None
+    eval_lat: Optional[float] = None
+    eval_lon: Optional[float] = None
+    eval_tz: Optional[str] = None
+    include_transit_events: bool = False
+    event_window_days: int = 7
+    # Optional deterministic prediction output for the AI to interpret (verbatim, never re-timed).
+    prediction_summary: Optional[Dict[str, Any]] = None
 
-    
+
 SYSTEM_PROMPT_TEMPLATE = """
 You are an expert AI Vedic Astrologer called "LifePath AI".
 Your goal is to engage in a helpful, strictly astrological, and highly professional conversation with the user based on the provided chart data.
@@ -49,6 +69,17 @@ KNOWLEDGE BASE:
 {knowledge_base}
 
 Use the above knowledge to enrich your explanation if relevant to the USER'S QUESTION.
+
+CANONICAL TRANSIT GROUNDING (authoritative):
+- Treat canonical transit facts in CURRENT_TRANSITS / TRANSIT_NATAL_RELATIONS / TRANSIT_ASPECTS as authoritative.
+- Do NOT recalculate planetary longitudes. Do NOT invent transit positions.
+- Distinguish natal placement (NATAL_FACTS/planets) from current transit (CURRENT_TRANSITS).
+- Use only backend-supplied transit-to-natal relationships/events.
+- Do NOT claim a transit is active unless the backend supplies the relevant relationship/event.
+- If transit status is "unavailable", explicitly say timing/current-transit analysis is unavailable rather than inventing it.
+- prediction_candidates (when present) are deterministic engine output; interpret them, do not re-time events independently.
+- AGENT_FINDINGS (when present) are deterministic specialist-agent output over canonical facts; restate and explain them, do not recalculate astrology, do not override their UNKNOWN/CONFLICTED states, and do not invent findings.
+- DETERMINISTIC_PREDICTION (when present) is authoritative engine output; interpret it verbatim, never re-time events independently.
 """
 
 def summarize_context(data: Dict[str, Any]) -> Dict[str, Any]:
@@ -195,7 +226,8 @@ def build_expert_context(data: Dict[str, Any]) -> Dict[str, Any]:
     summary = summarize_context(data)
     
     # Inject advanced modules for the expert AI
-    for key in ["jaimini", "ashtakavarga", "shadbala", "maitri", "panchanga_advanced", "mangal_dosha", "advanced_doshas"]:
+    for key in ["jaimini", "ashtakavarga", "shadbala", "maitri", "panchanga_advanced", "mangal_dosha", "advanced_doshas", "doshas",
+                "bhava_bala", "vimsopaka", "avastha", "functional_nature", "composite_strength", "rules"]:
         if key in data:
             summary[key] = data[key]
             
@@ -216,8 +248,10 @@ def analyze_astrology(
     kb_context = get_knowledge_context()
     system_prompt = SYSTEM_PROMPT_TEMPLATE.replace("{knowledge_base}", kb_context)
     
-    # SUMMARIZE DATA BEFORE SENDING
+    # SUMMARIZE DATA BEFORE SENDING (natal preserved; transit enriches, never replaces)
     optimized_data = summarize_context(req.context_data)
+    optimized_data = _attach_transit_section(optimized_data, req)
+    optimized_data = _attach_agent_section(optimized_data, req, req.query)
     
     # Context data to string
     data_str = json.dumps(optimized_data, indent=2)
@@ -232,6 +266,138 @@ def analyze_astrology(
 
 class ExpertReportRequest(BaseModel):
     context_data: Dict[str, Any]
+    # Optional canonical transit wiring (additive; same semantics as AIRequest).
+    year: Optional[int] = None
+    month: Optional[int] = None
+    day: Optional[int] = None
+    hour: Optional[int] = None
+    minute: Optional[int] = None
+    second: Optional[int] = None
+    tz: Optional[str] = None
+    lat: Optional[float] = None
+    lon: Optional[float] = None
+    evaluation_datetime: Optional[str] = None
+    evaluation_iso: Optional[str] = None
+    evaluation_tz: Optional[str] = None
+    eval_lat: Optional[float] = None
+    eval_lon: Optional[float] = None
+    eval_tz: Optional[str] = None
+    include_transit_events: bool = False
+    event_window_days: int = 7
+    # Optional deterministic prediction output for the AI to interpret (verbatim, never re-timed).
+    prediction_summary: Optional[Dict[str, Any]] = None
+
+
+def _request_birth(req: Any) -> Optional[Dict[str, Any]]:
+    """Extract birth params when fully supplied; else None (legacy path)."""
+    try:
+        y, m, d = req.year, req.month, req.day
+        if y is None or m is None or d is None:
+            return None
+        if req.tz is None or req.lat is None or req.lon is None:
+            return None
+        return {
+            "year": int(y), "month": int(m), "day": int(d),
+            "hour": int(req.hour or 0), "minute": int(req.minute or 0),
+            "second": int(req.second or 0),
+            "tz": str(req.tz), "lat": float(req.lat), "lon": float(req.lon),
+        }
+    except Exception:
+        return None
+
+
+def _request_eval_iso(req: Any) -> Optional[str]:
+    return req.evaluation_datetime if getattr(req, "evaluation_datetime", None) else getattr(req, "evaluation_iso", None)
+
+
+def _attach_transit_section(optimized_data: Dict[str, Any], req: Any) -> Dict[str, Any]:
+    """
+    Enrich (never replace) natal context with canonical transit facts.
+    Backward compatible: missing birth => explicit unavailable state.
+    """
+    from backend.ai_transit_context import (
+        build_canonical_transit_section,
+        transit_unavailable_section,
+    )
+
+    birth = _request_birth(req)
+    if birth is None:
+        optimized_data["TRANSIT_STATUS"] = "unavailable-no-birth-params"
+        optimized_data.update(transit_unavailable_section("no-birth-params"))
+        return optimized_data
+    try:
+        section = build_canonical_transit_section(
+            **birth,
+            evaluation_iso=_request_eval_iso(req),
+            evaluation_tz=getattr(req, "evaluation_tz", None),
+            eval_lat=getattr(req, "eval_lat", None),
+            eval_lon=getattr(req, "eval_lon", None),
+            eval_tz=getattr(req, "eval_tz", None),
+            include_events=bool(getattr(req, "include_transit_events", False)),
+            event_window_days=int(getattr(req, "event_window_days", 7) or 7),
+        )
+    except Exception as exc:
+        optimized_data["TRANSIT_STATUS"] = f"unavailable-error: {exc}"
+        optimized_data.update(transit_unavailable_section(f"error: {exc}"))
+        return optimized_data
+    # Distinct keys per spec; natal summary keys untouched.
+    for key in ("NATAL_FACTS", "CURRENT_EVALUATION", "CURRENT_TRANSITS",
+                "TRANSIT_NATAL_RELATIONS", "TRANSIT_ASPECTS", "TRANSIT_EVENTS",
+                "DASHA", "OTHER_CANONICAL_FACTS", "PROVENANCE"):
+        if key in section:
+            optimized_data[key] = section[key]
+    optimized_data["TRANSIT_STATUS"] = "available" if section.get("_transit_available") else "unavailable"
+    optimized_data["_dynamic_state_evaluation_utc_iso"] = (
+        section.get("CURRENT_EVALUATION", {}) or {}
+    ).get("evaluation_utc_iso")
+    # Part D: deterministic prediction output passes through verbatim for interpretation.
+    pred = getattr(req, "prediction_summary", None)
+    if pred is not None:
+        optimized_data["DETERMINISTIC_PREDICTION"] = pred
+    return optimized_data
+
+def _attach_agent_section(optimized_data: Dict[str, Any], req: Any,
+                          query: str = "") -> Dict[str, Any]:
+    """
+    Attach deterministic specialist-agent findings (Migration #10, additive).
+
+    Agents run as pure functions over canonical production data already in
+    context; they calculate nothing. On any failure an explicit unavailable
+    marker is set — never fabricated findings.
+    """
+    try:
+        from backend.canonical_agents import (
+            build_agent_context_from_compute,
+            run_full_production_with_synthesis,
+        )
+    except ImportError:  # pragma: no cover - alternate import root
+        from canonical_agents import (  # type: ignore
+            build_agent_context_from_compute,
+            run_full_production_with_synthesis,
+        )
+    try:
+        transit_section = {
+            key: optimized_data.get(key)
+            for key in ("CURRENT_TRANSITS", "TRANSIT_NATAL_RELATIONS",
+                        "TRANSIT_ASPECTS", "TRANSIT_EVENTS", "DASHA")
+            if optimized_data.get(key) is not None
+        }
+        context = build_agent_context_from_compute(
+            getattr(req, "context_data", {}) or {},
+            question=query or "",
+            transit_section=transit_section,
+            prediction_summary=optimized_data.get("DETERMINISTIC_PREDICTION"),
+        )
+        full = run_full_production_with_synthesis(context)
+        optimized_data["AGENT_FINDINGS"] = full
+        optimized_data["AGENT_STATUS"] = "available"
+    except Exception as exc:
+        optimized_data["AGENT_FINDINGS"] = {
+            "status": "unavailable", "reason": f"{type(exc).__name__}",
+            "_source": "production_agents",
+        }
+        optimized_data["AGENT_STATUS"] = "unavailable"
+    return optimized_data
 
 @router.post("/expert_report")
 def generate_expert_report(
@@ -243,6 +409,8 @@ def generate_expert_report(
     """
     try:
         expert_context = build_expert_context(req.context_data)
+        expert_context = _attach_transit_section(expert_context, req)
+        expert_context = _attach_agent_section(expert_context, req, "")
         data_str = json.dumps(expert_context, indent=2)
         
         json_response = ai_engine.generate_expert_report(data_str)

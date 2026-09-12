@@ -97,6 +97,12 @@ def create_app() -> FastAPI:
     except Exception as e:
         print(f"[Dynamic] router import failed: {e}")
     try:
+        # Hotfix: production deterministic prediction over live canonical transits.
+        from backend.routes.prediction import router as prediction_router
+        app.include_router(prediction_router)
+    except Exception as e:
+        print(f"[Prediction] router import failed: {e}")
+    try:
         # Phase 11: read-only Research Lab API (no calculation changes)
         from backend.routes.research import router as research_router
         app.include_router(research_router)

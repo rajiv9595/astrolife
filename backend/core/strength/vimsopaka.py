@@ -76,24 +76,20 @@ def calculate_vimsopaka_bala(
     
     for varga_num in profile.vimsopaka_vargas:
         weight = profile.vimsopaka_weights.get(varga_num, 1.0)
-        varga_key = f"d{varga_num}"
-        
-        if varga_key not in varga_results:
+        varga_key = f"D{varga_num}"
+
+        # Current canonical VargaFacts shape:
+        #   {"planets": {planet: {"D1": VargaPosition, ...}}, "ascendant": {...}}
+        # (Migration #5 narrow repair: varga *access* updated to the current
+        # canonical shape. Dignity scores, weights, and /20 normalization are
+        # unchanged from the defined formula.)
+        planet_slots = (varga_results.get("planets", {}) or {}).get(planet, {})
+        slot = planet_slots.get(varga_key)
+
+        if slot is None:
             continue
-        
-        varga_data = varga_results[varga_key]
-        
-        # Find planet in this varga
-        planet_varga = None
-        for p in varga_data.get("planets", []):
-            if p.get("name") == planet:
-                planet_varga = p
-                break
-        
-        if not planet_varga:
-            continue
-        
-        varga_sign = planet_varga.get("sign")
+
+        varga_sign = getattr(slot, "sign", None)
         if not varga_sign:
             continue
         

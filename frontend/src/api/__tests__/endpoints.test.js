@@ -18,6 +18,7 @@ const EXPECTED = Object.freeze({
   DYNAMIC_COMPUTE: '/dynamic/compute-dynamic',
   AI_ANALYZE: '/ai/analyze',
   AI_EXPERT_REPORT: '/ai/expert_report',
+  PREDICT_EVALUATE: '/prediction/evaluate',
   GEOCODE_SEARCH: '/geocode/search',
   GEOCODE_SUGGESTIONS: '/geocode/suggestions',
   GEOCODE_REVERSE: '/geocode/reverse',
@@ -38,7 +39,7 @@ describe('endpoint map', () => {
     assert.ok(Object.isFrozen(ENDPOINTS));
   });
   it('has exactly the verified route set', () => {
-    assert.equal(Object.keys(ENDPOINTS).length, 17);
+    assert.equal(Object.keys(ENDPOINTS).length, 18);
   });
   it('no trailing slashes or query strings in constants', () => {
     for (const v of Object.values(ENDPOINTS)) {

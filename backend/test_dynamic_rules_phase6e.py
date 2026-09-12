@@ -499,7 +499,7 @@ def main() -> None:
     customs = GOLDEN_CAT.find_rules(tradition="CUSTOM_DEVELOPER")
     check(len(customs) >= 6 and all(e.provenance_status == "USER_SUPPLIED" for e in customs),
           "dynamic customs remain CUSTOM_DEVELOPER/USER_SUPPLIED/UNVERIFIED")
-    check(len(GOLDEN_CAT.entries) == 56, "golden catalogue size 56 (31+6+12+6+1 guard)")
+    check(len(GOLDEN_CAT.entries) == 102, "golden catalogue size 102 (77+6+12+6+1 guard, Migration #3C)")
     check(all("PREDICT" not in json.dumps(e.to_canonical_dict()).upper()
               or True for e in GOLDEN_CAT.list_all()), "no new classical claims added")
 
@@ -507,7 +507,7 @@ def main() -> None:
     buckets = {APPLICABLE: 0, NOT_APPLICABLE: 0, UNKNOWN: 0, INVALID: 0}
     for e, r in GOLDEN_CAT.find_rules_for_context(GOLDEN, mode="ALL"):
         buckets[r.status] += 1
-    check(buckets[APPLICABLE] == 55, f"55 applicable on golden chart (got {buckets})")
+    check(buckets[APPLICABLE] == 101, f"101 applicable on golden chart, Migration #3C (got {buckets})")
     check(buckets[NOT_APPLICABLE] == 1, "1 not-applicable (deprecated guard)")
     check(buckets[UNKNOWN] == 0 and buckets[INVALID] == 0, "0 unknown / 0 invalid on full chart")
 

@@ -165,3 +165,71 @@ def kendras_from_moon_houses(ctx) -> List[int]:
     if hm is None:
         return []
     return [((hm + d - 1) % 12) + 1 for d in (0, 3, 6, 9)]
+
+
+def sun_house(ctx) -> Optional[int]:
+    return house_of(ctx, "Sun")
+
+
+def house_from_sun(ctx, planet: str) -> Optional[int]:
+    """House of planet counted from Sun: ((hp - hs) % 12) + 1."""
+    hs, hp = sun_house(ctx), house_of(ctx, planet)
+    if hs is None or hp is None:
+        return None
+    return ((hp - hs) % 12) + 1
+
+
+def planets_in_house_from_sun(ctx, offset: int,
+                              exclude: Tuple[str, ...] = ("Moon", "Rahu", "Ketu")) -> List[str]:
+    """Planets in the house that is `offset` from Sun (1=with Sun)."""
+    hs = sun_house(ctx)
+    if hs is None:
+        return []
+    target = ((hs + offset - 2) % 12) + 1
+    return [p for p in SEVEN_PLANETS
+            if p not in exclude and house_of(ctx, p) == target]
+
+
+def is_kendra_from_sun(ctx, planet: str) -> bool:
+    hs, hp = sun_house(ctx), house_of(ctx, planet)
+    if hs is None or hp is None:
+        return False
+    return ((hp - hs) % 12) in (0, 3, 6, 9)
+
+
+def house_from_planet(ctx, from_planet: str, target_planet: str) -> Optional[int]:
+    """House of target_planet counted from from_planet: ((h_target - h_from) % 12) + 1."""
+    h_from = house_of(ctx, from_planet)
+    h_target = house_of(ctx, target_planet)
+    if h_from is None or h_target is None:
+        return None
+    return ((h_target - h_from) % 12) + 1
+
+
+def planets_in_house_from_planet(ctx, from_planet: str, offset: int,
+                                  exclude: Tuple[str, ...] = ()) -> List[str]:
+    """Planets in the house that is `offset` from from_planet (1=with from_planet)."""
+    h_from = house_of(ctx, from_planet)
+    if h_from is None:
+        return []
+    target = ((h_from + offset - 2) % 12) + 1
+    return [p for p in SEVEN_PLANETS
+            if p not in exclude and house_of(ctx, p) == target]
+
+
+def is_kendra_from_planet(ctx, from_planet: str, target_planet: str) -> bool:
+    h_from = house_of(ctx, from_planet)
+    h_target = house_of(ctx, target_planet)
+    if h_from is None or h_target is None:
+        return False
+    return ((h_target - h_from) % 12) in (0, 3, 6, 9)
+
+
+def is_6_8_12_from(ctx, planet_a: str, planet_b: str) -> bool:
+    """Check if planet_a is in 6th, 8th, or 12th from planet_b."""
+    h_a = house_of(ctx, planet_a)
+    h_b = house_of(ctx, planet_b)
+    if h_a is None or h_b is None:
+        return False
+    diff = (h_a - h_b) % 12
+    return diff in (5, 7, 11)  # 6th=5, 8th=7, 12th=11

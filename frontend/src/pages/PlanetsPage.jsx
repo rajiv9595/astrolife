@@ -47,7 +47,7 @@ const PlanetsPage = () => {
                 if (cachedData) {
                     try {
                         const parsedCache = JSON.parse(cachedData);
-                        if (parsedCache && parsedCache._cache_version === 1 && parsedCache.planets) {
+                        if (parsedCache && parsedCache._cache_version === 2 && parsedCache.planets) {
                             // Re-check: a newer generation may have already
                             // written fresh network data; stale cache must
                             // never overwrite it.
@@ -80,7 +80,7 @@ const PlanetsPage = () => {
 
                 try {
                     const cachePayload = {
-                        _cache_version: 1,
+                        _cache_version: 2,
                         planets: data.planets,
                         ascendant: data.ascendant,
                         whole_sign_houses: data.whole_sign_houses,

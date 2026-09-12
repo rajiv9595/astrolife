@@ -1,3 +1,11 @@
+"""DEPRECATED (Migration #11 audit): legacy Shadbala implementation.
+
+Source of truth is the canonical engine
+(backend/core/strength/shadbala.py via backend/canonical_strength.py).
+No production route, adapter, or functional test imports this module
+(only dev scripts / import-presence checks). Kept on disk for reference;
+do NOT wire it into production.
+"""
 from typing import List, Dict
 
 SIGNS_LIST = [

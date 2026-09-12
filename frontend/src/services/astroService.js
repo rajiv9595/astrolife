@@ -19,8 +19,15 @@ export const astroService = {
     },
 
     // AI Expert Report
-    generateExpertReport: async (chartData) => {
-        const response = await api.post('/ai/expert_report', { context_data: chartData });
+    // opts (all optional, additive): { birthParams, evaluationIso, includeTransitEvents, eventWindowDays }
+    generateExpertReport: async (chartData, opts = {}) => {
+        const response = await api.post('/ai/expert_report', {
+            context_data: chartData,
+            ...(opts.birthParams || {}),
+            ...((opts.evaluationIso ?? opts.evaluation_iso) ? { evaluation_iso: opts.evaluationIso ?? opts.evaluation_iso } : {}),
+            ...(opts.includeTransitEvents ? { include_transit_events: true } : {}),
+            ...(opts.eventWindowDays ? { event_window_days: opts.eventWindowDays } : {}),
+        });
         return response.data;
     },
 

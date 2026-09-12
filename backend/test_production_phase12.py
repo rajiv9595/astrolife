@@ -386,7 +386,7 @@ for k in ("application_version", "api_version", "calculation_engine_version",
           "golden_data_sha256", "parashari_rule_count"):
     check(k in MANIFEST, f"rel.manifest.{k}")
 check(MANIFEST["application_version"] == "12.0.0", "rel.app.version")
-check(MANIFEST["parashari_rule_count"] == 31, "rel.rule.count.31")
+check(MANIFEST["parashari_rule_count"] == 77, "rel.rule.count.77")
 check(len(MANIFEST["golden_data_sha256"]) == 64, "rel.golden.sha")
 check(VER.API_VERSION == "v1", "rel.api.version")
 
@@ -409,7 +409,7 @@ check(JF.karakamsha.karakamsha_sign == "Cancer" and JF.arudha_lagna.final_sign =
 SR = generate_strength_report(CF2, DEFAULT_STRENGTH_PROFILE)
 check(abs(float(SR.planets["Sun"].total_rupas) - 6.18) < 0.02 and abs(float(SR.planets["Venus"].total_rupas) - 7.34) < 0.02, "int.strength.spot")
 YR = evaluate_all_parashari(CTX)
-check(sum(1 for r in YR if str(getattr(getattr(r, "formation_status"), "value", "?")) == "FORMED") == 8, "int.yoga.formed.8")
+check(sum(1 for r in YR if str(getattr(getattr(r, "formation_status"), "value", "?")) == "FORMED") == 17, "int.yoga.formed.17")
 DR = evaluate_all_doshas(CTX)
 check(any(str(getattr(getattr(r, "formation_status"), "value", "?")) == "FORMED" for r in DR.dosha_results), "int.dosha.formed.present")
 DS = get_dynamic_state(CF2, datetime(2026, 9, 2, 12, 0, 0, tzinfo=timezone.utc), profile=DEFAULT_PROFILE)
