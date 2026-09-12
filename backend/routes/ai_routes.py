@@ -80,6 +80,8 @@ CANONICAL TRANSIT GROUNDING (authoritative):
 - prediction_candidates (when present) are deterministic engine output; interpret them, do not re-time events independently.
 - AGENT_FINDINGS (when present) are deterministic specialist-agent output over canonical facts; restate and explain them, do not recalculate astrology, do not override their UNKNOWN/CONFLICTED states, and do not invent findings.
 - DETERMINISTIC_PREDICTION (when present) is authoritative engine output; interpret it verbatim, never re-time events independently.
+- FUTURE_WINDOW (when present) is the canonical evaluation of the user's requested future period (transits, exact events, dasha, windowed candidates with evidence/provenance). Use it to answer future-range questions. Do NOT claim future transit data are unavailable when FUTURE_WINDOW is present, and do NOT ask the user to manually provide transit details the backend already supplied.
+- Timing semantics are strict: EXACT only from canonical exact timestamps; EVENT_WINDOW stays a range; UNKNOWN stays unknown. Prefer "stronger career/opportunity window" over guaranteed-date language unless the canonical system supplies exact timing.
 """
 
 def summarize_context(data: Dict[str, Any]) -> Dict[str, Any]:
@@ -251,6 +253,7 @@ def analyze_astrology(
     # SUMMARIZE DATA BEFORE SENDING (natal preserved; transit enriches, never replaces)
     optimized_data = summarize_context(req.context_data)
     optimized_data = _attach_transit_section(optimized_data, req)
+    optimized_data = _attach_future_section(optimized_data, req, req.query)
     optimized_data = _attach_agent_section(optimized_data, req, req.query)
     
     # Context data to string
@@ -399,6 +402,68 @@ def _attach_agent_section(optimized_data: Dict[str, Any], req: Any,
         optimized_data["AGENT_STATUS"] = "unavailable"
     return optimized_data
 
+def _attach_future_section(optimized_data: Dict[str, Any], req: Any,
+                           query: str = "") -> Dict[str, Any]:
+    """
+    Attach canonical future-window evaluation (post-release bugfix, additive).
+
+    When the user query names a future date range and birth params are
+    present, the requested interval is evaluated with the existing canonical
+    engines (no new astrology). A caller-supplied DETERMINISTIC_PREDICTION
+    is never overridden. Any engine failure yields an explicit unavailable
+    marker — never fabricated timing.
+    """
+    try:
+        from backend.future_window import (
+            build_future_window_section,
+            parse_requested_range,
+        )
+    except ImportError:  # pragma: no cover - alternate import root
+        from future_window import (  # type: ignore
+            build_future_window_section,
+            parse_requested_range,
+        )
+    birth = _request_birth(req)
+    if birth is None or not query:
+        return optimized_data
+    if optimized_data.get("DETERMINISTIC_PREDICTION") is not None:
+        return optimized_data
+    try:
+        from datetime import datetime as _dt
+        from datetime import timezone as _tzmod
+        tz_name = (getattr(req, "evaluation_tz", None)
+                   or getattr(req, "eval_tz", None)
+                   or birth.get("tz") or "UTC")
+        now = _dt.now(_tzmod.utc)
+        parsed = parse_requested_range(query, now, tz_name)
+        if parsed is None:
+            return optimized_data
+        section = build_future_window_section(
+            year=birth["year"], month=birth["month"], day=birth["day"],
+            hour=birth.get("hour", 0), minute=birth.get("minute", 0),
+            second=birth.get("second", 0), tz=birth.get("tz", "UTC"),
+            lat=birth.get("lat", 0.0), lon=birth.get("lon", 0.0),
+            range_start=parsed["future_start"], range_end=parsed["future_end"],
+            eval_tz=getattr(req, "eval_tz", None),
+            eval_lat=getattr(req, "eval_lat", None),
+            eval_lon=getattr(req, "eval_lon", None),
+            label=parsed["label"],
+        )
+        optimized_data["FUTURE_WINDOW"] = section
+        optimized_data["FUTURE_WINDOW_STATUS"] = "available"
+        optimized_data["DETERMINISTIC_PREDICTION"] = {
+            "status": (section.get("PREDICTION") or {}).get("status"),
+            "candidates": (section.get("PREDICTION") or {}).get("candidates", []),
+            "source": "canonical-future-window",
+        }
+    except Exception as exc:
+        optimized_data["FUTURE_WINDOW"] = {
+            "status": "unavailable", "reason": f"{type(exc).__name__}",
+            "_source": "canonical",
+        }
+        optimized_data["FUTURE_WINDOW_STATUS"] = "unavailable"
+    return optimized_data
+
 @router.post("/expert_report")
 def generate_expert_report(
     req: ExpertReportRequest,
@@ -410,6 +475,7 @@ def generate_expert_report(
     try:
         expert_context = build_expert_context(req.context_data)
         expert_context = _attach_transit_section(expert_context, req)
+        expert_context = _attach_future_section(expert_context, req, "")
         expert_context = _attach_agent_section(expert_context, req, "")
         data_str = json.dumps(expert_context, indent=2)
         
