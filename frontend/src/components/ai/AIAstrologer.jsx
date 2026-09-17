@@ -30,7 +30,8 @@ const AIAstrologer = ({ chartData, birthParams = null, evaluationIso = null }) =
         setLoading(true);
 
         try {
-            const result = await aiService.analyze(query, chartData, { birthParams, evaluationIso });
+            const effectiveBirthParams = birthParams || (chartData?.request ? chartData.request : null);
+            const result = await aiService.analyze(query, chartData, { birthParams: effectiveBirthParams, evaluationIso });
             setMessages(prev => [...prev, { role: 'assistant', text: result.response }]);
         } catch (err) {
             setMessages(prev => [...prev, { role: 'assistant', text: "The cosmic signals are weak right now. Please try again." }]);

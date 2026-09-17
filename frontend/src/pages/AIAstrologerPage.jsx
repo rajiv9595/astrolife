@@ -10,6 +10,7 @@ import ReactMarkdown from 'react-markdown';
 const AIAstrologerPage = () => {
     const [query, setQuery] = useState('');
     const [chartData, setChartData] = useState(null);
+    const [birthParams, setBirthParams] = useState(null);
     const [messages, setMessages] = useState([
         { role: 'assistant', text: 'Hari Om! I am your AI Vedic Astrologer. I have analyzed your birth chart to provide personalized insights.\n\nAsk me anything about your:\n- Career path and success\n- Marriage and relationships\n- Wealth and financial prospects\n- Health and well-being' }
     ]);
@@ -22,6 +23,7 @@ const AIAstrologerPage = () => {
             try {
                 // Fetch chart data so the AI has context
                 const params = await authService.getChartDataParams();
+                setBirthParams(params);
                 const data = await astroService.computeChart(params);
                 setChartData(data);
             } catch (err) {
@@ -50,7 +52,8 @@ const AIAstrologerPage = () => {
         setLoading(true);
 
         try {
-            const result = await aiService.analyze(query, chartData);
+            const effectiveBirthParams = birthParams || (chartData?.request ? chartData.request : null);
+            const result = await aiService.analyze(query, chartData, { birthParams: effectiveBirthParams });
             setMessages(prev => [...prev, { role: 'assistant', text: result.response }]);
         } catch (err) {
             setMessages(prev => [...prev, { role: 'assistant', text: "The cosmic signals are weak right now. Please try again." }]);
@@ -58,6 +61,7 @@ const AIAstrologerPage = () => {
             setLoading(false);
         }
     };
+
 
     if (initializing) {
         return (

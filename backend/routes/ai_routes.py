@@ -299,21 +299,47 @@ class ExpertReportRequest(BaseModel):
 
 
 def _request_birth(req: Any) -> Optional[Dict[str, Any]]:
-    """Extract birth params when fully supplied; else None (legacy path)."""
+    """Extract birth params when fully supplied at top-level or inside context_data."""
+    # 1. Primary: top-level birth parameters on req
     try:
-        y, m, d = req.year, req.month, req.day
-        if y is None or m is None or d is None:
-            return None
-        if req.tz is None or req.lat is None or req.lon is None:
-            return None
-        return {
-            "year": int(y), "month": int(m), "day": int(d),
-            "hour": int(req.hour or 0), "minute": int(req.minute or 0),
-            "second": int(req.second or 0),
-            "tz": str(req.tz), "lat": float(req.lat), "lon": float(req.lon),
-        }
+        y, m, d = getattr(req, "year", None), getattr(req, "month", None), getattr(req, "day", None)
+        tz, lat, lon = getattr(req, "tz", None), getattr(req, "lat", None), getattr(req, "lon", None)
+        if y is not None and m is not None and d is not None and tz is not None and lat is not None and lon is not None:
+            return {
+                "year": int(y), "month": int(m), "day": int(d),
+                "hour": int(getattr(req, "hour", 0) or 0),
+                "minute": int(getattr(req, "minute", 0) or 0),
+                "second": int(getattr(req, "second", 0) or 0),
+                "tz": str(tz), "lat": float(lat), "lon": float(lon),
+            }
     except Exception:
-        return None
+        pass
+
+    # 2. Fallback: inspect context_data["request"] or context_data["birth_params"]
+    ctx = getattr(req, "context_data", {}) or {}
+    if isinstance(ctx, dict):
+        for sub_key in ("request", "birth_params"):
+            req_sub = ctx.get(sub_key)
+            if isinstance(req_sub, dict):
+                try:
+                    y = req_sub.get("year")
+                    m = req_sub.get("month")
+                    d = req_sub.get("day")
+                    tz = req_sub.get("tz")
+                    lat = req_sub.get("lat")
+                    lon = req_sub.get("lon")
+                    if y is not None and m is not None and d is not None and tz is not None and lat is not None and lon is not None:
+                        return {
+                            "year": int(y), "month": int(m), "day": int(d),
+                            "hour": int(req_sub.get("hour", 0) or 0),
+                            "minute": int(req_sub.get("minute", 0) or 0),
+                            "second": int(req_sub.get("second", 0) or 0),
+                            "tz": str(tz), "lat": float(lat), "lon": float(lon),
+                        }
+                except Exception:
+                    pass
+    return None
+
 
 
 def _request_eval_iso(req: Any) -> Optional[str]:
