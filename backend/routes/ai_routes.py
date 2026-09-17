@@ -82,6 +82,11 @@ CANONICAL TRANSIT GROUNDING (authoritative):
 - DETERMINISTIC_PREDICTION (when present) is authoritative engine output; interpret it verbatim, never re-time events independently.
 - FUTURE_WINDOW (when present) is the canonical evaluation of the user's requested future period (transits, exact events, dasha, windowed candidates with evidence/provenance). Use it to answer future-range questions. Do NOT claim future transit data are unavailable when FUTURE_WINDOW is present, and do NOT ask the user to manually provide transit details the backend already supplied.
 - Timing semantics are strict: EXACT only from canonical exact timestamps; EVENT_WINDOW stays a range; UNKNOWN stays unknown. Prefer "stronger career/opportunity window" over guaranteed-date language unless the canonical system supplies exact timing.
+- FUTURE_WINDOW is a BOUNDED deterministic AI projection of the complete canonical future-window evidence (raw exact-event and signal lists are compacted for context size; see EXACT_TRANSIT_EVENTS_COMPACTION and SEMANTICS). Omitted events/signals EXIST in the canonical engine — omission is NOT evidence of absence. Never claim an omitted transit did not occur.
+- Exact timestamps come ONLY from EXACT signals / EXACT_TRANSIT_EVENTS supplied by the backend. EVENT_WINDOW means a window (start..end), never an exact date. UNKNOWN/PARTIAL/EVIDENCE_INSUFFICIENT means evidence is insufficient — say so explicitly instead of inventing a date.
+- Never manufacture an exact job-offer/interview/joining date: the canonical engine cannot distinguish interview vs offer vs joining. Report windows as windows.
+- NEVER independently recalculate planetary positions, longitudes, dashas, or transit timings. Interpret ONLY the supplied canonical evidence (Swiss Ephemeris / Lahiri / Mean Node / canonical_transit_engine / canonical-future-window provenance).
+- Bounded projections (FUTURE_WINDOW / AGENT_FINDINGS) carry COMPACTION metadata with counts of omitted items. Omitted detail exists in the canonical engine output — omission from the prompt is NOT evidence of absence.
 """
 
 def summarize_context(data: Dict[str, Any]) -> Dict[str, Any]:
@@ -255,9 +260,11 @@ def analyze_astrology(
     optimized_data = _attach_transit_section(optimized_data, req)
     optimized_data = _attach_future_section(optimized_data, req, req.query)
     optimized_data = _attach_agent_section(optimized_data, req, req.query)
-    
-    # Context data to string
-    data_str = json.dumps(optimized_data, indent=2)
+
+    # Context data to string — internal-only keys ("_..." prefix, e.g. the
+    # complete _FUTURE_WINDOW_FULL) are NEVER sent to Gemini; only the
+    # bounded deterministic projection (FUTURE_WINDOW) is serialized.
+    data_str = json.dumps(_gemini_safe_payload(optimized_data), indent=2)
     
     # Append user query
     final_prompt = f"{system_prompt}\n\nUSER QUERY: {req.query}"
@@ -359,8 +366,19 @@ def _attach_transit_section(optimized_data: Dict[str, Any], req: Any) -> Dict[st
         optimized_data["DETERMINISTIC_PREDICTION"] = pred
     return optimized_data
 
+def _gemini_safe_payload(optimized_data: Dict[str, Any]) -> Dict[str, Any]:
+    """Return the Gemini-bound payload: strip internal-only "_..." keys.
+
+    The complete canonical FUTURE_WINDOW stays available to backend/internal
+    consumers under ``_FUTURE_WINDOW_FULL`` (and the full deterministic
+    prediction under ``_DETERMINISTIC_PREDICTION_FULL``); those keys are
+    excluded here so Gemini receives ONLY the bounded AI projection.
+    """
+    return {k: v for k, v in optimized_data.items() if not str(k).startswith("_")}
+
+
 def _attach_agent_section(optimized_data: Dict[str, Any], req: Any,
-                          query: str = "") -> Dict[str, Any]:
+                           query: str = "") -> Dict[str, Any]:
     """
     Attach deterministic specialist-agent findings (Migration #10, additive).
 
@@ -385,14 +403,30 @@ def _attach_agent_section(optimized_data: Dict[str, Any], req: Any,
                         "TRANSIT_ASPECTS", "TRANSIT_EVENTS", "DASHA")
             if optimized_data.get(key) is not None
         }
+        # Internal consumers (agents) read the COMPLETE canonical prediction
+        # when present; the bounded Gemini projection is only a fallback.
+        prediction_for_agents = optimized_data.get("_DETERMINISTIC_PREDICTION_FULL")
+        if prediction_for_agents is None:
+            prediction_for_agents = optimized_data.get("DETERMINISTIC_PREDICTION")
         context = build_agent_context_from_compute(
             getattr(req, "context_data", {}) or {},
             question=query or "",
             transit_section=transit_section,
-            prediction_summary=optimized_data.get("DETERMINISTIC_PREDICTION"),
+            prediction_summary=prediction_for_agents,
         )
         full = run_full_production_with_synthesis(context)
-        optimized_data["AGENT_FINDINGS"] = full
+        # Complete findings stay available internally; Gemini receives only
+        # the bounded deterministic projection (AI context compaction fix).
+        optimized_data["_AGENT_FINDINGS_FULL"] = full
+        try:
+            from backend.ai_future_projection import (
+                project_agent_findings_for_ai,
+            )
+        except ImportError:  # pragma: no cover - alternate import root
+            from ai_future_projection import (  # type: ignore
+                project_agent_findings_for_ai,
+            )
+        optimized_data["AGENT_FINDINGS"] = project_agent_findings_for_ai(full)
         optimized_data["AGENT_STATUS"] = "available"
     except Exception as exc:
         optimized_data["AGENT_FINDINGS"] = {
@@ -403,15 +437,21 @@ def _attach_agent_section(optimized_data: Dict[str, Any], req: Any,
     return optimized_data
 
 def _attach_future_section(optimized_data: Dict[str, Any], req: Any,
-                           query: str = "") -> Dict[str, Any]:
+                            query: str = "") -> Dict[str, Any]:
     """
-    Attach canonical future-window evaluation (post-release bugfix, additive).
+    Attach canonical future-window evaluation (post-release bugfix, additive)
+    plus the bounded deterministic AI projection (context-compaction bugfix).
 
     When the user query names a future date range and birth params are
     present, the requested interval is evaluated with the existing canonical
-    engines (no new astrology). A caller-supplied DETERMINISTIC_PREDICTION
-    is never overridden. Any engine failure yields an explicit unavailable
-    marker — never fabricated timing.
+    engines (future_window.py — UNCHANGED, no new astrology). The COMPLETE
+    section stays available to backend/internal consumers under the
+    internal-only ``_FUTURE_WINDOW_FULL`` key (excluded from the Gemini
+    payload by _gemini_safe_payload). Gemini receives ONLY the bounded
+    deterministic projection under ``FUTURE_WINDOW`` (see
+    backend/ai_future_projection.py). A caller-supplied
+    DETERMINISTIC_PREDICTION is never overridden. Any engine failure yields
+    an explicit unavailable marker — never fabricated timing.
     """
     try:
         from backend.future_window import (
@@ -423,6 +463,10 @@ def _attach_future_section(optimized_data: Dict[str, Any], req: Any,
             build_future_window_section,
             parse_requested_range,
         )
+    try:
+        from backend.ai_future_projection import project_future_window_for_ai
+    except ImportError:  # pragma: no cover - alternate import root
+        from ai_future_projection import project_future_window_for_ai  # type: ignore
     birth = _request_birth(req)
     if birth is None or not query:
         return optimized_data
@@ -449,12 +493,41 @@ def _attach_future_section(optimized_data: Dict[str, Any], req: Any,
             eval_lon=getattr(req, "eval_lon", None),
             label=parsed["label"],
         )
-        optimized_data["FUTURE_WINDOW"] = section
-        optimized_data["FUTURE_WINDOW_STATUS"] = "available"
-        optimized_data["DETERMINISTIC_PREDICTION"] = {
+        # Complete canonical evidence — internal consumers only (agents read
+        # this via _DETERMINISTIC_PREDICTION_FULL; never serialized to Gemini).
+        optimized_data["_FUTURE_WINDOW_FULL"] = section
+        optimized_data["_DETERMINISTIC_PREDICTION_FULL"] = {
             "status": (section.get("PREDICTION") or {}).get("status"),
             "candidates": (section.get("PREDICTION") or {}).get("candidates", []),
             "source": "canonical-future-window",
+        }
+        # Bounded deterministic AI projection — the ONLY future-window form
+        # Gemini receives.
+        projection = project_future_window_for_ai(section, query)
+        optimized_data["FUTURE_WINDOW"] = projection
+        optimized_data["FUTURE_WINDOW_STATUS"] = "available"
+        optimized_data["FUTURE_WINDOW_COMPACTION"] = projection.get(
+            "EXACT_TRANSIT_EVENTS_COMPACTION", {}
+        )
+        # Light candidate index (full compacted candidates already live in
+        # FUTURE_WINDOW.PREDICTION.candidates — no duplication in the prompt).
+        proj_pred = projection.get("PREDICTION") or {}
+        optimized_data["DETERMINISTIC_PREDICTION"] = {
+            "status": proj_pred.get("status"),
+            "candidates_total": proj_pred.get("candidates_total"),
+            "candidate_index": [
+                {
+                    "hypothesis_id": c.get("hypothesis_id"),
+                    "event_type": c.get("event_type"),
+                    "timing_status": c.get("timing_status"),
+                    "evidence_state": c.get("evidence_state"),
+                }
+                for c in (proj_pred.get("candidates") or [])
+            ],
+            "source": "canonical-future-window",
+            "projection": "canonical-future-window-projection",
+            "note": "Full compacted candidates are under "
+                    "FUTURE_WINDOW.PREDICTION.candidates.",
         }
     except Exception as exc:
         optimized_data["FUTURE_WINDOW"] = {
@@ -477,7 +550,7 @@ def generate_expert_report(
         expert_context = _attach_transit_section(expert_context, req)
         expert_context = _attach_future_section(expert_context, req, "")
         expert_context = _attach_agent_section(expert_context, req, "")
-        data_str = json.dumps(expert_context, indent=2)
+        data_str = json.dumps(_gemini_safe_payload(expert_context), indent=2)
         
         json_response = ai_engine.generate_expert_report(data_str)
         
