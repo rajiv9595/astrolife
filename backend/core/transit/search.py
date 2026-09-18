@@ -44,6 +44,11 @@ def find_exact_conjunction(
     d_lo = signed(lo_lon); d_hi = signed(hi_lon)
     if d_lo * d_hi > 0 and abs(d_lo) > 1e-9 and abs(d_hi)>1e-9:
         return None
+    # Reject +/-180 branch-cut jumps (point opposite the target): a true
+    # zero crossing moves |d_lo-d_hi| by the actual angular motion (small),
+    # while a cut jump moves it by ~360-motion (huge).
+    if abs(d_lo - d_hi) >= 180.0 and abs(d_lo) > 1e-9 and abs(d_hi) > 1e-9:
+        return None
     for _ in range(60):
         if abs(hi_jd-lo_jd) < tol_days:
             return (lo_jd+hi_jd)/2

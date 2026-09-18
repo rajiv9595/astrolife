@@ -348,6 +348,19 @@ def detect_transit_events(
                                                     jd=lo2, utc_iso=_jd_to_utc_iso(lo2)))
                         continue
                     if d_lo * d_hi < 0:
+                        # Guard against the +/-180 branch-cut artifact: the
+                        # wrapped signed difference jumps from +180 to -180
+                        # at the point OPPOSITE the target (target+180).
+                        # That jump also yields d_lo*d_hi<0 but is NOT a zero
+                        # crossing. A true crossing moves |d_lo-d_hi| by the
+                        # actual angular motion (small); a cut jump moves it
+                        # by ~360-motion (huge). Reject cut jumps so a
+                        # conjunction is never emitted at its opposition point
+                        # (and vice versa). This also prevents impossible
+                        # same-timestamp Moon-conjunct-Rahu + Moon-conjunct-Ketu
+                        # pairs (natal nodes are 180 deg apart).
+                        if abs(d_lo - d_hi) >= 180.0:
+                            continue
                         # bracket found, bisect
                         lo_b = lo2; hi_b = hi2
                         for _ in range(50):
@@ -362,7 +375,7 @@ def detect_transit_events(
                                 lo_b = mid; d_lo = d_mid
                         mid_jd = (lo_b+hi_b)/2
                         mid_lon2 = _get_transit_lon(mid_jd, pl, profile)
-                        sep = abs(((mid_lon2 - natal_lon +540)%360)-180) # distance to ... actually for conj we want diff to target, for opp target+180 else above already
+                        sep = abs(((mid_lon2 - target_lon +540)%360)-180) # distance to target (0 at exact event)
                         events.append(TransitEvent(type=ev_type, transit_planet=pl, natal_planet=natal_name,
                                                     details={"target_longitude": target_lon, "transit_longitude": mid_lon2, "separation": sep},
                                                     jd=mid_jd, utc_iso=_jd_to_utc_iso(mid_jd)))

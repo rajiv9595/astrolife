@@ -56,6 +56,41 @@ def check(name, cond, msg=""):
     return ok
 
 
+def _no_phantom_moon_conjunctions(events, birth):
+    """Independently re-verify every Moon exact_conjunction with raw SWE:
+    transit Moon sidereal at the event timestamp must equal the natal target
+    longitude (catches 180-deg-off phantom duplicates from branch-cut bugs)."""
+    import swisseph as swe
+    try:
+        from backend.core.calculation.pipeline import generate_chart_facts
+    except ImportError:  # type: ignore
+        from core.calculation.pipeline import generate_chart_facts  # type: ignore
+    chart = generate_chart_facts(year=birth["year"], month=birth["month"], day=birth["day"],
+                                 hour=birth.get("hour", 0), minute=birth.get("minute", 0),
+                                 second=birth.get("second", 0), lat=birth["lat"],
+                                 lon=birth["lon"], tz_name=birth["tz"])
+    natal = {k: float(v.longitude.sidereal) for k, v in chart.planets.items()}
+    swe.set_sid_mode(swe.SIDM_LAHIRI, 0, 0)
+    for e in events:
+        if not isinstance(e, dict):
+            continue
+        if e.get("planet") != "Moon" or e.get("kind") != "exact_conjunction":
+            continue
+        target_name = e.get("natal_target")
+        if target_name not in natal:
+            continue
+        dt = datetime.fromisoformat(str(e["timestamp_iso"]).replace("Z", "+00:00"))
+        dt = dt.astimezone(timezone.utc)
+        ut = dt.hour + dt.minute / 60.0 + dt.second / 3600.0 + dt.microsecond / 3600.0 / 1_000_000.0
+        jd = swe.julday(dt.year, dt.month, dt.day, ut, swe.GREG_CAL)
+        ay = swe.get_ayanamsa_ut(jd)
+        res, _ = swe.calc_ut(jd, swe.MOON, swe.FLG_SWIEPH | swe.FLG_SPEED)
+        mlon = (float(res[0]) - ay) % 360.0
+        if abs(((mlon - natal[target_name] + 540) % 360) - 180) >= 1.0:
+            return False
+    return True
+
+
 print("=" * 70)
 print("AI FUTURE PROJECTION (CONTEXT COMPACTION) — REGRESSION TESTS")
 print("=" * 70)
@@ -105,8 +140,16 @@ print(f"\ncanonical build: {len(FULL_EVENTS)} exact events, "
 
 # ============ C. Internal completeness ============
 print("\n--- C. Internal FUTURE_WINDOW complete ---")
-check("C1. 265+ exact events internally",
-      len(FULL_EVENTS) >= 265, str(len(FULL_EVENTS)))
+check("C1. exact event count for the deterministic 78-day window "
+      "(Oct 15-Dec 31 2026, SWE 2.10.03/Lahiri/Mean Node): 207. "
+      "Pre-branch-cut-fix builds yielded 265+ because phantom 180-deg-off "
+      "conjunction/opposition duplicates were counted; the fix removed them, "
+      "so the contract is now the exact real-event count, not a threshold.",
+      len(FULL_EVENTS) == 207, str(len(FULL_EVENTS)))
+check("C1b. no phantom Moon conjunctions (each independently re-verified "
+      "via Swiss Ephemeris: transit Moon == natal target within 1 deg)",
+      _no_phantom_moon_conjunctions(FULL_EVENTS, BIRTH),
+      "phantom 180-deg-off Moon conjunction present")
 check("C2. full candidates present", len(FULL_CANDS) >= 5, str(len(FULL_CANDS)))
 check("C3. dasha hierarchy present",
       bool((FULL.get("DASHA_AT_WINDOW_START") or {}).get("hierarchy")))
